@@ -50,14 +50,12 @@ const schoolSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-schoolSchema.pre("save", function (next) {
-  if (!this.isModified("name")) return next();
+schoolSchema.pre("save", function () {
+  if (!this.isModified("name")) return;
 
   this.slug = slugify(this.name, {
     lower: true,
   });
-
-  next();
 });
 
 const School = mongoose.model("School", schoolSchema);

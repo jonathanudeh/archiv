@@ -1,6 +1,7 @@
 const express = require("express");
 const schoolController = require("../../controllers/schoolController");
 const departmentRouter = require("./departmentRoutes");
+const { protect, restrictTo } = require("../../controllers/authController");
 
 const router = express.Router();
 
@@ -10,13 +11,21 @@ router.use("/:schoolId/departments", departmentRouter);
 router
   .route("/")
   .get(schoolController.getAllSchools)
-  .post(schoolController.createSchool);
+  .post(
+    protect,
+    restrictTo("admin", "contributor"),
+    schoolController.createSchool,
+  );
 
 router
   .route("/:id")
   .get(schoolController.getSchool)
-  .patch(schoolController.updateSchool)
-  .delete(schoolController.deleteSchool);
+  .patch(
+    protect,
+    restrictTo("admin", "contributor"),
+    schoolController.updateSchool,
+  )
+  .delete(protect, restrictTo("admin"), schoolController.deleteSchool);
 
 router.route("/slug/:slug").get(schoolController.getSchoolBySlug);
 

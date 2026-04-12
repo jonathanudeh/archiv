@@ -5,7 +5,7 @@ const bcrypt = require("bcryptjs");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "A user must have a name"],
+    required: [true, "Please tell us your name"],
     trim: true,
     minlength: [2, "A user's name must have more or equal than 2 characters"],
     maxlength: [
@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
 
   email: {
     type: String,
-    required: [true, ""],
+    required: [true, "Please provide your email"],
     unique: true,
     lowercase: true,
     validate: [validator.isEmail, "Please provide a valid email"],
@@ -56,17 +56,11 @@ const userSchema = new mongoose.Schema({
   passwordChangedAt: Date,
 });
 
-userSchema.pre("save", async function (next) {
-  // Only run if password was modified
-  if (!this.isModified("password")) return next();
+userSchema.pre("save", async function () {
+  if (!this.isModified("password")) return;
 
-  // Hash password
   this.password = await bcrypt.hash(this.password, 12);
-
-  // Remove passwordConfirm field
   this.passwordConfirm = undefined;
-
-  next();
 });
 
 userSchema.methods.correctPassword = async function (
@@ -74,6 +68,18 @@ userSchema.methods.correctPassword = async function (
   userPassword,
 ) {
   return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10,
+    );
+    return JWTTimestamp < changedTimestamp;
+  }
+
+  return false;
 };
 
 const User = mongoose.model("User", userSchema);

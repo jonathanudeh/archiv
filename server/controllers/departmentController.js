@@ -103,7 +103,7 @@ exports.updateDepartment = catchAsync(async (req, res, next) => {
     // Check duplicate in SAME school
     const existingDepartment = await Department.findOne({
       name,
-      school: dept.school,
+      school: department.school,
       _id: { $ne: req.params.id },
     });
 
@@ -153,4 +153,3 @@ exports.deleteDepartment = catchAsync(async (req, res, next) => {
     data: null,
   });
 });
-s;

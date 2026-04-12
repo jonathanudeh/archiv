@@ -1,3 +1,4 @@
+const slugify = require("slugify");
 const School = require("../models/schoolModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");

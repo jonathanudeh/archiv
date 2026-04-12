@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 const departmentSchema = new mongoose.Schema(
   {
@@ -10,7 +11,7 @@ const departmentSchema = new mongoose.Schema(
 
     slug: {
       type: String,
-      unique: true,
+      lowercase: true,
     },
 
     school: {
@@ -24,3 +25,18 @@ const departmentSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+// Ensure unique department name within the same school
+departmentSchema.index({ school: 1, slug: 1 }, { unique: true });
+
+departmentSchema.pre("save", function () {
+  if (!this.isModified("name")) return;
+
+  this.slug = slugify(this.name, {
+    lower: true,
+  });
+});
+
+const Department = mongoose.model("Department", departmentSchema);
+
+module.exports = Department;
