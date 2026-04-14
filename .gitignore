@@ -8,6 +8,7 @@ out
 # env files
 .env
 .env.*
+*.env
 
 # build outputs
 dist

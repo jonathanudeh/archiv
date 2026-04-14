@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const globalErrorHandler = require("./controllers/errorController");
 const schoolRouter = require("./routes/v1/schoolRoutes");
 const departmentRouter = require("./routes/v1/departmentRoutes");
@@ -7,6 +8,7 @@ const AppError = require("./utils/appError");
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.use("/api/v1/schools", schoolRouter);
