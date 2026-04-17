@@ -20,6 +20,12 @@ const departmentSchema = new mongoose.Schema(
       required: [true, "A department must belong to a school"],
     },
 
+    numberOfLevels: {
+      type: Number,
+      required: [true, "A department must have number of levels"],
+      min: 1,
+    },
+
     logo: String,
     color: String,
   },

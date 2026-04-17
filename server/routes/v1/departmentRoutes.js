@@ -7,8 +7,11 @@ const {
   updateDepartment,
   deleteDepartment,
 } = require("../../controllers/departmentController");
+const levelRouter = require("./levelRoutes");
 
 const router = express.Router({ mergeParams: true });
+
+router.use("/:departmentId/levels", levelRouter);
 
 router
   .route("/")
