@@ -7,6 +7,8 @@ const router = express.Router();
 
 // NESTED ROUTE CONNECTION
 router.use("/:schoolId/departments", departmentRouter);
+// ps. I just realized that i should also use school slug
+router.use("/:slug/department/:departmentSlug", departmentRouter);
 
 router
   .route("/")

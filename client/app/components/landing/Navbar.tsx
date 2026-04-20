@@ -4,7 +4,7 @@ export default function Navbar() {
   return (
     <nav className="z-10 flex w-full items-center justify-between border-b-[0.2px] border-slate-400 bg-gray-100 px-6 py-4">
       {/* logo */}
-      <Image src="/next.svg" alt="Archiv Logo" width={100} height={40} />
+      <Image src="/archivLogo.svg" alt="Archiv Logo" width={60} height={10} />
 
       {/* nav links */}
       <div></div>

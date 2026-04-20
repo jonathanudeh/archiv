@@ -6,6 +6,7 @@ import { useDepartments } from "@/app/hooks/useDeparments";
 
 import { useSchool } from "@/app/hooks/useSchools";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 
 const SchoolPage = () => {
@@ -15,6 +16,7 @@ const SchoolPage = () => {
   // TODO - fetch departments by pupular algorithm
   const { schoolDepartments, isLoadingSchDepartments, schDeptError } =
     useDepartments(school?._id);
+  console.log(schoolDepartments);
 
   if (isLoadingSchool || isLoadingSchDepartments) return <Spinner />;
   if (errorSchool || schDeptError || !school)
@@ -79,7 +81,8 @@ const SchoolPage = () => {
             schoolDepartments?.map((dept) => (
               <DepartmentCard
                 key={dept._id}
-                title={dept.name}
+                name={dept.slug}
+                slug={String(slug)}
                 icon={dept.icon}
                 bgColor={dept.bgColor}
               />
@@ -93,43 +96,50 @@ const SchoolPage = () => {
 
 // Sub-component for Departments
 const DepartmentCard = ({
-  title,
+  name,
+  slug,
   icon,
   bgColor,
 }: {
-  title: string;
+  name: string;
+  slug: string;
   icon: string;
   bgColor: string;
 }) => (
-  <div
-    className="flex flex-col gap-4 rounded-2xl border border-white p-6 shadow-sm transition-transform hover:scale-[1.01]"
-    style={{ backgroundColor: bgColor }}
+  <Link
+    href={`/schools/${slug}/departments/${name}`}
+    className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/60 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95"
   >
-    <div className="flex items-center gap-4">
-      <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-500 text-white shadow-md">
-        {/* Placeholder for Icon */}
-        <span className="text-2xl font-bold">{title[0]}</span>
-      </div>
-      <h3 className="w-32 text-xl leading-tight font-extrabold text-slate-800">
-        {title}
-      </h3>
-    </div>
-
-    <div className="mt-2 flex gap-4">
-      {["100 Level", "200 Level", "300 Level"].map((level, i) => (
-        <div key={level} className="flex items-center gap-1.5">
-          <div
-            className={`h-1.5 w-1.5 rounded-sm bg-slate-400 ${i === 0 ? "opacity-100" : "opacity-30"}`}
-          />
-          <span
-            className={`text-[11px] font-bold ${i === 0 ? "text-slate-900" : "text-slate-400"}`}
-          >
-            {level}
-          </span>
+    <div
+      className="flex flex-col gap-4 rounded-2xl border border-white p-6 shadow-sm transition-transform hover:scale-[1.01]"
+      style={{ backgroundColor: bgColor }}
+    >
+      <div className="flex items-center gap-4">
+        <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-500 text-white shadow-md">
+          {/* Placeholder for Icon */}
+          <span className="text-2xl font-bold">{name[0]}</span>
         </div>
-      ))}
+        <h3 className="w-32 text-xl leading-tight font-extrabold text-slate-800">
+          {name}
+        </h3>
+      </div>
+
+      <div className="mt-2 flex gap-4">
+        {["100 Level", "200 Level", "300 Level"].map((level, i) => (
+          <div key={level} className="flex items-center gap-1.5">
+            <div
+              className={`h-1.5 w-1.5 rounded-sm bg-slate-400 ${i === 0 ? "opacity-100" : "opacity-30"}`}
+            />
+            <span
+              className={`text-[11px] font-bold ${i === 0 ? "text-slate-900" : "text-slate-400"}`}
+            >
+              {level}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
-  </div>
+  </Link>
 );
 
 export default SchoolPage;
