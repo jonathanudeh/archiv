@@ -1,4 +1,5 @@
 "use client";
+
 import { useSchools } from "@/app/hooks/useSchools";
 import SchoolCard from "./SchoolCard";
 import Spinner from "../ui/Spinner";
@@ -8,27 +9,53 @@ const PopularSchools = () => {
   const { schools, isLoadingAllSchools, errorAllSchools } = useSchools();
 
   if (isLoadingAllSchools) return <Spinner />;
-  if (errorAllSchools)
+
+  if (errorAllSchools) {
     return (
-      <div className="p-10 text-center text-slate-400">
-        Error loading schools.
+      <div className="text-muted py-16 text-center">
+        Failed to load schools.
       </div>
     );
+  }
 
   return (
-    <section className="mx-auto w-full bg-gray-100 px-6 py-12">
-      <h2 className="mb-8 text-xl font-bold text-slate-800">Popular Schools</h2>
+    <section className="bg-background">
+      <div className="archiv-container py-20">
+        {/* HEADER */}
+        <div className="mb-12 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+          <div>
+            {/* small label */}
+            <p className="text-muted text-xs font-medium tracking-[0.2em] uppercase">
+              Academic Index
+            </p>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {schools?.map((school: any) => (
-          <SchoolCard key={school._id} school={school} />
-        ))}
+            {/* title */}
+            <h2 className="text-foreground mt-2 text-2xl font-bold tracking-[-0.04em] md:text-3xl">
+              Popular Schools
+            </h2>
+
+            <p className="text-muted mt-2 max-w-xl text-sm md:text-base">
+              Explore institutions and access structured academic materials
+              across departments and levels.
+            </p>
+          </div>
+
+          {/* CTA */}
+          <Link
+            href="/schools"
+            className="inline-flex items-center justify-center rounded-full bg-[#172033] px-5 py-2.5 text-sm font-semibold text-white transition-all hover:scale-[1.02] hover:bg-[#2b3954]"
+          >
+            View all schools
+          </Link>
+        </div>
+
+        {/* GRID */}
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {schools?.map((school: any) => (
+            <SchoolCard key={school._id} school={school} />
+          ))}
+        </div>
       </div>
-
-      {/* All schools button */}
-      <button className="mt-10 rounded-sm bg-blue-900 px-4 py-2 text-white">
-        <Link href={`/schools`}>All Schools</Link>
-      </button>
     </section>
   );
 };

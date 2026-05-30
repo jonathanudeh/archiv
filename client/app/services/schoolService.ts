@@ -5,6 +5,8 @@ import API from "../lib/axios";
 export const getSchools = async () => {
   const res = await API.get("/schools");
 
+  console.log(res.data.data.schools);
+
   return res.data.data.schools;
 };
 
