@@ -46,7 +46,6 @@ exports.getDepartment = catchAsync(async (req, res, next) => {
 });
 
 // create a department and assign it to a school
-
 exports.createDepartment = catchAsync(async (req, res, next) => {
   const session = await mongoose.startSession();
   session.startTransaction();
