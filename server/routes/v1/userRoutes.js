@@ -18,15 +18,13 @@ router.get("/me", protect, getMe);
 router.patch("/updateMe", protect, upload.single("photo"), updateMe);
 router.delete("/deleteMe", protect, deleteMe);
 
-router
-  .route("/")
-  .get(protect, restrictTo("admin"), getAllUsers)
-  .post(createUser);
+router.route("/").get(protect, restrictTo("admin"), getAllUsers);
+// .post(protect, restrictTo("admin"), createUser);
 
 router
   .route("/:id")
-  .get(protect, getUser)
-  .patch(protect, updateUser)
+  .get(protect, restrictTo("admin"), getUser)
+  .patch(protect, restrictTo("admin"), updateUser)
   .delete(protect, restrictTo("admin"), deleteUser);
 
 module.exports = router;

@@ -14,12 +14,7 @@ const filterObj = (obj, ...allowedFields) => {
 };
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
-  let filter = {};
-  if (req.params.id) {
-    filter = { user: req.params.id };
-  }
-
-  const features = new APIFeatures(User.find(filter), req.query)
+  const features = new APIFeatures(User.find(), req.query)
     .filter()
     .sort()
     .limitFields()
@@ -51,12 +46,30 @@ exports.getUser = catchAsync(async (req, res, next) => {
   });
 });
 
-exports.updateUser = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "This route is not yet defined!",
+exports.updateUser = catchAsync(async (req, res, next) => {
+  const user = await User.findByIdAndUpdate(
+    req.params.id,
+    {
+      role: req.body.role,
+      active: req.body.active,
+    },
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
+
+  if (!user) {
+    return next(new AppError("No user found", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      user,
+    },
   });
-};
+});
 
 exports.deleteUser = (req, res) => {
   res.status(500).json({
@@ -65,12 +78,13 @@ exports.deleteUser = (req, res) => {
   });
 };
 
-exports.createUser = (req, res) => {
-  res.status(500).json({
-    status: "error",
-    message: "This route is not yet defined!",
-  });
-};
+// might remove
+// exports.createUser = (req, res) => {
+//   res.status(500).json({
+//     status: "error",
+//     message: "This route is not yet defined!",
+//   });
+// };
 
 //
 //
@@ -86,7 +100,13 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     );
   }
 
-  const filteredBody = filterObj(req.body, "name");
+  const filteredBody = filterObj(
+    req.body,
+    "name",
+    "bio",
+    "school",
+    "department",
+  );
   const user = await User.findById(req.user.id);
 
   if (req.file) {
@@ -133,17 +153,20 @@ exports.getMe = catchAsync(async (req, res, next) => {
 
 exports.deleteMe = catchAsync(async (req, res, next) => {
   const { id } = req.user;
-  const user = await User.findById(id);
 
-  // or
-  // await User.findByIdAndUpdate(id, { active: false })
+  const user = await User.findById(id);
 
   if (!user) {
     return next(new AppError("No user found with that ID", 404));
   }
 
-  user.active = false;
-  await User.save();
+  if (user.photo?.public_id) {
+    await cloudinary.uploader.destroy(user.photo.public_id);
+  }
+
+  await User.findByIdAndUpdate(req.user.id, {
+    active: false,
+  });
 
   res.status(204).json({
     status: "success",

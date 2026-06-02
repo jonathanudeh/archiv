@@ -50,10 +50,30 @@ const userSchema = new mongoose.Schema({
     public_id: String,
   },
 
+  bio: {
+    type: String,
+    maxlength: 300,
+  },
+
+  school: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "School",
+  },
+
+  department: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Department",
+  },
+
   role: {
     type: String,
     enum: ["user", "contributor", "admin"],
     default: "user",
+  },
+
+  materialsUploaded: {
+    type: Number,
+    default: 0,
   },
 
   createdAt: {
