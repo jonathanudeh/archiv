@@ -43,6 +43,8 @@ const materialSchema = new mongoose.Schema(
 
     fileSize: Number,
 
+    originalFileName: String,
+
     semester: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Semester",

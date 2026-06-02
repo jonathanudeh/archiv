@@ -6,16 +6,19 @@ const helmet = require("helmet");
 const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
+const cookieParser = require("cookie-parser");
 
 const globalErrorHandler = require("./controllers/errorController");
 const schoolRouter = require("./routes/v1/schoolRoutes");
 const departmentRouter = require("./routes/v1/departmentRoutes");
+const authRouter = require("./routes/v1/authRoutes");
 const userRouter = require("./routes/v1/userRoutes");
 const AppError = require("./utils/appError");
 
 const app = express();
 
 app.use(helmet());
+app.use(cookieParser());
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -47,8 +50,7 @@ app.use(
 
 app.use("/api/v1/schools", schoolRouter);
 app.use("/api/v1/departments", departmentRouter);
-
-//// TODO: /auth and /users to be seperate routers
+app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 
 app.use((req, res, next) => {

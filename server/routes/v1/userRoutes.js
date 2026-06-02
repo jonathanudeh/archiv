@@ -1,22 +1,22 @@
 const express = require("express");
-const {
-  signup,
-  login,
-  protect,
-  restrictTo,
-} = require("../../controllers/authController");
+const upload = require("../../middlewares/multerUpload");
+const { protect, restrictTo } = require("../../controllers/authController");
 const {
   getAllUsers,
   createUser,
   getUser,
   updateUser,
   deleteUser,
+  deleteMe,
+  getMe,
+  updateMe,
 } = require("../../controllers/userController");
 
 const router = express.Router();
 
-router.post("/signup", signup);
-router.post("/login", login);
+router.get("/me", protect, getMe);
+router.patch("/updateMe", protect, upload.single("photo"), updateMe);
+router.delete("/deleteMe", protect, deleteMe);
 
 router
   .route("/")
