@@ -1,5 +1,6 @@
 const express = require("express");
 const upload = require("../../middlewares/multerUpload");
+const rateLimit = require("express-rate-limit");
 const {
   getAllMaterials,
   deleteMaterial,
@@ -7,13 +8,26 @@ const {
   uploadMaterial,
 } = require("../../controllers/materialController");
 const { protect, restrictTo } = require("../../controllers/authController");
+const { validateFileType } = require("../../middlewares/validateFileType");
 
 const router = express.Router();
+
+const uploadLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  message: "Upload limit reached.",
+});
 
 router
   .route("/")
   .get(getAllMaterials)
-  .post(protect, upload.single("file"), uploadMaterial);
+  .post(
+    protect,
+    uploadLimiter,
+    upload.single("file"),
+    validateFileType,
+    uploadMaterial,
+  );
 router.route("/:materialId").get(getMaterial).delete(protect, deleteMaterial);
 
 module.exports = router;

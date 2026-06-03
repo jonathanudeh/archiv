@@ -15,8 +15,6 @@ const allowedMimeTypes = [
   "application/vnd.ms-excel",
   "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
 
-  "application/zip",
-
   "image/jpeg",
   "image/png",
   "image/webp",

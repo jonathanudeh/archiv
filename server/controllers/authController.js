@@ -51,9 +51,6 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
   });
 
-  newUser.password = undefined;
-  newUser.passwordConfirm = undefined;
-
   const verificationToken = newUser.createEmailVerificationToken();
   await newUser.save({ validateBeforeSave: false });
 
@@ -268,6 +265,8 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 exports.updatePassword = catchAsync(async (req, res, next) => {
   // get user from collection
   const user = await User.findById(req.user.id).select("+password");
+
+  console.log({ user, id: req.user.id });
 
   if (!user) {
     return next(new AppError("User does not exist", 400));

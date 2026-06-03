@@ -3,7 +3,7 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const cloudinary = require("../config/cloudinary");
 const APIFeatures = require("../utils/apiFeatures");
-const uploadToCloudinary = require("../utils/uploadToCloudinary");
+const { uploadToCloudinary } = require("../utils/uploadToCloudinary");
 
 const filterObj = (obj, ...allowedFields) => {
   const newObj = {};
@@ -89,7 +89,6 @@ exports.deleteUser = (req, res) => {
 //
 //
 
-// confirm email isnt already taken
 exports.updateMe = catchAsync(async (req, res, next) => {
   if (req.body.password || req.body.passwordConfirm) {
     return next(
@@ -142,6 +141,10 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 exports.getMe = catchAsync(async (req, res, next) => {
   const { id } = req.user;
   const user = await User.findById(id);
+
+  if (!user) {
+    return next(new AppError("No user found with that ID", 404));
+  }
 
   res.status(200).json({
     status: "success",

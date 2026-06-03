@@ -1,6 +1,5 @@
 export const useAuth = () => {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
+  const token = typeof window !== "undefined" ? "cookie goes here" : null;
 
   const isAuthenticated = !!token;
 

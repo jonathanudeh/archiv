@@ -5,6 +5,14 @@ const APIFeatures = require("../utils/apiFeatures");
 const cloudinary = require("../config/cloudinary");
 const { uploadToCloudinary } = require("../utils/uploadToCloudinary");
 
+const getFolder = (mimeType) => {
+  if (mimeType.includes("pdf")) return "archiv/materials/pdf";
+
+  if (mimeType.startsWith("image")) return "archiv/materials/images";
+
+  return "archiv/materials/documents";
+};
+
 exports.getMaterial = catchAsync(async (req, res, next) => {
   const material = await Material.findById(req.params.materialId);
 
@@ -46,14 +54,22 @@ exports.getAllMaterials = catchAsync(async (req, res, next) => {
 exports.uploadMaterial = catchAsync(async (req, res, next) => {
   const semesterId = req.params.semesterId;
 
+  const semester = await Semester.findById(semesterId);
+
+  if (!semester) {
+    return next(new AppError("Invalid semester", 404));
+  }
+
+  if (!req.user.isVerified) {
+    return next(new AppError("Verify your email before uploading.", 403));
+  }
+
   if (!req.file) {
     return next(new AppError("Please upload a file", 400));
   }
 
-  const uploadResult = await uploadToCloudinary(
-    req.file.buffer,
-    "archiv/materials",
-  );
+  const folder = getFolder(req.file.mimetype);
+  const uploadResult = await uploadToCloudinary(req.file.buffer, folder);
 
   const material = await Material.create({
     title: req.body.title,
@@ -85,6 +101,15 @@ exports.uploadMaterial = catchAsync(async (req, res, next) => {
 exports.deleteMaterial = catchAsync(async (req, res, next) => {
   const material = await Material.findById(req.params.materialId);
 
+  if (
+    material.uploadedBy.toString() !== req.user.id &&
+    req.user.role !== "admin"
+  ) {
+    return next(
+      new AppError("You do not have permission to delete this material", 403),
+    );
+  }
+
   if (!material) {
     return next(new AppError("No material found with that ID", 404));
   }
@@ -93,8 +118,7 @@ exports.deleteMaterial = catchAsync(async (req, res, next) => {
   try {
     await cloudinary.uploader.destroy(material.filePublicId);
   } catch (err) {
-    // TODO: use custom alert
-    console.error(err);
+    return next(new AppError("Failed to delete file from cloud storage", 500));
   }
 
   await Material.findByIdAndDelete(req.params.materialId);

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 const materialSchema = new mongoose.Schema(
   {
@@ -57,17 +58,6 @@ const materialSchema = new mongoose.Schema(
       required: true,
     },
 
-    approvedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-
-    status: {
-      type: String,
-      enum: ["pending", "approved", "rejected"],
-      default: "pending",
-    },
-
     tags: [String],
 
     downloadCount: {
@@ -84,6 +74,11 @@ const materialSchema = new mongoose.Schema(
     timestamps: true,
   },
 );
+
+// INDEXES for faster queries
+materialSchema.index({ semester: 1 });
+materialSchema.index({ uploadedBy: 1 });
+materialSchema.index({ title: "text", description: "text" });
 
 materialSchema.pre("save", function () {
   if (!this.isModified("title")) return;
