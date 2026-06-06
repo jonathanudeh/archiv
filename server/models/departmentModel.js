@@ -25,15 +25,15 @@ const departmentSchema = new mongoose.Schema(
       required: [true, "A department must have number of levels"],
       min: 1,
     },
-
-    logo: String,
-    color: String,
   },
   { timestamps: true },
 );
 
+// INDEXES
 // Ensure unique department name within the same school
-departmentSchema.index({ school: 1, slug: 1 }, { unique: true });
+departmentSchema.index({ name: "text" });
+departmentSchema.index({ school: 1 });
+departmentSchema.index({ name: 1, school: 1 }, { unique: true });
 
 departmentSchema.pre("save", function () {
   if (!this.isModified("name")) return;

@@ -22,13 +22,16 @@ const createSendToken = (user, statusCode, res) => {
         Number(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000,
     ),
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
   };
 
-  if (process.env.NODE_ENV === "production") {
-    cookieOptions.secure = true;
-  }
+  console.log("COOKIE OPTIONS", cookieOptions);
+  console.log("NODE_ENV", process.env.NODE_ENV);
 
   res.cookie("jwt", token, cookieOptions);
+
+  console.log("TOKEN CREATED", token);
 
   // Remove password from output
   user.password = undefined;
@@ -54,9 +57,13 @@ exports.signup = catchAsync(async (req, res, next) => {
   const verificationToken = newUser.createEmailVerificationToken();
   await newUser.save({ validateBeforeSave: false });
 
-  const url = `${req.protocol}://${req.get("host")}/api/v1/auth/verify-email/${verificationToken}`;
+  const url = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
   await new Email(newUser, url).sendEmailVerification();
-  createSendToken(newUser, 201, res);
+  // createSendToken(newUser, 201, res);
+  res.status(200).json({
+    status: "success",
+    message: "Verification email sent. Please check your inbox.",
+  });
 });
 
 exports.verifyEmail = catchAsync(async (req, res, next) => {
@@ -81,12 +88,13 @@ exports.verifyEmail = catchAsync(async (req, res, next) => {
   user.emailVerifiedAt = Date.now();
   await user.save({ validateBeforeSave: false });
 
-  res.status(200).json({
-    status: "success",
-    message: "Email verified successfully",
-  });
+  // res.status(200).json({
+  //   status: "success",
+  //   message: "Email verified successfully",
+  // });
 
-  // createSendToken(user, 200, res); // this can log the user in immediately after verification.
+  createSendToken(user, 200, res);
+  // this can log the user in immediately after verification.
 });
 
 exports.resendVerificationEmail = catchAsync(async (req, res, next) => {
@@ -108,13 +116,13 @@ exports.resendVerificationEmail = catchAsync(async (req, res, next) => {
     validateBeforeSave: false,
   });
 
-  const url = `${req.protocol}://${req.get("host")}/api/v1/auth/verify-email/${verificationToken}`;
+  const url = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
 
   await new Email(user, url).sendEmailVerification();
 
   res.status(200).json({
     status: "success",
-    message: "Verification email sent",
+    message: "Verification email sent. Please check your inbox.",
   });
 });
 
@@ -163,6 +171,10 @@ exports.protect = catchAsync(async (req, res, next) => {
   } else if (req.cookies.jwt) {
     token = req.cookies.jwt;
   }
+
+  console.log({ token });
+  console.log("REQ COOKIES", req.cookies);
+  console.log("JWT COOKIE", req.cookies.jwt);
 
   if (!token) {
     return next(
@@ -216,13 +228,13 @@ exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   // Send resend token to user email
   try {
-    const resetUrl = `${req.protocol}://${req.get("host")}/api/v1/auth/resetPassword/${resetToken}`;
+    const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
     await new Email(user, resetUrl).sendPasswordReset();
 
     res.status(200).json({
       status: "success",
-      message: "Token sent to email",
+      message: "Password reset link sent. Please check your email.",
     });
   } catch (err) {
     user.passwordResetToken = undefined;

@@ -6,17 +6,28 @@ const School = require("../models/schoolModel");
 const slugify = require("slugify");
 const Level = require("../models/levelModel");
 const Semester = require("../models/semesterModel");
+const APIFeatures = require("../utils/apiFeatures");
+const { filterObj } = require("../utils/filterObj");
 
 // get all departments or all dept in a school if ID is provided
 exports.getAllDepartments = catchAsync(async (req, res, next) => {
-  let filter = {};
+  let queryObj = {};
 
-  if (req.params.schoolId)
-    filter = {
-      school: req.params.schoolId,
-    };
+  // nested route support
+  if (req.params.schoolId) {
+    queryObj.school = req.params.schoolId;
+  }
 
-  const departments = await Department.find(filter).populate("school");
+  let query = Department.find(queryObj).populate("school");
+
+  const features = new APIFeatures(query, req.query)
+    .search(["name"])
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+
+  const departments = await features.query;
 
   res.status(200).json({
     status: "success",
@@ -47,21 +58,23 @@ exports.getDepartment = catchAsync(async (req, res, next) => {
 
 // create a department and assign it to a school
 exports.createDepartment = catchAsync(async (req, res, next) => {
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return next(new AppError("Please provide department data.", 400));
+  }
+
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
     // 1. Allow nested route to set school ID
-    if (!req.body.school) req.body.school = req.params.schoolId;
+    const school = req.body.school || req.params.schoolId;
 
-    if (!req.body.school) {
-      throw new AppError("School ID is required to create a department.", 400);
+    if (!school) {
+      throw new AppError("School ID is required.", 400);
     }
 
     // 2. Validate school exists
-    const schoolExists = await School.findById(req.body.school).session(
-      session,
-    );
+    const schoolExists = await School.findById(school).session(session);
 
     if (!schoolExists) {
       throw new AppError("Invalid school ID", 400);
@@ -74,7 +87,7 @@ exports.createDepartment = catchAsync(async (req, res, next) => {
     // 4. Check duplicate department in same school
     const existingDepartment = await Department.findOne({
       name,
-      school: req.body.school,
+      school,
     }).session(session);
 
     if (existingDepartment) {
@@ -85,12 +98,19 @@ exports.createDepartment = catchAsync(async (req, res, next) => {
     }
 
     // 5. Create Department (must use array with session)
+    const filteredBody = filterObj(
+      req.body,
+      "name",
+      "school",
+      "numberOfLevels",
+    );
     const [newDepartment] = await Department.create(
       [
         {
-          ...req.body,
+          ...filteredBody,
           name,
           slug,
+          school,
         },
       ],
       { session },
@@ -143,6 +163,10 @@ exports.createDepartment = catchAsync(async (req, res, next) => {
 });
 
 exports.updateDepartment = catchAsync(async (req, res, next) => {
+  if (!req.body || Object.keys(req.body).length === 0) {
+    return next(new AppError("Please provide department data.", 400));
+  }
+
   const department = await Department.findById(req.params.id);
 
   if (!department) {
@@ -173,9 +197,11 @@ exports.updateDepartment = catchAsync(async (req, res, next) => {
     req.body.slug = slugify(name, { lower: true, strict: true });
   }
 
+  const filteredBody = filterObj(req.body, "name", "numberOfLevels");
+
   const updatedDepartment = await Department.findByIdAndUpdate(
     req.params.id,
-    req.body,
+    filteredBody,
     {
       new: true,
       runValidators: true,

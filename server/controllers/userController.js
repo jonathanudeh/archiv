@@ -4,14 +4,7 @@ const AppError = require("../utils/appError");
 const cloudinary = require("../config/cloudinary");
 const APIFeatures = require("../utils/apiFeatures");
 const { uploadToCloudinary } = require("../utils/uploadToCloudinary");
-
-const filterObj = (obj, ...allowedFields) => {
-  const newObj = {};
-  Object.keys(obj).forEach((el) => {
-    if (allowedFields.includes(el)) newObj[el] = obj[el];
-  });
-  return newObj;
-};
+const { filterObj } = require("../utils/filterObj");
 
 exports.getAllUsers = catchAsync(async (req, res, next) => {
   const features = new APIFeatures(User.find(), req.query)
@@ -47,6 +40,24 @@ exports.getUser = catchAsync(async (req, res, next) => {
 });
 
 exports.updateUser = catchAsync(async (req, res, next) => {
+  if (req.body.password || req.body.passwordConfirm) {
+    return next(new AppError("This route is not for password updates.", 400));
+  }
+
+  if (!req.body.role && !req.body.active) {
+    return next(
+      new AppError("Please provide at least one field to update.", 400),
+    );
+  }
+
+  if (req.body.role === "admin") {
+    return next(new AppError("You cannot assign admin role to a user.", 403));
+  }
+
+  if (req.body.role && !["user", "contributor"].includes(req.body.role)) {
+    return next(new AppError("Invalid role.", 400));
+  }
+
   const user = await User.findByIdAndUpdate(
     req.params.id,
     {

@@ -10,7 +10,7 @@ const {
 const { protect, restrictTo } = require("../../controllers/authController");
 const { validateFileType } = require("../../middlewares/validateFileType");
 
-const router = express.Router();
+const router = express.Router({ mergeParams: true });
 
 const uploadLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
@@ -28,6 +28,7 @@ router
     validateFileType,
     uploadMaterial,
   );
+
 router.route("/:materialId").get(getMaterial).delete(protect, deleteMaterial);
 
 module.exports = router;

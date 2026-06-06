@@ -1,4 +1,5 @@
 const AppError = require("../utils/appError");
+const multer = require("multer");
 
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}`;
@@ -95,4 +96,23 @@ module.exports = (err, req, res, next) => {
   }
 
   next();
+};
+
+// multer file upload error handling
+
+module.exports = (err, req, res, next) => {
+  if (err instanceof multer.MulterError) {
+    if (err.code === "LIMIT_FILE_SIZE") {
+      err.statusCode = 400;
+      err.message = "File too large. Maximum upload size is 10MB.";
+    }
+  }
+
+  err.statusCode = err.statusCode || 500;
+  err.status = err.status || "error";
+
+  res.status(err.statusCode).json({
+    status: err.status,
+    message: err.message,
+  });
 };

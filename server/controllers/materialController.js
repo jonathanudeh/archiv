@@ -1,4 +1,5 @@
 const Material = require("../models/materialModel");
+const Semester = require("../models/semesterModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const APIFeatures = require("../utils/apiFeatures");
@@ -11,6 +12,14 @@ const getFolder = (mimeType) => {
   if (mimeType.startsWith("image")) return "archiv/materials/images";
 
   return "archiv/materials/documents";
+};
+
+const getResourceType = (mimeType) => {
+  if (mimeType.startsWith("image/")) {
+    return "image";
+  }
+
+  return "raw";
 };
 
 exports.getMaterial = catchAsync(async (req, res, next) => {
@@ -30,10 +39,18 @@ exports.getMaterial = catchAsync(async (req, res, next) => {
 
 exports.getAllMaterials = catchAsync(async (req, res, next) => {
   let filter = {};
-  if (req.params.semesterId)
-    filter = {
-      semester: req.params.semesterId,
-    };
+
+  console.log({ body: req.body });
+
+  if (req.params.semesterId) {
+    filter.semester = req.params.semesterId;
+  }
+
+  if (req.body.semester && !filter.semester) {
+    filter.semester = req.body.semester;
+  }
+
+  console.log({ filter });
 
   const features = new APIFeatures(Material.find(filter), req.query)
     .filter()
@@ -52,7 +69,9 @@ exports.getAllMaterials = catchAsync(async (req, res, next) => {
 });
 
 exports.uploadMaterial = catchAsync(async (req, res, next) => {
-  const semesterId = req.params.semesterId;
+  console.log({ params: req.params });
+  console.log({ body: req.body.semester });
+  const semesterId = req.body.semester;
 
   const semester = await Semester.findById(semesterId);
 
@@ -69,7 +88,14 @@ exports.uploadMaterial = catchAsync(async (req, res, next) => {
   }
 
   const folder = getFolder(req.file.mimetype);
-  const uploadResult = await uploadToCloudinary(req.file.buffer, folder);
+  const resourceType = getResourceType(req.file.mimetype);
+
+  const uploadResult = await uploadToCloudinary(
+    req.file.buffer,
+    folder,
+    resourceType,
+    req.file.originalname,
+  );
 
   const material = await Material.create({
     title: req.body.title,
@@ -101,6 +127,10 @@ exports.uploadMaterial = catchAsync(async (req, res, next) => {
 exports.deleteMaterial = catchAsync(async (req, res, next) => {
   const material = await Material.findById(req.params.materialId);
 
+  if (!material) {
+    return next(new AppError("No material found with that ID", 404));
+  }
+
   if (
     material.uploadedBy.toString() !== req.user.id &&
     req.user.role !== "admin"
@@ -108,10 +138,6 @@ exports.deleteMaterial = catchAsync(async (req, res, next) => {
     return next(
       new AppError("You do not have permission to delete this material", 403),
     );
-  }
-
-  if (!material) {
-    return next(new AppError("No material found with that ID", 404));
   }
 
   //   cloudinary delete logic

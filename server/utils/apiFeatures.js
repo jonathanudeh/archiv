@@ -7,7 +7,7 @@ class APIFeatures {
   filter() {
     // 1A) filtering
     const queryObj = { ...this.queryStr };
-    const excludedFields = ["page", "sort", "limit", "fields"];
+    const excludedFields = ["page", "sort", "limit", "fields", "search"];
     excludedFields.forEach((el) => delete queryObj[el]);
 
     // 1B) advanced filtering
@@ -46,6 +46,25 @@ class APIFeatures {
     const limit = this.queryStr.limit * 1 || 100;
     const skip = (page - 1) * limit;
     this.query = this.query.skip(skip).limit(limit);
+
+    return this;
+  }
+
+  search(fields) {
+    if (!this.queryStr.search) return this;
+
+    const search = this.queryStr.search.trim();
+
+    const conditions = fields.map((field) => ({
+      [field]: {
+        $regex: search,
+        $options: "i",
+      },
+    }));
+
+    this.query = this.query.find({
+      $or: conditions,
+    });
 
     return this;
   }
