@@ -7,7 +7,7 @@ export function useCurrentUser() {
     isLoading: isLoadingCurrentUser,
     refetch: refetchCurrentUser,
   } = useQuery({
-    queryKey: ["currentUser"],
+    queryKey: ["me"],
     queryFn: getMe,
     retry: false,
   });

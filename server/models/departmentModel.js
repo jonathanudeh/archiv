@@ -25,6 +25,18 @@ const departmentSchema = new mongoose.Schema(
       required: [true, "A department must have number of levels"],
       min: 1,
     },
+
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      select: false,
+    },
+
+    updatedBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      select: false,
+    },
   },
   { timestamps: true },
 );

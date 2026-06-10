@@ -39,8 +39,7 @@ const schoolSchema = new mongoose.Schema(
     logo: {
       url: {
         type: String,
-        default:
-          "https://res.cloudinary.com/dnunviyej/image/upload/v1780620503/default-school-logo_w5mtnw.png",
+        default: "/default-school-logo.png",
       },
       public_id: String,
     },

@@ -18,19 +18,20 @@ export function useLogout() {
 
     onSuccess: async () => {
       // await queryClient.removeQueries({
-      //   queryKey: ["currentUser"],
+      //   queryKey: ["me"],
       // });
 
-      await queryClient.cancelQueries({ queryKey: ["currentUser"] });
+      await queryClient.cancelQueries({ queryKey: ["me"] });
 
-      queryClient.setQueryData(["currentUser"], null);
+      queryClient.setQueryData(["me"], null);
 
       queryClient.invalidateQueries({
-        queryKey: ["currentUser"],
+        queryKey: ["me"],
       });
 
       success("Logged out successfully");
       router.push("/");
+      router.replace("/");
       router.refresh();
     },
 

@@ -1,5 +1,11 @@
-function page() {
-  return <div>Profile Page route. yet to be implemented.</div>;
-}
+import ProfileActivity from "@/src/features/profile/components/ProfileActivity";
+import ProfileHeader from "@/src/features/profile/components/ProfileHeader";
 
-export default page;
+export default function ProfilePage() {
+  return (
+    <main className="mx-auto max-w-4xl p-5">
+      <ProfileHeader />
+      <ProfileActivity />
+    </main>
+  );
+}

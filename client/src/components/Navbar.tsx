@@ -3,11 +3,10 @@
 import { useAuth } from "@/src/providers/AuthProvider";
 import Image from "next/image";
 import Link from "next/link";
-import { useLogout } from "../features/auth/hooks/useLogout";
+import UserMenu from "./UserMenu";
 
 export default function Navbar() {
   const { loading, isAuthenticated } = useAuth();
-  const { logoutUser, isLoggingOut } = useLogout();
 
   return (
     <header className="border-border/70 bg-background sticky top-0 z-50 border-b backdrop-blur-xl">
@@ -66,13 +65,7 @@ export default function Navbar() {
             </Link>
           </div>
         ) : (
-          <button
-            className="text-muted hover:text-foreground rounded-full border px-4 py-2 text-sm font-medium transition-colors md:px-5"
-            onClick={() => logoutUser()}
-            disabled={isLoggingOut}
-          >
-            {isLoggingOut ? "Logging out..." : "Logout"}
-          </button>
+          <UserMenu />
         )}
       </nav>
     </header>

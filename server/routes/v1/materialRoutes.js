@@ -15,7 +15,7 @@ const router = express.Router({ mergeParams: true });
 const uploadLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 10,
-  message: "Upload limit reached.",
+  message: "Upload limit reached. Wait an hour.",
 });
 
 router

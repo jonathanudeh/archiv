@@ -15,6 +15,7 @@ const departmentRouter = require("./routes/v1/departmentRoutes");
 const authRouter = require("./routes/v1/authRoutes");
 const userRouter = require("./routes/v1/userRoutes");
 const materialRouter = require("./routes/v1/materialRoutes");
+const savedMaterialRouter = require("./routes/v1/savedMaterialRoutes");
 const AppError = require("./utils/appError");
 
 const app = express();
@@ -67,6 +68,7 @@ app.use("/api/v1/departments", departmentRouter);
 app.use("/api/v1/materials", materialRouter);
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/savedMaterials", savedMaterialRouter);
 
 // Handle unhandled routes
 app.use((req, res, next) => {

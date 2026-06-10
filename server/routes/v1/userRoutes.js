@@ -10,11 +10,13 @@ const {
   deleteMe,
   getMe,
   updateMe,
+  getMyActivity,
 } = require("../../controllers/userController");
 
 const router = express.Router();
 
 router.get("/me", protect, getMe);
+router.get("/me/activity", protect, getMyActivity);
 router.patch("/updateMe", protect, upload.single("photo"), updateMe);
 router.delete("/deleteMe", protect, deleteMe);
 

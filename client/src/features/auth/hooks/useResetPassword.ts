@@ -18,7 +18,7 @@ export function useResetPassword(token: string) {
 
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: ["currentUser"],
+        queryKey: ["me"],
       });
 
       success("Password reset successfully");

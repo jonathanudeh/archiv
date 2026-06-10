@@ -104,6 +104,8 @@ exports.createDepartment = catchAsync(async (req, res, next) => {
       "school",
       "numberOfLevels",
     );
+    filteredBody.createdBy = req.user.id;
+
     const [newDepartment] = await Department.create(
       [
         {
@@ -198,6 +200,7 @@ exports.updateDepartment = catchAsync(async (req, res, next) => {
   }
 
   const filteredBody = filterObj(req.body, "name", "numberOfLevels");
+  filteredBody.updatedBy = req.user.id;
 
   const updatedDepartment = await Department.findByIdAndUpdate(
     req.params.id,

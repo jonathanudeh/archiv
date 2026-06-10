@@ -17,18 +17,11 @@ export default function ProtectedLayout({
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
-      router.replace("/login");
+      router.replace("/");
     }
   }, [loading, isAuthenticated, router]);
 
   if (loading) return <Spinner />;
-  //  {
-  //   return (
-  //     <div className="flex min-h-screen items-center justify-center">
-  //       <Spinner />
-  //     </div>
-  //   );
-  // }
 
   if (!isAuthenticated) {
     return null;

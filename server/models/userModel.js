@@ -3,103 +3,106 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const bcrypt = require("bcryptjs");
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, "Please tell us your name"],
-    trim: true,
-    minlength: [2, "A user's name must have more or equal than 2 characters"],
-    maxlength: [
-      100,
-      "A user's name must have less or equal than 100 characters",
-    ],
-  },
-
-  email: {
-    type: String,
-    required: [true, "Please provide your email"],
-    unique: true,
-    lowercase: true,
-    validate: [validator.isEmail, "Please provide a valid email"],
-  },
-
-  password: {
-    type: String,
-    required: [true, "Please provide a password"],
-    minlength: [8, "A password must have more or equal than 8 characters"],
-    select: false,
-  },
-
-  passwordConfirm: {
-    type: String,
-    required: [true, "Please confirm your password"],
-    validate: {
-      // This only works on CREATE and SAVE!!! not UPDATE
-      validator: function (val) {
-        return val === this.password;
-      },
-      message: "Passwords are not the same!",
-    },
-  },
-
-  photo: {
-    url: {
+const userSchema = new mongoose.Schema(
+  {
+    name: {
       type: String,
-      default: "default.jpg",
+      required: [true, "Please tell us your name"],
+      trim: true,
+      minlength: [2, "A user's name must have more or equal than 2 characters"],
+      maxlength: [
+        100,
+        "A user's name must have less or equal than 100 characters",
+      ],
     },
-    public_id: String,
-  },
 
-  bio: {
-    type: String,
-    maxlength: 300,
-  },
+    email: {
+      type: String,
+      required: [true, "Please provide your email"],
+      unique: true,
+      lowercase: true,
+      validate: [validator.isEmail, "Please provide a valid email"],
+    },
 
-  school: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "School",
-  },
+    password: {
+      type: String,
+      required: [true, "Please provide a password"],
+      minlength: [8, "A password must have more or equal than 8 characters"],
+      select: false,
+    },
 
-  department: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Department",
-  },
+    passwordConfirm: {
+      type: String,
+      required: [true, "Please confirm your password"],
+      validate: {
+        // This only works on CREATE and SAVE!!! not UPDATE
+        validator: function (val) {
+          return val === this.password;
+        },
+        message: "Passwords are not the same!",
+      },
+    },
 
-  role: {
-    type: String,
-    enum: ["user", "contributor", "admin"],
-    default: "user",
-  },
+    photo: {
+      url: {
+        type: String,
+        default: "/default.jpg",
+      },
+      public_id: String,
+    },
 
-  materialsUploaded: {
-    type: Number,
-    default: 0,
-  },
+    bio: {
+      type: String,
+      maxlength: 300,
+    },
 
-  createdAt: {
-    type: Date,
-    default: Date.now(),
-    select: false,
-  },
+    school: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "School",
+    },
 
-  active: {
-    type: Boolean,
-    default: true,
-    select: false,
-  },
+    department: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department",
+    },
 
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
+    role: {
+      type: String,
+      enum: ["user", "contributor", "admin"],
+      default: "user",
+    },
 
-  passwordChangedAt: Date,
-  passwordResetToken: String,
-  passwordResetExpires: Date,
-  emailVerifiedAt: Date,
-  emailVerificationToken: String,
-  emailVerificationExpires: Date,
-});
+    materialsUploaded: {
+      type: Number,
+      default: 0,
+    },
+
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+      select: false,
+    },
+
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
+    },
+
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
+
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+    emailVerifiedAt: Date,
+    emailVerificationToken: String,
+    emailVerificationExpires: Date,
+  },
+  { timestamps: true },
+);
 
 //? PRE MIDDLEWARES
 

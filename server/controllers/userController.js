@@ -1,4 +1,6 @@
 const User = require("../models/userModel");
+const SavedMaterial = require("../models/savedModel");
+const Material = require("../models/materialModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const cloudinary = require("../config/cloudinary");
@@ -89,15 +91,6 @@ exports.deleteUser = (req, res) => {
   });
 };
 
-// might remove
-// exports.createUser = (req, res) => {
-//   res.status(500).json({
-//     status: "error",
-//     message: "This route is not yet defined!",
-//   });
-// };
-
-//
 //
 
 exports.updateMe = catchAsync(async (req, res, next) => {
@@ -117,7 +110,20 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     "school",
     "department",
   );
+
   const user = await User.findById(req.user.id);
+
+  if (
+    (filteredBody.school || filteredBody.department) &&
+    (user.school || user.department)
+  ) {
+    return next(
+      new AppError(
+        "School and department cannot be changed once selected.",
+        400,
+      ),
+    );
+  }
 
   if (req.file) {
     if (user.photo?.public_id) {
@@ -139,7 +145,9 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   const updatedUser = await User.findByIdAndUpdate(req.user.id, filteredBody, {
     new: true,
     runValidators: true,
-  });
+  })
+    .populate({ path: "school", select: "name acronym" })
+    .populate({ path: "department", select: "name" });
 
   res.status(200).json({
     status: "success",
@@ -151,7 +159,9 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
 exports.getMe = catchAsync(async (req, res, next) => {
   const { id } = req.user;
-  const user = await User.findById(id);
+  const user = await User.findById(id)
+    .populate({ path: "school", select: "name acronym" })
+    .populate({ path: "department", select: "name" });
 
   if (!user) {
     return next(new AppError("No user found with that ID", 404));
@@ -161,6 +171,53 @@ exports.getMe = catchAsync(async (req, res, next) => {
     status: "success",
     data: {
       user,
+    },
+  });
+});
+
+exports.getMyActivity = catchAsync(async (req, res) => {
+  const userId = req.user.id;
+
+  const [uploadedCount, savedCount, recentUploads, recentSaved] =
+    await Promise.all([
+      Material.countDocuments({
+        uploadedBy: userId,
+      }),
+
+      SavedMaterial.countDocuments({
+        user: userId,
+      }),
+
+      Material.find({
+        uploadedBy: userId,
+      })
+        .select("title fileType createdAt")
+        .sort("-createdAt")
+        .limit(5)
+        .lean(),
+
+      SavedMaterial.find({
+        user: userId,
+      })
+        .populate({
+          path: "material",
+          select: "title fileType createdAt",
+        })
+        .sort("-createdAt")
+        .limit(5)
+        .lean(),
+    ]);
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      stats: {
+        uploadedCount,
+        savedCount,
+      },
+
+      recentUploads,
+      recentSaved,
     },
   });
 });

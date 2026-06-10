@@ -18,7 +18,7 @@ export function useLogin() {
 
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: ["currentUser"],
+        queryKey: ["me"],
       });
       success(data.message);
       router.replace("/profile");

@@ -1,5 +1,3 @@
-import React from "react";
-
 const Spinner = ({ color = "#000000" }: { color?: string }) => {
   return (
     <div className="flex min-h-dvh w-full flex-col items-center justify-center gap-6 bg-gray-50">

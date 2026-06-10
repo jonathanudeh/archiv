@@ -26,12 +26,7 @@ const createSendToken = (user, statusCode, res) => {
     sameSite: "lax",
   };
 
-  console.log("COOKIE OPTIONS", cookieOptions);
-  console.log("NODE_ENV", process.env.NODE_ENV);
-
   res.cookie("jwt", token, cookieOptions);
-
-  console.log("TOKEN CREATED", token);
 
   // Remove password from output
   user.password = undefined;
@@ -172,10 +167,6 @@ exports.protect = catchAsync(async (req, res, next) => {
     token = req.cookies.jwt;
   }
 
-  console.log({ token });
-  console.log("REQ COOKIES", req.cookies);
-  console.log("JWT COOKIE", req.cookies.jwt);
-
   if (!token) {
     return next(
       new AppError("You are not logged in! Please log in to get access.", 401),
@@ -277,8 +268,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 exports.updatePassword = catchAsync(async (req, res, next) => {
   // get user from collection
   const user = await User.findById(req.user.id).select("+password");
-
-  console.log({ user, id: req.user.id });
 
   if (!user) {
     return next(new AppError("User does not exist", 400));
