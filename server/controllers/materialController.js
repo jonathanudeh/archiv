@@ -1,5 +1,8 @@
 const Material = require("../models/materialModel");
+const Level = require("../models/levelModel");
 const Semester = require("../models/semesterModel");
+const User = require("../models/userModel");
+const SavedMaterial = require("../models/savedModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const APIFeatures = require("../utils/apiFeatures");
@@ -23,16 +26,44 @@ const getResourceType = (mimeType) => {
 };
 
 exports.getMaterial = catchAsync(async (req, res, next) => {
-  const material = await Material.findById(req.params.materialId);
+  const material = await Material.findById(req.params.materialId)
+    .populate({
+      path: "uploadedBy",
+      select: "name photo",
+    })
+    .populate({
+      path: "school",
+      select: "name acronym",
+    })
+    .populate({
+      path: "department",
+      select: "name",
+    })
+    .populate({
+      path: "level",
+      select: "name",
+    })
+    .populate({
+      path: "semester",
+      select: "name",
+    });
 
   if (!material) {
     return next(new AppError("No material found with that ID", 404));
   }
 
+  const isSaved = await SavedMaterial.exists({
+    user: req.user?.id,
+    material: material._id,
+  });
+
+  const materialObj = material.toObject();
+  materialObj.isSaved = !!isSaved;
+
   res.status(200).json({
     status: "success",
     data: {
-      material,
+      material: materialObj,
     },
   });
 });
@@ -40,28 +71,67 @@ exports.getMaterial = catchAsync(async (req, res, next) => {
 exports.getAllMaterials = catchAsync(async (req, res, next) => {
   let filter = {};
 
-  console.log({ body: req.body });
-
   if (req.params.semesterId) {
     filter.semester = req.params.semesterId;
   }
 
-  if (req.body.semester && !filter.semester) {
-    filter.semester = req.body.semester;
+  if (req.query.semester && !filter.semester) {
+    filter.semester = req.query.semester;
   }
 
-  console.log({ filter });
+  //// if (req.body.semester && !filter.semester) {
+  //   //filter.semester = req.body.semester;
+  //// }
 
   const features = new APIFeatures(Material.find(filter), req.query)
+    .search(["title", "category", "school", "department"])
     .filter()
     .sort()
     .limitFields()
     .paginate();
+
   const materials = await features.query;
+
+  //
+  // COUNT
+  //
+
+  const countQuery = {
+    ...filter,
+  };
+
+  if (req.query.category) {
+    countQuery.category = req.query.category;
+  }
+
+  if (req.query.search) {
+    countQuery.$or = [
+      {
+        title: {
+          $regex: req.query.search,
+          $options: "i",
+        },
+      },
+      {
+        category: {
+          $regex: req.query.search,
+          $options: "i",
+        },
+      },
+    ];
+  }
+
+  const total = await Material.countDocuments(countQuery);
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 20;
+  const totalPages = Math.ceil(total / limit);
 
   res.status(200).json({
     status: "success",
     result: materials.length,
+    total,
+    page,
+    totalPages,
     data: {
       materials,
     },
@@ -69,12 +139,27 @@ exports.getAllMaterials = catchAsync(async (req, res, next) => {
 });
 
 exports.uploadMaterial = catchAsync(async (req, res, next) => {
-  console.log({ params: req.params });
-  console.log({ body: req.body.semester });
-  const semesterId = req.body.semester;
+  if (!req.file) {
+    return next(new AppError("Please upload a file", 400));
+  }
+  if (!req.body.levelId) {
+    return next(new AppError("Please select a level.", 400));
+  }
+  if (!req.body.semester) {
+    return next(new AppError("Please select a semester.", 400));
+  }
+  const [semester, level, user] = await Promise.all([
+    Semester.findById(req.body.semester),
+    Level.findById(req.body.levelId),
+    User.findById(req.user.id),
+  ]);
 
-  const semester = await Semester.findById(semesterId);
-
+  if (!user) {
+    return next(new AppError("No user found.", 404));
+  }
+  if (!level) {
+    return next(new AppError("Invalid level", 404));
+  }
   if (!semester) {
     return next(new AppError("Invalid semester", 404));
   }
@@ -83,8 +168,17 @@ exports.uploadMaterial = catchAsync(async (req, res, next) => {
     return next(new AppError("Verify your email before uploading.", 403));
   }
 
-  if (!req.file) {
-    return next(new AppError("Please upload a file", 400));
+  if (!user.school || !user.department) {
+    return next(
+      new AppError("Complete your profile before uploading materials.", 400),
+    );
+  }
+
+  if (level.department.toString() !== user.department.toString()) {
+    return next(new AppError("Invalid level selected.", 400));
+  }
+  if (semester.level.toString() !== level._id.toString()) {
+    return next(new AppError("Invalid semester selected.", 400));
   }
 
   const folder = getFolder(req.file.mimetype);
@@ -100,22 +194,20 @@ exports.uploadMaterial = catchAsync(async (req, res, next) => {
   const material = await Material.create({
     title: req.body.title,
     description: req.body.description,
-
+    category: req.body.category,
     fileUrl: uploadResult.secure_url,
-
     filePublicId: uploadResult.public_id,
-
     fileType: req.file.mimetype,
-
     fileSize: req.file.size,
-
     originalFileName: req.file.originalname,
-
-    semester: semesterId,
-
+    school: user.school,
+    department: user.department,
+    level: level._id,
+    semester: req.body.semester,
     uploadedBy: req.user.id,
   });
 
+  console.time("response");
   res.status(201).json({
     status: "success",
     data: {

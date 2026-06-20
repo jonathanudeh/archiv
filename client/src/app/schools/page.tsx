@@ -4,7 +4,6 @@ import { useState } from "react";
 import { Search } from "lucide-react";
 import { useSchools } from "@/src/hooks/useSchools";
 import Spinner from "@/src/components/ui/Spinner";
-import Navbar from "@/src/components/Navbar";
 import SchoolCard from "@/src/components/SchoolCard";
 
 const SchoolsPage = () => {
@@ -30,8 +29,6 @@ const SchoolsPage = () => {
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
-      <Navbar />
-
       <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-12">
         {/* Header Section */}
         <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-center">

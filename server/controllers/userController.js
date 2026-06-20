@@ -113,15 +113,13 @@ exports.updateMe = catchAsync(async (req, res, next) => {
 
   const user = await User.findById(req.user.id);
 
-  if (
-    (filteredBody.school || filteredBody.department) &&
-    (user.school || user.department)
-  ) {
+  if (filteredBody.school && user.school) {
+    return next(new AppError("School cannot be changed once selected.", 400));
+  }
+
+  if (filteredBody.department && user.department) {
     return next(
-      new AppError(
-        "School and department cannot be changed once selected.",
-        400,
-      ),
+      new AppError("Department cannot be changed once selected.", 400),
     );
   }
 
@@ -193,7 +191,7 @@ exports.getMyActivity = catchAsync(async (req, res) => {
       })
         .select("title fileType createdAt")
         .sort("-createdAt")
-        .limit(5)
+        .limit(3)
         .lean(),
 
       SavedMaterial.find({
@@ -204,7 +202,7 @@ exports.getMyActivity = catchAsync(async (req, res) => {
           select: "title fileType createdAt",
         })
         .sort("-createdAt")
-        .limit(5)
+        .limit(3)
         .lean(),
     ]);
 
@@ -218,6 +216,22 @@ exports.getMyActivity = catchAsync(async (req, res) => {
 
       recentUploads,
       recentSaved,
+    },
+  });
+});
+
+exports.getMyMaterials = catchAsync(async (req, res, next) => {
+  const materials = await Material.find({
+    uploadedBy: req.user.id,
+  })
+    .sort("-createdAt")
+    .populate("uploadedBy", "name photo");
+
+  res.status(200).json({
+    status: "success",
+    results: materials.length,
+    data: {
+      materials,
     },
   });
 });

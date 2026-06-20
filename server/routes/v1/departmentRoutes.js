@@ -6,6 +6,7 @@ const {
   getDepartment,
   updateDepartment,
   deleteDepartment,
+  getDepartmentBySlug,
 } = require("../../controllers/departmentController");
 const levelRouter = require("./levelRoutes");
 
@@ -25,5 +26,7 @@ router
   .get(getDepartment)
   .patch(protect, restrictTo("admin", "contributor"), updateDepartment)
   .delete(protect, restrictTo("admin"), deleteDepartment);
+
+router.route("/slug/:slug").get(getDepartmentBySlug);
 
 module.exports = router;

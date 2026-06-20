@@ -13,8 +13,6 @@ interface School {
   };
 }
 const SchoolCard = ({ school }: { school: School }) => {
-  // const filterId = `noise-${school._id}`;
-
   return (
     <Link
       href={`/schools/${school.slug}`}

@@ -11,12 +11,18 @@ const {
   getMe,
   updateMe,
   getMyActivity,
+  getMyMaterials,
 } = require("../../controllers/userController");
+const {
+  getMySavedMaterials,
+} = require("../../controllers/savedMaterialController");
 
 const router = express.Router();
 
 router.get("/me", protect, getMe);
 router.get("/me/activity", protect, getMyActivity);
+router.get("/me/materials", protect, getMyMaterials);
+router.get("/me/savedMaterials", protect, getMySavedMaterials);
 router.patch("/updateMe", protect, upload.single("photo"), updateMe);
 router.delete("/deleteMe", protect, deleteMe);
 

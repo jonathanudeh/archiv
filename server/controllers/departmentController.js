@@ -56,6 +56,23 @@ exports.getDepartment = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getDepartmentBySlug = catchAsync(async (req, res, next) => {
+  const department = await Department.findOne({
+    slug: req.params.slug,
+  }).populate("school");
+
+  if (!department) {
+    return next(new AppError("Department not found.", 404));
+  }
+
+  res.status(200).json({
+    status: "success",
+    data: {
+      department,
+    },
+  });
+});
+
 // create a department and assign it to a school
 exports.createDepartment = catchAsync(async (req, res, next) => {
   if (!req.body || Object.keys(req.body).length === 0) {

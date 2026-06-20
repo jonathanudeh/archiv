@@ -28,3 +28,9 @@ export function isPopulatedSchool(
 ): school is School {
   return typeof school !== "string" && !!school;
 }
+
+export function isPopulatedDepartment(
+  department: string | Department | undefined,
+): department is Department {
+  return !!department && typeof department !== "string";
+}

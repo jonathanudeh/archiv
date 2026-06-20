@@ -62,6 +62,20 @@ app.use(
   }),
 );
 
+app.use((req, res, next) => {
+  const start = Date.now();
+
+  res.on("finish", () => {
+    console.log(
+      `${req.method} ${req.originalUrl} FINISHED IN`,
+      Date.now() - start,
+      "ms",
+    );
+  });
+
+  next();
+});
+
 // ROUTES
 app.use("/api/v1/schools", schoolRouter);
 app.use("/api/v1/departments", departmentRouter);

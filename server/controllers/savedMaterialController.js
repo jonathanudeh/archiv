@@ -1,9 +1,12 @@
 const SavedMaterial = require("../models/savedModel");
-const Material = require("../models/savedModel");
+const Material = require("../models/materialModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 
 exports.saveMaterial = catchAsync(async (req, res, next) => {
+  if (!req.user.id) {
+    return next(new AppError("Log in to save material", 404));
+  }
   const material = await Material.findById(req.params.materialId);
 
   if (!material) {
@@ -45,5 +48,27 @@ exports.unsaveMaterial = catchAsync(async (req, res, next) => {
   res.status(204).json({
     status: "success",
     data: null,
+  });
+});
+
+exports.getMySavedMaterials = catchAsync(async (req, res, next) => {
+  const savedMaterials = await SavedMaterial.find({
+    user: req.user.id,
+  })
+    .populate({
+      path: "material",
+      populate: {
+        path: "uploadedBy",
+        select: "name photo",
+      },
+    })
+    .sort("-createdAt");
+
+  res.status(200).json({
+    status: "success",
+    results: savedMaterials.length,
+    data: {
+      savedMaterials,
+    },
   });
 });

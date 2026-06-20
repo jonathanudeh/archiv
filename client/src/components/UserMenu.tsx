@@ -53,14 +53,14 @@ export default function UserMenu() {
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link href="/uploads" className="cursor-pointer">
+          <Link href="/upload" className="cursor-pointer">
             <Upload className="mr-2 h-4 w-4" />
             My Uploads
           </Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link href="/saved" className="cursor-pointer">
+          <Link href="/profile/saved" className="cursor-pointer">
             <Bookmark className="mr-2 h-4 w-4" />
             Saved Materials
           </Link>

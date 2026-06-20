@@ -20,14 +20,15 @@ const materialSchema = new mongoose.Schema(
       type: String,
       enum: [
         "material",
-        "lecture-note",
-        "past-question",
+        "lecture note",
+        "past question",
         "assignment",
         "project",
         "textbook",
-        "lab-report",
+        "lab report",
         "other",
       ],
+      required: true,
     },
 
     fileUrl: {
@@ -45,6 +46,24 @@ const materialSchema = new mongoose.Schema(
     fileSize: Number,
 
     originalFileName: String,
+
+    school: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "School",
+      required: true,
+    },
+
+    department: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Department",
+      required: true,
+    },
+
+    level: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Level",
+      required: true,
+    },
 
     semester: {
       type: mongoose.Schema.Types.ObjectId,
@@ -76,7 +95,13 @@ const materialSchema = new mongoose.Schema(
 );
 
 // INDEXES for faster queries
-materialSchema.index({ semester: 1 });
+materialSchema.index({
+  school: 1,
+  department: 1,
+  level: 1,
+  semester: 1,
+  createdAt: -1,
+});
 materialSchema.index({ uploadedBy: 1 });
 materialSchema.index({ title: "text", description: "text" });
 

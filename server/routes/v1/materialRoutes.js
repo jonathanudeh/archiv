@@ -7,7 +7,11 @@ const {
   getMaterial,
   uploadMaterial,
 } = require("../../controllers/materialController");
-const { protect, restrictTo } = require("../../controllers/authController");
+const {
+  protect,
+  restrictTo,
+  optionalProtect,
+} = require("../../controllers/authController");
 const { validateFileType } = require("../../middlewares/validateFileType");
 
 const router = express.Router({ mergeParams: true });
@@ -29,6 +33,9 @@ router
     uploadMaterial,
   );
 
-router.route("/:materialId").get(getMaterial).delete(protect, deleteMaterial);
+router
+  .route("/:materialId")
+  .get(optionalProtect, getMaterial)
+  .delete(protect, deleteMaterial);
 
 module.exports = router;

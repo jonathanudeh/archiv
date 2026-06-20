@@ -32,9 +32,9 @@ export default function ProfileActivity() {
         </div>
       </div>
 
-      <RecentUploads />
+      {(activity?.stats.uploadedCount ?? 0) > 0 && <RecentUploads />}
 
-      <RecentSaved />
+      {(activity?.stats.savedCount ?? 0) > 0 && <RecentSaved />}
     </section>
   );
 }
