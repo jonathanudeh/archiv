@@ -25,6 +25,7 @@
     "hpp": "^0.2.3",
     "html-to-text": "^10.0.0",
     "jsonwebtoken": "^9.0.3",
+    "libreoffice-convert": "^1.8.1",
     "mongoose": "^9.4.1",
     "morgan": "^1.10.1",
     "multer": "^2.1.1",

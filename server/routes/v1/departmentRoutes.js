@@ -9,10 +9,12 @@ const {
   getDepartmentBySlug,
 } = require("../../controllers/departmentController");
 const levelRouter = require("./levelRoutes");
+const materialRouter = require("./materialRoutes");
 
 const router = express.Router({ mergeParams: true });
 
 router.use("/:departmentId/levels", levelRouter);
+router.use("/:departmentId/materials", materialRouter);
 
 // GET ALL DEPARTMENTS / ALL DEPARTMENTS IN A SCHOOL
 router

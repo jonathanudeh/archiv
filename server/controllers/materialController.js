@@ -8,6 +8,7 @@ const AppError = require("../utils/appError");
 const APIFeatures = require("../utils/apiFeatures");
 const cloudinary = require("../config/cloudinary");
 const { uploadToCloudinary } = require("../utils/uploadToCloudinary");
+const { convertToPdf } = require("../utils/convertToPdf");
 
 const getFolder = (mimeType) => {
   if (mimeType.includes("pdf")) return "archiv/materials/pdf";
@@ -71,17 +72,28 @@ exports.getMaterial = catchAsync(async (req, res, next) => {
 exports.getAllMaterials = catchAsync(async (req, res, next) => {
   let filter = {};
 
+  // department
+  if (req.params.departmentId) {
+    filter.department = req.params.departmentId;
+  }
+
+  // level
+  if (req.query.level) {
+    filter.level = req.query.level;
+  }
+
+  // semester
   if (req.params.semesterId) {
     filter.semester = req.params.semesterId;
   }
-
   if (req.query.semester && !filter.semester) {
     filter.semester = req.query.semester;
   }
 
-  //// if (req.body.semester && !filter.semester) {
-  //   //filter.semester = req.body.semester;
-  //// }
+  // catergory
+  if (req.query.category) {
+    filter.category = req.query.category;
+  }
 
   const features = new APIFeatures(Material.find(filter), req.query)
     .search(["title", "category", "school", "department"])
@@ -181,29 +193,37 @@ exports.uploadMaterial = catchAsync(async (req, res, next) => {
     return next(new AppError("Invalid semester selected.", 400));
   }
 
-  const folder = getFolder(req.file.mimetype);
-  const resourceType = getResourceType(req.file.mimetype);
+  // Convert file if necessary
+  const convertedFile = await convertToPdf(req.file);
+
+  const folder = getFolder(convertedFile.mimetype);
+  const resourceType = getResourceType(convertedFile.mimetype);
 
   const uploadResult = await uploadToCloudinary(
-    req.file.buffer,
+    convertedFile.buffer,
     folder,
     resourceType,
-    req.file.originalname,
+    convertedFile.filename,
   );
 
   const material = await Material.create({
     title: req.body.title,
     description: req.body.description,
     category: req.body.category,
+
     fileUrl: uploadResult.secure_url,
     filePublicId: uploadResult.public_id,
-    fileType: req.file.mimetype,
-    fileSize: req.file.size,
+
+    fileType: convertedFile.mimetype,
+    fileSize: convertedFile.buffer.length,
+
     originalFileName: req.file.originalname,
+    wasConverted: convertedFile.wasConverted,
+
     school: user.school,
     department: user.department,
     level: level._id,
-    semester: req.body.semester,
+    semester: semester._id ?? req.body.semester,
     uploadedBy: req.user.id,
   });
 

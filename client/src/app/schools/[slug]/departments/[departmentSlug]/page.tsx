@@ -8,6 +8,7 @@ import { useMaterials } from "@/src/features/materials/hooks/useMaterials";
 import { useDepartmentBySlug } from "@/src/features/departments/hooks/useDepartmentBySlug";
 import { useParams } from "next/navigation";
 import { useMaterialFilters } from "@/src/hooks/useMaterialFilters";
+import { MiniSpinner } from "@/src/components/ui/MiniSpinner";
 
 export default function DepartmentPage() {
   const { departmentSlug } = useParams();
@@ -39,7 +40,7 @@ export default function DepartmentPage() {
   }
 
   return (
-    <main className="mx-auto max-w-7xl space-y-6 px-4 py-6 sm:px-6">
+    <main className="mx-auto flex min-h-screen max-w-7xl flex-col space-y-6 px-4 py-6 sm:px-6">
       <MaterialFilters
         departmentId={departmentId}
         departmentName={departmentBySlug.name}
@@ -52,7 +53,7 @@ export default function DepartmentPage() {
       />
 
       {isLoading ? (
-        <Spinner />
+        <MiniSpinner />
       ) : (
         <>
           <MaterialsGrid materials={materials} />

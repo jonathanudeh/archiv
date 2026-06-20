@@ -83,7 +83,7 @@ export default function MaterialFilters({
               page: "1",
             })
           }
-          className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-sm outline-none"
+          className="rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-[16px] outline-none"
         >
           <option value="">Level</option>
 
@@ -128,7 +128,7 @@ export default function MaterialFilters({
               })
             }
             placeholder="Search materials..."
-            className="focus:border-primary w-full rounded-lg border border-slate-200 py-2 pr-4 pl-10 text-sm outline-none"
+            className="focus:border-primary w-full rounded-lg border border-slate-200 py-2 pr-4 pl-10 outline-none"
           />
         </div>
       </div>

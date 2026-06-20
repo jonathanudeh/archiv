@@ -14,7 +14,7 @@ export default function Pagination({ page, totalPages, onPageChange }: Props) {
   }
 
   return (
-    <div className="mt-10 flex justify-center gap-2">
+    <div className="flex justify-center gap-2 py-6">
       <button
         disabled={page === 1}
         onClick={() => onPageChange(page - 1)}

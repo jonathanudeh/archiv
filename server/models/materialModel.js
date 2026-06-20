@@ -44,7 +44,6 @@ const materialSchema = new mongoose.Schema(
     },
 
     fileSize: Number,
-
     originalFileName: String,
 
     school: {
@@ -78,6 +77,16 @@ const materialSchema = new mongoose.Schema(
     },
 
     tags: [String],
+
+    originalFileName: {
+      type: String,
+      required: true,
+    },
+
+    wasConverted: {
+      type: Boolean,
+      default: false,
+    },
 
     downloadCount: {
       type: Number,

@@ -21,8 +21,14 @@ export async function getMaterials({
   const params = new URLSearchParams();
 
   params.set("page", String(page));
-  params.set("limit", "12");
+  params.set("limit", "6");
 
+  if (levelId) {
+    params.set("level", levelId);
+  }
+  if (semesterId) {
+    params.set("semester", semesterId);
+  }
   if (search) {
     params.set("search", search);
   }
@@ -30,9 +36,7 @@ export async function getMaterials({
     params.set("category", category);
   }
 
-  const res = await API.get(
-    `departments/${departmentId}/levels/${levelId}/semesters/${semesterId}/materials?${params}`,
-  );
+  const res = await API.get(`departments/${departmentId}/materials?${params}`);
 
   return res.data as {
     data: {

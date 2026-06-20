@@ -19,7 +19,15 @@ export function useMaterials({
   category,
 }: Params) {
   const query = useQuery({
-    queryKey: ["materials", semesterId, page, search, category],
+    queryKey: [
+      "materials",
+      departmentId,
+      levelId,
+      semesterId,
+      category,
+      search,
+      page,
+    ],
     queryFn: () =>
       getMaterials({
         departmentId: departmentId!,
