@@ -29,11 +29,6 @@ exports.convertToPdf = async (file) => {
 
   // Convert Office documents
   try {
-    console.log("Converting:", {
-      name: file.originalname,
-      mime: file.mimetype,
-      size: file.size,
-    });
     const pdfBuffer = await convert(file.buffer, ".pdf", undefined);
 
     const filename = file.originalname.replace(/\.[^/.]+$/, "") + ".pdf";
@@ -44,11 +39,7 @@ exports.convertToPdf = async (file) => {
       filename,
       wasConverted: true,
     };
-    console.log("Conversion successful");
   } catch (err) {
-    console.error("LibreOffice conversion failed:");
-    console.error(err);
-
     throw new AppError("Failed to convert document to PDF.", 500);
   }
 };

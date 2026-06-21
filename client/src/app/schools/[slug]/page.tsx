@@ -1,145 +1,240 @@
 "use client";
 
-import Spinner from "@/src/components/ui/Spinner";
-import { useDepartments } from "@/src/hooks/useDeparments";
-// /school/[slug]
-
-import { useSchool } from "@/src/hooks/useSchools";
+import { useState, useEffect } from "react";
+import { Search, MapPin } from "lucide-react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
-import { useParams } from "next/navigation";
+
+import Spinner from "@/src/components/ui/Spinner";
+import Pagination from "@/src/components/layout/Pagination";
+import DepartmentCard from "@/src/features/departments/components/DepartmentCard";
+import { useSchool } from "@/src/features/schools/hooks/useSchoolSlug";
+import { useDepartments } from "@/src/features/departments/hooks/useDeparments";
 
 const SchoolPage = () => {
   const { slug } = useParams();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  // URL STATE
+  const page = Number(searchParams.get("page")) || 1;
+  const search = searchParams.get("search") || "";
+
+  const [input, setInput] = useState(search);
+
+  // keep input in sync with URL
+  useEffect(() => {
+    setInput(search);
+  }, [search]);
+
+  // SCHOOL
   const { school, isLoadingSchool, errorSchool } = useSchool(slug as string);
 
-  // TODO - fetch departments by pupular algorithm
-  const { schoolDepartments, isLoadingSchDepartments, schDeptError } =
-    useDepartments(school?._id);
-  console.log(schoolDepartments);
+  // DEPARTMENTS
+  const { departments, totalPages, isLoadingDepartments, departmentsError } =
+    useDepartments(school?._id, page, 12, search);
 
-  if (isLoadingSchool || isLoadingSchDepartments) return <Spinner />;
-  if (errorSchool || schDeptError || !school)
+  if (isLoadingSchool) {
+    return <Spinner />;
+  }
+
+  if (errorSchool || !school) {
     return <div className="p-20 text-center">School not found.</div>;
+  }
 
-  // Use the primary color for the hero background, default to gold/cream
-  const themeColor = school.primaryColor || "#FDF4E3";
+  const handleSearch = () => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", "1");
+    if (input.trim()) {
+      params.set("search", input.trim());
+    } else {
+      params.delete("search");
+    }
+    router.push(`/schools/${slug}?${params.toString()}`);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("page", String(newPage));
+    router.push(`/schools/${slug}?${params.toString()}`);
+  };
 
   return (
     <main className="min-h-screen bg-white">
-      {/* --- HERO SECTION --- */}
+      {/* HERO */}
       <section
-        className="relative px-6 pt-10 pb-16 md:px-12"
+        className="relative px-6 pt-10 pb-10 md:px-12"
         style={{
-          background: `radial-gradient(circle at top right, white, ${themeColor} 70%)`,
+          background:
+            "radial-gradient(circle at top right, white, #f8fafc 70%)",
         }}
       >
-        {/* Subtle SVG Texture Overlay */}
-        <div className="pointer-events-none absolute inset-0 opacity-10 mix-blend-multiply" />
+        <div className="mx-auto max-w-7xl">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            {/* LEFT */}
+            <div className="flex items-center gap-6">
+              <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-white bg-white shadow-xl md:h-32 md:w-32">
+                <Image
+                  src={school.logo?.url ?? "/default-school-logo.png"}
+                  alt={school.name}
+                  fill
+                  className="object-contain p-1"
+                />
+              </div>
 
-        <div className="relative z-10 mx-auto flex max-w-7xl items-center gap-6">
-          {/* School Logo with White Glow */}
-          <div className="relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-4 border-white bg-white shadow-xl md:h-32 md:w-32">
-            <Image
-              src={school.logo.url}
-              alt={school.name}
-              fill
-              className="object-contain p-1"
-            />
+              <div>
+                <h1 className="text-3xl font-extrabold text-slate-900 capitalize md:text-5xl">
+                  {school.name}
+                </h1>
+
+                {school.acronym && (
+                  <p className="mt-2 text-sm font-bold tracking-[0.25em] text-slate-500 uppercase">
+                    {school.acronym}
+                  </p>
+                )}
+
+                {(school.location || school.country) && (
+                  <div className="mt-3 flex items-center gap-2 text-sm text-slate-500">
+                    <MapPin size={16} />
+
+                    <span>
+                      {[school.location, school.country]
+                        .filter(Boolean)
+                        .join(", ")}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
-          {/* School Titles */}
-          <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-extrabold tracking-tight text-slate-800 md:text-4xl">
-              {school.name}{" "}
-              {/* <span className="block font-medium text-slate-400">
-                ({school.slug.toUpperCase()})
-              </span> */}
-            </h1>
-            <p className="text-sm font-bold tracking-[0.2em] text-slate-600/60 uppercase md:text-base">
-              {school.slug.toUpperCase()}
-            </p>
-          </div>
+          {/* DESCRIPTION */}
+          {school.description && (
+            <div className="mt-8 max-w-4xl">
+              <div className="flex items-center justify-between">
+                <h2 className="mb-3 text-lg font-bold text-slate-900">
+                  About this school
+                </h2>
+
+                {/* WEBSITE */}
+                {school.website && (
+                  <a
+                    href={school.website}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex h-fit items-center rounded-full bg-slate-900 px-3 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+                  >
+                    Visit School
+                  </a>
+                )}
+              </div>
+
+              <p className="leading-8 text-slate-600">{school.description}</p>
+            </div>
+          )}
         </div>
       </section>
 
-      {/* --- CONTENT SECTION --- */}
+      {/* DEPARTMENTS */}
       <section className="mx-auto max-w-7xl px-6 py-12 md:px-12">
-        <div className="mb-10 flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-slate-800">
-            Popular Departments
-          </h2>
+        {/* HEADER */}
+        <div className="mb-10 flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-slate-900">
+              Browse {school.stats.departmentsCount} Departments
+            </h2>
+
+            <p className="mt-2 text-sm text-slate-500">
+              Explore departments and discover academic materials.
+            </p>
+          </div>
+
+          {/* SEARCH */}
+          <div className="w-full md:w-96">
+            <div className="flex gap-3">
+              <div className="relative flex-1">
+                <Search
+                  size={18}
+                  className="absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"
+                />
+
+                <input
+                  value={input}
+                  onChange={(e) => {
+                    const value = e.target.value;
+
+                    setInput(value);
+
+                    // clear search automatically
+                    if (!value.trim() && search) {
+                      const params = new URLSearchParams(
+                        searchParams.toString(),
+                      );
+
+                      params.delete("search");
+                      params.set("page", "1");
+
+                      router.push(`/schools/${slug}?${params.toString()}`);
+                    }
+                  }}
+                  placeholder="Search departments..."
+                  className="w-full rounded-xl border border-slate-200 py-3 pr-4 pl-11 outline-none focus:border-slate-400"
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      handleSearch();
+                    }
+                  }}
+                />
+              </div>
+
+              <button
+                onClick={handleSearch}
+                className="rounded-xl bg-slate-900 px-5 py-3 text-white transition hover:bg-slate-800"
+              >
+                Search
+              </button>
+            </div>
+          </div>
         </div>
 
-        {/* Departments Grid */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {/* Example Department Card - You can map your school.departments here */}
+        {/* GRID */}
+        {isLoadingDepartments ? (
+          <Spinner />
+        ) : departmentsError ? (
+          <div className="py-20 text-center text-slate-500">
+            Failed to load departments.
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {departments.map((dept) => (
+                <DepartmentCard
+                  key={dept._id}
+                  name={dept.name}
+                  slug={dept.slug}
+                  schoolSlug={String(slug)}
+                  materialsCount={dept.stats.materialsCount}
+                  numberOfLevels={dept.numberOfLevels}
+                />
+              ))}
+            </div>
 
-          {isLoadingSchDepartments ? (
-            <Spinner />
-          ) : (
-            schoolDepartments?.map((dept) => (
-              <DepartmentCard
-                key={dept._id}
-                name={dept.slug}
-                slug={String(slug)}
-                icon={dept.icon}
-                bgColor={dept.bgColor}
-              />
-            ))
-          )}
-        </div>
+            {departments.length === 0 && (
+              <div className="py-20 text-center text-slate-500">
+                No departments found.
+              </div>
+            )}
+
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </>
+        )}
       </section>
     </main>
   );
 };
-
-// Sub-component for Departments
-const DepartmentCard = ({
-  name,
-  slug,
-  icon,
-  bgColor,
-}: {
-  name: string;
-  slug: string;
-  icon: string;
-  bgColor: string;
-}) => (
-  <Link
-    href={`/schools/${slug}/departments/${name}`}
-    className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/60 p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95"
-  >
-    <div
-      className="flex flex-col gap-4 rounded-2xl border border-white p-6 shadow-sm transition-transform hover:scale-[1.01]"
-      style={{ backgroundColor: bgColor }}
-    >
-      <div className="flex items-center gap-4">
-        <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-blue-500 text-white shadow-md">
-          {/* Placeholder for Icon */}
-          <span className="text-2xl font-bold">{name[0]}</span>
-        </div>
-        <h3 className="w-32 text-xl leading-tight font-extrabold text-slate-800">
-          {name}
-        </h3>
-      </div>
-
-      <div className="mt-2 flex gap-4">
-        {["100 Level", "200 Level", "300 Level"].map((level, i) => (
-          <div key={level} className="flex items-center gap-1.5">
-            <div
-              className={`h-1.5 w-1.5 rounded-sm bg-slate-400 ${i === 0 ? "opacity-100" : "opacity-30"}`}
-            />
-            <span
-              className={`text-[11px] font-bold ${i === 0 ? "text-slate-900" : "text-slate-400"}`}
-            >
-              {level}
-            </span>
-          </div>
-        ))}
-      </div>
-    </div>
-  </Link>
-);
 
 export default SchoolPage;

@@ -110,6 +110,44 @@ const schoolSchema = new mongoose.Schema(
       ref: "User",
       select: false,
     },
+
+    stats: {
+      departmentsCount: {
+        type: Number,
+        default: 0,
+      },
+
+      studentsCount: {
+        type: Number,
+        default: 0,
+      },
+
+      materialsCount: {
+        type: Number,
+        default: 0,
+      },
+
+      downloadsCount: {
+        type: Number,
+        default: 0,
+      },
+
+      savesCount: {
+        type: Number,
+        default: 0,
+      },
+
+      viewsCount: {
+        type: Number,
+        default: 0,
+      },
+
+      popularityScore: {
+        type: Number,
+        default: 0,
+        index: true,
+      },
+    },
   },
   { timestamps: true }, // adds createdAt and updatedAt fields
 );

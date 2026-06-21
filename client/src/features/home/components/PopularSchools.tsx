@@ -1,16 +1,17 @@
 "use client";
 
-import { useSchools } from "@/src/hooks/useSchools";
 import SchoolCard from "../../../components/SchoolCard";
 import Spinner from "../../../components/ui/Spinner";
 import Link from "next/link";
+import { usePopularSchools } from "../../schools/hooks/usePopularSchools";
 
 const PopularSchools = () => {
-  const { schools, isLoadingAllSchools, errorAllSchools } = useSchools();
+  const { popularSchools, isLoadingPopularSchools, errorPopularSchools } =
+    usePopularSchools();
 
-  if (isLoadingAllSchools) return <Spinner />;
+  if (isLoadingPopularSchools) return <Spinner />;
 
-  if (errorAllSchools) {
+  if (errorPopularSchools) {
     return (
       <div className="text-muted py-16 text-center">
         Failed to load schools.
@@ -51,7 +52,7 @@ const PopularSchools = () => {
 
         {/* GRID */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {schools?.map((school: any) => (
+          {popularSchools?.map((school: any) => (
             <SchoolCard key={school._id} school={school} />
           ))}
         </div>

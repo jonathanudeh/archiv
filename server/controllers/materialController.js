@@ -1,4 +1,6 @@
 const Material = require("../models/materialModel");
+const School = require("../models/schoolModel");
+const Department = require("../models/departmentModel");
 const Level = require("../models/levelModel");
 const Semester = require("../models/semesterModel");
 const User = require("../models/userModel");
@@ -52,6 +54,22 @@ exports.getMaterial = catchAsync(async (req, res, next) => {
   if (!material) {
     return next(new AppError("No material found with that ID", 404));
   }
+
+  await Promise.all([
+    School.findByIdAndUpdate(material.school, {
+      $inc: {
+        "stats.viewsCount": 1,
+        "stats.popularityScore": 1,
+      },
+    }),
+
+    Department.findByIdAndUpdate(material.department, {
+      $inc: {
+        "stats.viewsCount": 1,
+        "stats.popularityScore": 1,
+      },
+    }),
+  ]);
 
   const isSaved = await SavedMaterial.exists({
     user: req.user?.id,
@@ -227,7 +245,22 @@ exports.uploadMaterial = catchAsync(async (req, res, next) => {
     uploadedBy: req.user.id,
   });
 
-  console.time("response");
+  await Promise.all([
+    School.findByIdAndUpdate(user.school, {
+      $inc: {
+        "stats.materialsCount": 1,
+        "stats.popularityScore": 5,
+      },
+    }),
+
+    Department.findByIdAndUpdate(user.department, {
+      $inc: {
+        "stats.materialsCount": 1,
+        "stats.popularityScore": 5,
+      },
+    }),
+  ]);
+
   res.status(201).json({
     status: "success",
     data: {
@@ -260,6 +293,22 @@ exports.deleteMaterial = catchAsync(async (req, res, next) => {
   }
 
   await Material.findByIdAndDelete(req.params.materialId);
+
+  await Promise.all([
+    School.findByIdAndUpdate(material.school, {
+      $inc: {
+        "stats.materialsCount": -1,
+        "stats.popularityScore": -5,
+      },
+    }),
+
+    Department.findByIdAndUpdate(material.department, {
+      $inc: {
+        "stats.materialsCount": -1,
+        "stats.popularityScore": -5,
+      },
+    }),
+  ]);
 
   res.status(204).json({
     status: "success",

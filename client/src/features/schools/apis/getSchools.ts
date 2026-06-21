@@ -1,8 +1,14 @@
 import API from "@/src/lib/axios";
-import { School } from "../types/schools";
 
-export async function getSchools(): Promise<School[]> {
-  const res = await API.get("/schools");
+export async function getSchools(page = 1, limit = 20, search = "") {
+  const res = await API.get("/schools", {
+    params: {
+      page,
+      limit,
+      search,
+      sort: "-stats.popularityScore",
+    },
+  });
 
-  return res.data.data.schools;
+  return res.data;
 }

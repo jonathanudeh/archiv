@@ -1,5 +1,7 @@
 const slugify = require("slugify");
 const School = require("../models/schoolModel");
+const Department = require("../models/departmentModel");
+const User = require("../models/userModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const cloudinary = require("../config/cloudinary");
@@ -7,8 +9,13 @@ const APIFeatures = require("../utils/apiFeatures");
 const { uploadToCloudinary } = require("../utils/uploadToCloudinary");
 const { filterObj } = require("../utils/filterObj");
 
+// GET /api/v1/schools?page=1&limit=20
 exports.getAllSchools = catchAsync(async (req, res, next) => {
-  const features = new APIFeatures(School.find(), req.query)
+  const query = School.find();
+  const features = new APIFeatures(query, {
+    ...req.query,
+    sort: req.query.sort || "-stats.popularityScore",
+  })
     .search(["name", "description", "location", "acronym", "aliases"])
     .filter()
     .sort()
@@ -17,8 +24,47 @@ exports.getAllSchools = catchAsync(async (req, res, next) => {
 
   const schools = await features.query;
 
+  // COUNT QUERY
+  const countQuery = {};
+
+  if (req.query.search) {
+    countQuery.$or = [
+      {
+        name: {
+          $regex: req.query.search,
+          $options: "i",
+        },
+      },
+      {
+        description: {
+          $regex: req.query.search,
+          $options: "i",
+        },
+      },
+      {
+        acronym: {
+          $regex: req.query.search,
+          $options: "i",
+        },
+      },
+      {
+        aliases: {
+          $regex: req.query.search,
+          $options: "i",
+        },
+      },
+    ];
+  }
+
+  const total = await School.countDocuments(countQuery);
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 20;
+
   res.status(200).json({
     status: "success",
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
     results: schools.length,
     data: {
       schools,
@@ -49,6 +95,7 @@ exports.getSchoolsByLocation = catchAsync(async (req, res, next) => {
 
 exports.getSchool = catchAsync(async (req, res, next) => {
   const school = await School.findById(req.params.id);
+  const user = await User.findById(req.user.id);
 
   if (!school) {
     return next(new AppError("No school found with that ID", 404));

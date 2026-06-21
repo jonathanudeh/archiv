@@ -1,5 +1,7 @@
 const User = require("../models/userModel");
 const SavedMaterial = require("../models/savedModel");
+const School = require("../models/schoolModel");
+const Department = require("../models/departmentModel");
 const Material = require("../models/materialModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
@@ -122,6 +124,26 @@ exports.updateMe = catchAsync(async (req, res, next) => {
       new AppError("Department cannot be changed once selected.", 400),
     );
   }
+
+  await Promise.all([
+    filteredBody.school
+      ? School.findByIdAndUpdate(filteredBody.school, {
+          $inc: {
+            "stats.studentsCount": 1,
+            "stats.popularityScore": 1,
+          },
+        })
+      : Promise.resolve(),
+
+    filteredBody.department
+      ? Department.findByIdAndUpdate(filteredBody.department, {
+          $inc: {
+            "stats.studentsCount": 1,
+            "stats.popularityScore": 1,
+          },
+        })
+      : Promise.resolve(),
+  ]);
 
   if (req.file) {
     if (user.photo?.public_id) {

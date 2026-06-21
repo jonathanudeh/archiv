@@ -1,73 +1,119 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
-import { useSchools } from "@/src/hooks/useSchools";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import Spinner from "@/src/components/ui/Spinner";
 import SchoolCard from "@/src/components/SchoolCard";
+import Pagination from "@/src/components/layout/Pagination";
+import { useSchools } from "@/src/features/schools/hooks/useSchools";
 
 const SchoolsPage = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  // Using your existing hook
-  const { schools, isLoadingAllSchools, errorAllSchools } = useSchools();
+  // Read values from URL
+  const page = Number(searchParams.get("page")) || 1;
+  const search = searchParams.get("search") || "";
 
-  if (isLoadingAllSchools) return <Spinner />;
+  // Input is separate from actual search
+  const [input, setInput] = useState(search);
 
-  // Filter logic remains the same
-  const filteredSchools = schools?.filter((school: any) =>
-    school.name.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  // Keep input synced with URL
+  useEffect(() => {
+    setInput(search);
+  }, [search]);
+
+  const { schools, totalPages, isLoadingAllSchools, errorAllSchools } =
+    useSchools(page, 12, search);
+
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    params.set("page", "1");
+    if (input.trim()) {
+      params.set("search", input.trim());
+    }
+
+    router.push(`/schools?${params.toString()}`);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    const params = new URLSearchParams();
+    params.set("page", String(newPage));
+    if (search) {
+      params.set("search", search);
+    }
+
+    router.push(`/schools?${params.toString()}`);
+  };
+
+  if (isLoadingAllSchools) {
+    return <Spinner />;
+  }
 
   if (errorAllSchools) {
-    return (
-      <div>
-        <p>Error finding schools</p>
-      </div>
-    );
+    return <div className="py-20 text-center">Failed to load schools.</div>;
   }
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
       <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-12">
-        {/* Header Section */}
         <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <h1 className="text-3xl font-bold text-slate-900">Browse Schools</h1>
 
-          {/* Search Input */}
-          <div className="relative w-full md:w-96">
-            <div className="pointer-events-none absolute inset-y-0 left-4 flex items-center">
-              <Search className="h-4 w-4 text-slate-400" />
+          <div className="w-full md:w-96">
+            <div className="flex gap-3">
+              <input
+                value={input}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  setInput(value);
+
+                  if (!value.trim()) {
+                    router.push("/schools?page=1");
+                  }
+                }}
+                placeholder="Search schools..."
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch();
+                  }
+                }}
+                className="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm focus:ring-2 focus:ring-slate-900 focus:outline-none"
+              />
+
+              <button
+                onClick={handleSearch}
+                className="flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-white"
+              >
+                <Search size={16} />
+                Search
+              </button>
             </div>
-            <input
-              type="text"
-              placeholder="Search for school..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full rounded-xl border border-slate-200 bg-white py-3 pr-4 pl-11 text-sm transition-all focus:ring-2 focus:ring-blue-500/10 focus:outline-none"
-            />
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredSchools?.map((school: any) => (
-            <SchoolCard
-              key={school._id}
-              school={school}
-              // isDetailed={true} // Just pass a flag if you want the arrow/extra info
-            />
-          ))}
-        </div>
+        {schools.length > 0 ? (
+          <>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {schools.map((school: any) => (
+                <SchoolCard key={school._id} school={school} />
+              ))}
+            </div>
 
-        {/* Empty State */}
-        {!isLoadingAllSchools && filteredSchools?.length === 0 && (
+            <Pagination
+              page={page}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </>
+        ) : (
           <div className="py-20 text-center text-slate-500">
-            No schools found matching &quot;{searchTerm}&quot;
+            No schools found.
           </div>
         )}
       </main>
-
-      {/* <Footer /> */}
     </div>
   );
 };

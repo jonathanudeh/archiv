@@ -13,14 +13,19 @@ const { filterObj } = require("../utils/filterObj");
 exports.getAllDepartments = catchAsync(async (req, res, next) => {
   let queryObj = {};
 
-  // nested route support
   if (req.params.schoolId) {
     queryObj.school = req.params.schoolId;
   }
 
-  let query = Department.find(queryObj).populate("school");
+  const query = Department.find(queryObj).populate(
+    "school",
+    "name slug acronym",
+  );
 
-  const features = new APIFeatures(query, req.query)
+  const features = new APIFeatures(query, {
+    ...req.query,
+    sort: req.query.sort || "-stats.popularityScore",
+  })
     .search(["name"])
     .filter()
     .sort()
@@ -29,9 +34,27 @@ exports.getAllDepartments = catchAsync(async (req, res, next) => {
 
   const departments = await features.query;
 
+  const total = await Department.countDocuments({
+    ...queryObj,
+    ...(req.query.search
+      ? {
+          name: {
+            $regex: req.query.search,
+            $options: "i",
+          },
+        }
+      : {}),
+  });
+
+  const page = Number(req.query.page) || 1;
+  const limit = Number(req.query.limit) || 12;
+
   res.status(200).json({
     status: "success",
     results: departments.length,
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
     data: {
       departments,
     },
@@ -160,6 +183,18 @@ exports.createDepartment = catchAsync(async (req, res, next) => {
     });
 
     await Semester.insertMany(semestersToCreate, { session });
+
+    // incrementing department count for popular algorithm
+    await School.findByIdAndUpdate(
+      school,
+      {
+        $inc: {
+          "stats.departmentsCount": 1,
+          "stats.popularityScore": 2,
+        },
+      },
+      { session },
+    );
 
     // 8. COMMIT TRANSACTION
     await session.commitTransaction();
