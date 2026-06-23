@@ -3,17 +3,8 @@
 import { Search } from "lucide-react";
 import { useLevels } from "../hooks/useLevels";
 import { useSemesters } from "../hooks/useSemesters";
-
-type Props = {
-  departmentId: string;
-  departmentName: string;
-  schoolName: string;
-  levelId: string;
-  semesterId: string;
-  category: string;
-  search: string;
-  setFilters: (updates: Record<string, string>) => void;
-};
+import { MaterialFilterProps } from "../types/material";
+import { useEffect, useState } from "react";
 
 export default function MaterialFilters({
   departmentId,
@@ -24,9 +15,10 @@ export default function MaterialFilters({
   category,
   search,
   setFilters,
-}: Props) {
-  const { levels = [] } = useLevels(departmentId);
+}: MaterialFilterProps) {
+  const [input, setInput] = useState(search);
 
+  const { levels = [] } = useLevels(departmentId);
   const { semesters = [] } = useSemesters(departmentId, levelId);
 
   const categories = [
@@ -40,13 +32,19 @@ export default function MaterialFilters({
     "other",
   ];
 
+  useEffect(() => {
+    setInput(search);
+  }, [search]);
+
   return (
     <div className="space-y-4">
       {/* Department */}
       <div>
-        <h1 className="text-2xl font-bold text-slate-900">{departmentName}</h1>
+        <h1 className="text-4xl font-bold text-slate-900 uppercase">
+          {departmentName}
+        </h1>
 
-        <p className="text-sm text-slate-500">{schoolName}</p>
+        <p className="text-lg text-slate-500 capitalize">{schoolName}</p>
       </div>
 
       {/* Filters */}
@@ -116,20 +114,49 @@ export default function MaterialFilters({
         </select>
 
         {/* Search */}
-        <div className="relative ml-auto w-full sm:w-72">
-          <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
+        <div className="relative ml-auto flex w-full gap-2 sm:w-auto">
+          <div className="relative flex-1 sm:w-72">
+            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
 
-          <input
-            value={search}
-            onChange={(e) =>
+            <input
+              value={input}
+              onChange={(e) => {
+                const value = e.target.value;
+
+                setInput(value);
+
+                // If user clears the input, reset automatically
+                if (!value.trim()) {
+                  setFilters({
+                    search: "",
+                    page: "1",
+                  });
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  setFilters({
+                    search: input.trim(),
+                    page: "1",
+                  });
+                }
+              }}
+              placeholder="Search materials..."
+              className="focus:border-primary w-full rounded-lg border border-slate-200 py-2 pr-4 pl-10 outline-none"
+            />
+          </div>
+
+          <button
+            onClick={() =>
               setFilters({
-                search: e.target.value,
+                search: input.trim(),
                 page: "1",
               })
             }
-            placeholder="Search materials..."
-            className="focus:border-primary w-full rounded-lg border border-slate-200 py-2 pr-4 pl-10 outline-none"
-          />
+            className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
+          >
+            Search
+          </button>
         </div>
       </div>
     </div>

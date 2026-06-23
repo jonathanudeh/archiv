@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
+const User = require("../models/userModel");
 const Department = require("../models/departmentModel");
 const School = require("../models/schoolModel");
 const slugify = require("slugify");
@@ -106,11 +107,23 @@ exports.createDepartment = catchAsync(async (req, res, next) => {
   session.startTransaction();
 
   try {
+    const user = await User.findById(req.user.id);
     // 1. Allow nested route to set school ID
     const school = req.body.school || req.params.schoolId;
 
     if (!school) {
       throw new AppError("School ID is required.", 400);
+    }
+
+    if (
+      req.user.role === "contributor" &&
+      user.school &&
+      user.school.toString() !== school
+    ) {
+      throw new AppError(
+        "Contributors can only create departments in their school.",
+        403,
+      );
     }
 
     // 2. Validate school exists
@@ -221,10 +234,21 @@ exports.updateDepartment = catchAsync(async (req, res, next) => {
     return next(new AppError("Please provide department data.", 400));
   }
 
+  const user = await User.findById(req.user.id);
+
   const department = await Department.findById(req.params.id);
 
   if (!department) {
     return next(new AppError("Department not found.", 404));
+  }
+
+  if (
+    req.user.role === "contributor" &&
+    req.user.school?.toString() !== department.school.toString()
+  ) {
+    return next(
+      new AppError("You can only edit departments in your school.", 403),
+    );
   }
 
   // Normalize name if updating

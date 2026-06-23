@@ -10,7 +10,11 @@ const {
   getSchoolBySlug,
   updateSchool,
 } = require("../../controllers/schoolController");
-const { protect, restrictTo } = require("../../controllers/authController");
+const {
+  protect,
+  restrictTo,
+  requireVerified,
+} = require("../../controllers/authController");
 
 const router = express.Router();
 
@@ -23,6 +27,7 @@ router
   .post(
     protect,
     restrictTo("admin", "contributor"),
+    requireVerified,
     upload.single("logo"),
     createSchool,
   ); //add rate limiter to creation
@@ -33,10 +38,11 @@ router
   .patch(
     protect,
     restrictTo("admin", "contributor"),
+    requireVerified,
     upload.single("logo"),
     updateSchool,
   )
-  .delete(protect, restrictTo("admin"), deleteSchool);
+  .delete(protect, restrictTo("admin"), requireVerified, deleteSchool);
 
 router.route("/slug/:slug").get(getSchoolBySlug);
 

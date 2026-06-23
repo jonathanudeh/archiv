@@ -11,6 +11,7 @@ const {
   protect,
   restrictTo,
   optionalProtect,
+  requireVerified,
 } = require("../../controllers/authController");
 const { validateFileType } = require("../../middlewares/validateFileType");
 
@@ -27,6 +28,7 @@ router
   .get(getAllMaterials)
   .post(
     protect,
+    requireVerified,
     uploadLimiter,
     upload.single("file"),
     validateFileType,
@@ -36,6 +38,6 @@ router
 router
   .route("/:materialId")
   .get(optionalProtect, getMaterial)
-  .delete(protect, deleteMaterial);
+  .delete(protect, requireVerified, deleteMaterial);
 
 module.exports = router;

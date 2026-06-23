@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useContext } from "react";
-
 import { useCurrentUser } from "@/src/features/auth/hooks/useCurrentUser";
 
 import { User } from "@/src/types/user";

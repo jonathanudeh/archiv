@@ -1,5 +1,9 @@
 const express = require("express");
-const { protect, restrictTo } = require("../../controllers/authController");
+const {
+  protect,
+  restrictTo,
+  requireVerified,
+} = require("../../controllers/authController");
 const {
   createDepartment,
   getAllDepartments,
@@ -20,14 +24,24 @@ router.use("/:departmentId/materials", materialRouter);
 router
   .route("/")
   .get(getAllDepartments)
-  .post(protect, restrictTo("admin", "contributor"), createDepartment);
+  .post(
+    protect,
+    restrictTo("admin", "contributor"),
+    requireVerified,
+    createDepartment,
+  );
 
 // FOR A DEPARTMENT BY ID
 router
   .route("/:id")
   .get(getDepartment)
-  .patch(protect, restrictTo("admin", "contributor"), updateDepartment)
-  .delete(protect, restrictTo("admin"), deleteDepartment);
+  .patch(
+    protect,
+    restrictTo("admin", "contributor"),
+    requireVerified,
+    updateDepartment,
+  )
+  .delete(protect, restrictTo("admin"), requireVerified, deleteDepartment);
 
 router.route("/slug/:slug").get(getDepartmentBySlug);
 

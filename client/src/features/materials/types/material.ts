@@ -39,3 +39,14 @@ export type Material = {
     };
   };
 };
+
+export type MaterialFilterProps = {
+  departmentId: string;
+  departmentName: string;
+  schoolName: string;
+  levelId: string;
+  semesterId: string;
+  category: string;
+  search: string;
+  setFilters: (updates: Record<string, string>) => void;
+};

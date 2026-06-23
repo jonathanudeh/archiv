@@ -114,7 +114,7 @@ exports.getAllMaterials = catchAsync(async (req, res, next) => {
   }
 
   const features = new APIFeatures(Material.find(filter), req.query)
-    .search(["title", "category", "school", "department"])
+    .search(["title", "category"])
     .filter()
     .sort()
     .limitFields()

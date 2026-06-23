@@ -29,8 +29,8 @@ export async function getMaterials({
   if (semesterId) {
     params.set("semester", semesterId);
   }
-  if (search) {
-    params.set("search", search);
+  if (search?.trim()) {
+    params.set("search", search.trim());
   }
   if (category) {
     params.set("category", category);

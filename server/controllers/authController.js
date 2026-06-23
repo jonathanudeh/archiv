@@ -249,6 +249,15 @@ exports.restrictTo = (...roles) => {
   };
 };
 
+exports.requireVerified = (req, res, next) => {
+  if (!req.user.isVerified) {
+    return next(
+      new AppError("Verify your account to perform this action.", 403),
+    );
+  }
+  next();
+};
+
 exports.forgotPassword = catchAsync(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
 

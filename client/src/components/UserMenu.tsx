@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Bookmark, Heart, LogOut, Settings, Upload, User } from "lucide-react";
+import { Bookmark, LogOut, Settings, Upload, User } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,

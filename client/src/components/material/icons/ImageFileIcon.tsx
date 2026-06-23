@@ -1,6 +1,6 @@
 export default function ImageFileIcon() {
   return (
-    <svg viewBox="0 0 24 24" className="h-20 w-20" fill="none">
+    <svg viewBox="0 0 24 24" className="h-15 w-15" fill="none">
       <path d="M7 3h7l5 5v13H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="#9333EA" />
 
       <path d="M14 3v5h5" fill="#c08eee " />

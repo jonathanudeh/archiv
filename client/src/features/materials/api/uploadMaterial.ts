@@ -11,8 +11,6 @@ export async function uploadMaterial(data: UploadMaterialInput) {
   formData.append("semester", data.semester);
   formData.append("file", data.file);
 
-  console.time("frontend-upload");
-
   const res = await API.post("/materials", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
@@ -24,8 +22,6 @@ export async function uploadMaterial(data: UploadMaterialInput) {
       data.onProgress?.(progress);
     },
   });
-
-  console.timeEnd("frontend-upload");
 
   return res.data;
 }
