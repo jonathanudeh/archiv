@@ -10,6 +10,7 @@ const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
 
 const globalErrorHandler = require("./controllers/errorController");
+const searchRouter = require("./routes/v1/searchRoutes");
 const schoolRouter = require("./routes/v1/schoolRoutes");
 const departmentRouter = require("./routes/v1/departmentRoutes");
 const authRouter = require("./routes/v1/authRoutes");
@@ -77,6 +78,7 @@ app.use((req, res, next) => {
 });
 
 // ROUTES
+app.use("/api/v1/search", searchRouter);
 app.use("/api/v1/schools", schoolRouter);
 app.use("/api/v1/departments", departmentRouter);
 app.use("/api/v1/materials", materialRouter);

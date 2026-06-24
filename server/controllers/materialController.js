@@ -114,7 +114,7 @@ exports.getAllMaterials = catchAsync(async (req, res, next) => {
   }
 
   const features = new APIFeatures(Material.find(filter), req.query)
-    .search(["title", "category"])
+    .search(["title", "description", "category", "tags"])
     .filter()
     .sort()
     .limitFields()
@@ -143,7 +143,19 @@ exports.getAllMaterials = catchAsync(async (req, res, next) => {
         },
       },
       {
+        description: {
+          $regex: req.query.search,
+          $options: "i",
+        },
+      },
+      {
         category: {
+          $regex: req.query.search,
+          $options: "i",
+        },
+      },
+      {
+        tags: {
           $regex: req.query.search,
           $options: "i",
         },
