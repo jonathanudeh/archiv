@@ -9,6 +9,7 @@ const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
 const APIFeatures = require("../utils/apiFeatures");
 const cloudinary = require("../config/cloudinary");
+const AnalyticsService = require("../services/analyticsService");
 const { uploadToCloudinary } = require("../utils/uploadToCloudinary");
 const { convertToPdf } = require("../utils/convertToPdf");
 
@@ -257,21 +258,7 @@ exports.uploadMaterial = catchAsync(async (req, res, next) => {
     uploadedBy: req.user.id,
   });
 
-  await Promise.all([
-    School.findByIdAndUpdate(user.school, {
-      $inc: {
-        "stats.materialsCount": 1,
-        "stats.popularityScore": 5,
-      },
-    }),
-
-    Department.findByIdAndUpdate(user.department, {
-      $inc: {
-        "stats.materialsCount": 1,
-        "stats.popularityScore": 5,
-      },
-    }),
-  ]);
+  await AnalyticsService.trackUpload(material);
 
   res.status(201).json({
     status: "success",
@@ -288,46 +275,14 @@ exports.downloadMaterial = catchAsync(async (req, res, next) => {
     return next(new AppError("No material found with that ID.", 404));
   }
 
-  console.log({ material });
+  const downloadUrl = material.fileUrl.replace(
+    "/upload/",
+    "/upload/fl_attachment/",
+  );
 
-  console.log({
-    id: material._id.toString(),
-    publicId: material.filePublicId,
-    fileUrl: material.fileUrl,
-  });
-
-  await Promise.all([
-    Material.findByIdAndUpdate(material._id, {
-      $inc: {
-        downloadCount: 1,
-      },
-    }),
-
-    School.findByIdAndUpdate(material.school, {
-      $inc: {
-        "stats.downloadsCount": 1,
-        "stats.popularityScore": 3,
-      },
-    }),
-
-    Department.findByIdAndUpdate(material.department, {
-      $inc: {
-        "stats.downloadsCount": 1,
-        "stats.popularityScore": 3,
-      },
-    }),
-  ]);
-
-  const resourceType = getResourceType(material.fileType);
-
-  const downloadUrl = cloudinary.url(material.filePublicId, {
-    resource_type: resourceType,
-    secure: true,
-    flags: "attachment",
-    attachment: material.originalFileName,
-  });
-
-  console.log(downloadUrl);
+  AnalyticsService.runInBackground(() =>
+    AnalyticsService.trackDownload(material),
+  );
 
   res.redirect(downloadUrl);
 });
@@ -357,21 +312,7 @@ exports.deleteMaterial = catchAsync(async (req, res, next) => {
 
   await Material.findByIdAndDelete(req.params.materialId);
 
-  await Promise.all([
-    School.findByIdAndUpdate(material.school, {
-      $inc: {
-        "stats.materialsCount": -1,
-        "stats.popularityScore": -5,
-      },
-    }),
-
-    Department.findByIdAndUpdate(material.department, {
-      $inc: {
-        "stats.materialsCount": -1,
-        "stats.popularityScore": -5,
-      },
-    }),
-  ]);
+  await AnalyticsService.trackDelete(material);
 
   res.status(204).json({
     status: "success",

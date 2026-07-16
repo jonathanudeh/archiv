@@ -4,6 +4,7 @@ const Department = require("../models/departmentModel");
 const Material = require("../models/materialModel");
 const catchAsync = require("../utils/catchAsync");
 const AppError = require("../utils/appError");
+const AnalyticsService = require("../services/analyticsService");
 
 exports.saveMaterial = catchAsync(async (req, res, next) => {
   if (!req.user.id) {
@@ -29,21 +30,7 @@ exports.saveMaterial = catchAsync(async (req, res, next) => {
     material: material._id,
   });
 
-  await Promise.all([
-    School.findByIdAndUpdate(material.school, {
-      $inc: {
-        "stats.savesCount": 1,
-        "stats.popularityScore": 2,
-      },
-    }),
-
-    Department.findByIdAndUpdate(material.department, {
-      $inc: {
-        "stats.savesCount": 1,
-        "stats.popularityScore": 2,
-      },
-    }),
-  ]);
+  await AnalyticsService.trackSave(material);
 
   res.status(201).json({
     status: "success",
@@ -64,21 +51,7 @@ exports.unsaveMaterial = catchAsync(async (req, res, next) => {
     return next(new AppError("Saved material not found", 404));
   }
 
-  await Promise.all([
-    School.findByIdAndUpdate(material.school, {
-      $inc: {
-        "stats.savesCount": -1,
-        "stats.popularityScore": -2,
-      },
-    }),
-
-    Department.findByIdAndUpdate(material.department, {
-      $inc: {
-        "stats.savesCount": -1,
-        "stats.popularityScore": -2,
-      },
-    }),
-  ]);
+  await AnalyticsService.trackUnsave(material);
 
   res.status(204).json({
     status: "success",
@@ -107,28 +80,3 @@ exports.getMySavedMaterials = catchAsync(async (req, res, next) => {
     },
   });
 });
-
-/*
-when download has been implemented
-await Promise.all([
-  Material.findByIdAndUpdate(materialId, {
-    $inc: {
-      downloads: 1,
-    },
-  }),
-
-  School.findByIdAndUpdate(material.school, {
-    $inc: {
-      "stats.downloadsCount": 1,
-      "stats.popularityScore": 3,
-    },
-  }),
-
-  Department.findByIdAndUpdate(material.department, {
-    $inc: {
-      "stats.downloadsCount": 1,
-      "stats.popularityScore": 3,
-    },
-  }),
-]);
-*/
