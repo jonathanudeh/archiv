@@ -54,6 +54,7 @@ exports.saveMaterial = catchAsync(async (req, res, next) => {
 });
 
 exports.unsaveMaterial = catchAsync(async (req, res, next) => {
+  const material = await Material.findById(req.params.materialId);
   const saved = await SavedMaterial.findOneAndDelete({
     user: req.user.id,
     material: req.params.materialId,

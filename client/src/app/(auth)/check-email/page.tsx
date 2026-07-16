@@ -21,7 +21,11 @@ export default function CheckEmailPage() {
         <p className="mt-6 text-sm">
           Click the link in the email to verify your account.
         </p>
-        <button onClick={() => resendEmail(email!)}>
+
+        <button
+          className="bg-primary hover:bg-primary/90 mt-5 w-full rounded-full py-3 font-medium text-white transition disabled:opacity-50"
+          onClick={() => resendEmail(email!)}
+        >
           {isResendingEmail ? "Resending Email" : "Resend Verification Email"}
         </button>
       </div>

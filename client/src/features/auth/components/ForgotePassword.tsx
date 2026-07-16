@@ -30,7 +30,7 @@ export default function ForgotPasswordForm() {
       <div>
         <label
           htmlFor="email"
-          className="mb-2 block text-sm font-medium text-[#172033]"
+          className="text-primary mb-2 block text-sm font-medium"
         >
           Email Address
         </label>
@@ -40,7 +40,7 @@ export default function ForgotPasswordForm() {
           type="email"
           {...register("email")}
           placeholder="Enter your email"
-          className="focus:border-primary focus:ring-primary/20 w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:ring-2"
+          className="focus:border-primary focus:ring-primary/20 w-full rounded-full border border-slate-300 px-4 py-3 outline-none focus:ring-2"
         />
 
         {errors.email && (
@@ -51,7 +51,7 @@ export default function ForgotPasswordForm() {
       <button
         type="submit"
         disabled={isSendingResetEmail}
-        className="bg-primary hover:bg-primary/90 w-full rounded-xl py-3 font-medium text-white transition disabled:opacity-50"
+        className="bg-primary hover:bg-primary/90 w-full rounded-full py-3 font-medium text-white transition disabled:opacity-50"
       >
         {isSendingResetEmail ? "Sending..." : "Send Reset Link"}
       </button>

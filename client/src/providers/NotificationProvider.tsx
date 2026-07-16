@@ -6,48 +6,44 @@ import {
   useReducer,
   ReactNode,
   useCallback,
+  useRef,
 } from "react";
 
 type NotificationType = "success" | "error" | "info";
 
-type Notification = {
+export type Notification = {
   id: string;
   message: string;
   type: NotificationType;
 };
 
 type State = {
-  notifications: Notification[];
+  notification: Notification | null;
 };
 
 type Action =
   | {
-      type: "ADD_NOTIFICATION";
+      type: "SHOW_NOTIFICATION";
       payload: Notification;
     }
   | {
-      type: "REMOVE_NOTIFICATION";
-      payload: string;
+      type: "HIDE_NOTIFICATION";
     };
 
 const initialState: State = {
-  notifications: [],
+  notification: null,
 };
 
 function notificationReducer(state: State, action: Action): State {
   switch (action.type) {
-    case "ADD_NOTIFICATION":
+    case "SHOW_NOTIFICATION":
       return {
-        ...state,
-        notifications: [...state.notifications, action.payload],
+        notification: action.payload,
       };
 
-    case "REMOVE_NOTIFICATION":
+    case "HIDE_NOTIFICATION":
       return {
-        ...state,
-        notifications: state.notifications.filter(
-          (notification) => notification.id !== action.payload,
-        ),
+        notification: null,
       };
 
     default:
@@ -56,66 +52,77 @@ function notificationReducer(state: State, action: Action): State {
 }
 
 type NotificationContextType = {
+  notification: Notification | null;
+
   success: (message: string) => void;
   error: (message: string) => void;
   info: (message: string) => void;
-  removeNotification: (id: string) => void;
-  notifications: Notification[];
+
+  removeNotification: () => void;
 };
 
 const NotificationContext = createContext<NotificationContextType | null>(null);
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
   const [state, dispatch] = useReducer(notificationReducer, initialState);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  const addNotification = useCallback(
+  const showNotification = useCallback(
     (message: string, type: NotificationType) => {
-      const id = Date.now().toString() + Math.random().toString(36).slice(2);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+
+      const id = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 
       dispatch({
-        type: "ADD_NOTIFICATION",
-        payload: { id, message, type },
+        type: "SHOW_NOTIFICATION",
+        payload: {
+          id,
+          message,
+          type,
+        },
       });
 
-      const timeout = setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         dispatch({
-          type: "REMOVE_NOTIFICATION",
-          payload: id,
+          type: "HIDE_NOTIFICATION",
         });
-      }, 5000);
-
-      return () => clearTimeout(timeout);
+      }, 4000);
     },
     [],
   );
 
   const success = (message: string) => {
-    addNotification(message, "success");
+    showNotification(message, "success");
   };
 
   const error = (message: string) => {
-    addNotification(message, "error");
+    showNotification(message, "error");
   };
 
   const info = (message: string) => {
-    addNotification(message, "info");
+    showNotification(message, "info");
   };
 
-  const removeNotification = (id: string) => {
+  const removeNotification = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
     dispatch({
-      type: "REMOVE_NOTIFICATION",
-      payload: id,
+      type: "HIDE_NOTIFICATION",
     });
   };
 
   return (
     <NotificationContext.Provider
       value={{
+        notification: state.notification,
         success,
         error,
         info,
         removeNotification,
-        notifications: state.notifications,
       }}
     >
       {children}
@@ -127,9 +134,7 @@ export function useNotification() {
   const context = useContext(NotificationContext);
 
   if (!context) {
-    throw new Error(
-      "useNotificationContext must be used inside NotificationProvider",
-    );
+    throw new Error("useNotification must be used inside NotificationProvider");
   }
 
   return context;

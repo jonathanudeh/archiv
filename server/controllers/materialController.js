@@ -281,6 +281,57 @@ exports.uploadMaterial = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.downloadMaterial = catchAsync(async (req, res, next) => {
+  const material = await Material.findById(req.params.materialId);
+
+  if (!material) {
+    return next(new AppError("No material found with that ID.", 404));
+  }
+
+  console.log({ material });
+
+  console.log({
+    id: material._id.toString(),
+    publicId: material.filePublicId,
+    fileUrl: material.fileUrl,
+  });
+
+  await Promise.all([
+    Material.findByIdAndUpdate(material._id, {
+      $inc: {
+        downloadCount: 1,
+      },
+    }),
+
+    School.findByIdAndUpdate(material.school, {
+      $inc: {
+        "stats.downloadsCount": 1,
+        "stats.popularityScore": 3,
+      },
+    }),
+
+    Department.findByIdAndUpdate(material.department, {
+      $inc: {
+        "stats.downloadsCount": 1,
+        "stats.popularityScore": 3,
+      },
+    }),
+  ]);
+
+  const resourceType = getResourceType(material.fileType);
+
+  const downloadUrl = cloudinary.url(material.filePublicId, {
+    resource_type: resourceType,
+    secure: true,
+    flags: "attachment",
+    attachment: material.originalFileName,
+  });
+
+  console.log(downloadUrl);
+
+  res.redirect(downloadUrl);
+});
+
 exports.deleteMaterial = catchAsync(async (req, res, next) => {
   const material = await Material.findById(req.params.materialId);
 

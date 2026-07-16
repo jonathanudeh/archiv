@@ -42,7 +42,7 @@ export default function LoginForm() {
             autoComplete="email"
             {...register("email")}
             placeholder="Enter your email"
-            className="focus:border-primary focus:ring-primary/20 w-full rounded-xl border border-slate-300 px-4 py-3 transition outline-none focus:ring-2"
+            className="focus:border-primary focus:ring-primary/20 w-full rounded-full border border-slate-300 px-4 py-3 transition outline-none focus:ring-2"
           />
 
           {errors.email && (
@@ -66,7 +66,7 @@ export default function LoginForm() {
               autoComplete="current-password"
               {...register("password")}
               placeholder="Enter your password"
-              className="focus:border-primary focus:ring-primary/20 w-full rounded-xl border border-slate-300 px-4 py-3 pr-14 transition outline-none focus:ring-2"
+              className="focus:border-primary focus:ring-primary/20 w-full rounded-full border border-slate-300 px-4 py-3 pr-14 transition outline-none focus:ring-2"
             />
 
             <button
@@ -99,9 +99,9 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={isLoggingIn}
-          className="bg-primary hover:bg-primary/90 w-full rounded-xl py-3 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-50"
+          className="bg-primary hover:bg-primary/90 w-full rounded-full py-3 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-50"
         >
-          {isLoggingIn ? "Signing In..." : "Sign In"}
+          {isLoggingIn ? "Loggin In..." : "Log In"}
         </button>
 
         {/* Signup Link */}

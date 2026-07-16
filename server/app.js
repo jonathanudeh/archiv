@@ -8,6 +8,7 @@ const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const cookieParser = require("cookie-parser");
+const compression = require("compression");
 
 const globalErrorHandler = require("./controllers/errorController");
 const searchRouter = require("./routes/v1/searchRoutes");
@@ -39,7 +40,11 @@ const limiter = rateLimit({
 
 app.use("/api", limiter);
 
-const allowedOrigins = ["http://localhost:3000", "http://172.20.10.5:3000"];
+const allowedOrigins = [
+  "http://localhost:3000",
+  "http://172.20.10.5:3000",
+  "http://172.26.192.1:3000",
+];
 
 app.use(
   cors({
@@ -76,6 +81,8 @@ app.use((req, res, next) => {
 
   next();
 });
+
+app.use(compression());
 
 // ROUTES
 app.use("/api/v1/search", searchRouter);

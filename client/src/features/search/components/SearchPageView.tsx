@@ -22,7 +22,10 @@ export default function SearchPageView() {
   };
 
   return (
-    <motion.main layoutId="global-search" className="archiv-container py-12">
+    <motion.main
+      layoutId="global-search"
+      className="archiv-container pt-5 pb-12"
+    >
       <SearchInput />
 
       <SearchResults

@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import Image from "next/image";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   updateProfileSchema,
@@ -26,7 +26,7 @@ export default function EditProfileForm() {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors },
   } = useForm<UpdateProfileSchema>({
@@ -43,7 +43,7 @@ export default function EditProfileForm() {
     },
   });
 
-  const selectedSchool = watch("school");
+  const selectedSchool = useWatch({ control, name: "school" });
   const { schools } = useSchools();
   const { departments } = useDepartments(selectedSchool);
 
@@ -113,7 +113,7 @@ export default function EditProfileForm() {
 
         <input
           {...register("name")}
-          className="focus:ring-primary/20 focus:border-primary w-full rounded-xl border border-slate-200 bg-white px-4 py-3 transition outline-none focus:ring-4"
+          className="focus:ring-primary/20 focus:border-primary w-full rounded-full border border-slate-200 bg-white px-4 py-3 transition outline-none focus:ring-4"
           placeholder="Your full name"
         />
 
@@ -139,7 +139,7 @@ export default function EditProfileForm() {
           )}
 
           <span className="ml-auto text-xs text-slate-400">
-            {watch("bio")?.length ?? 0}/300
+            {useWatch({ control, name: "bio" })?.length ?? 0}/300
           </span>
         </div>
       </div>
@@ -148,7 +148,7 @@ export default function EditProfileForm() {
         <div className="space-y-2">
           <label className="text-sm font-medium text-slate-700">School</label>
 
-          <div className="flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50 px-4 py-3">
+          <div className="flex items-center justify-between rounded-full border border-blue-100 bg-blue-50 px-4 py-3">
             <div>
               {user?.school && (
                 <p className="text-primary font-medium capitalize">
@@ -168,7 +168,7 @@ export default function EditProfileForm() {
 
           <select
             {...register("school")}
-            className="focus:ring-primary/20 focus:border-primary w-full rounded-xl border border-slate-200 bg-white px-4 py-3 capitalize transition outline-none focus:ring-4"
+            className="focus:ring-primary/20 focus:border-primary w-full rounded-full border border-slate-200 bg-white px-4 py-3 capitalize transition outline-none focus:ring-4"
           >
             <option value="">Select School</option>
 
@@ -187,7 +187,7 @@ export default function EditProfileForm() {
             Department
           </label>
 
-          <div className="flex items-center justify-between rounded-xl border border-blue-100 bg-blue-50 px-4 py-3">
+          <div className="flex items-center justify-between rounded-full border border-blue-100 bg-blue-50 px-4 py-3">
             <div>
               {user?.department && (
                 <p className="text-primary font-medium">
@@ -225,26 +225,24 @@ export default function EditProfileForm() {
         </div>
       )}
 
-      <div className="rounded-xl border border-amber-200 bg-amber-50 p-2 text-xs">
+      <div className="p-3 text-xs">
         {schoolLocked ? (
           <>
-            <p className="font-medium text-amber-800">
-              School & Department Selection
-            </p>
-
             <p className="mt-1 text-amber-700">
-              These details can only be selected once. Contact support if you
-              need a correction.
+              * School & Department Selection Can only be done once. Contact
+              support if you need a correction.
             </p>
           </>
         ) : (
-          <p>School and department can only be selected once.</p>
+          <p className="text-red-600">
+            School and department can only be selected once.
+          </p>
         )}
       </div>
 
       <button
         type="submit"
-        className="bg-primary hover:bg-primary/90 flex w-full items-center justify-center rounded-xl py-3 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-50"
+        className="bg-primary hover:bg-primary/90 flex w-full items-center justify-center rounded-full py-3 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-50"
         disabled={isUpdatingUser}
       >
         {isUpdatingUser ? "Saving..." : "Save Changes"}

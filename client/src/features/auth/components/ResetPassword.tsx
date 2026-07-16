@@ -48,7 +48,7 @@ export default function ResetPasswordForm({ token }: Props) {
             type={showPassword ? "text" : "password"}
             {...register("password")}
             placeholder="Enter new password"
-            className="focus:border-primary focus:ring-primary/20 w-full rounded-xl border border-slate-300 px-4 py-3 pr-12 outline-none focus:ring-2"
+            className="focus:border-primary focus:ring-primary/20 w-full rounded-full border border-slate-300 px-4 py-3 pr-12 outline-none focus:ring-2"
           />
 
           <button
@@ -79,7 +79,7 @@ export default function ResetPasswordForm({ token }: Props) {
             type={showConfirmPassword ? "text" : "password"}
             {...register("passwordConfirm")}
             placeholder="Confirm password"
-            className="focus:border-primary focus:ring-primary/20 w-full rounded-xl border border-slate-300 px-4 py-3 pr-12 outline-none focus:ring-2"
+            className="focus:border-primary focus:ring-primary/20 w-full rounded-full border border-slate-300 px-4 py-3 pr-12 outline-none focus:ring-2"
           />
 
           <button
@@ -101,7 +101,7 @@ export default function ResetPasswordForm({ token }: Props) {
       <button
         type="submit"
         disabled={isResettingPassword}
-        className="bg-primary hover:bg-primary/90 w-full rounded-xl py-3 font-medium text-white transition disabled:opacity-50"
+        className="bg-primary hover:bg-primary/90 w-full rounded-full py-3 font-medium text-white transition disabled:opacity-50"
       >
         {isResettingPassword ? "Resetting..." : "Reset Password"}
       </button>

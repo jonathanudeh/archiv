@@ -29,7 +29,7 @@ export default function UpdatePasswordForm() {
   }
 
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+    <section className="rounded-2xl p-6">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div>
           <label className="mb-2 block text-sm font-medium">
@@ -39,7 +39,7 @@ export default function UpdatePasswordForm() {
           <input
             type="password"
             {...register("passwordCurrent")}
-            className="w-full rounded-xl border border-slate-200 px-4 py-3 transition outline-none focus:border-[#172033]"
+            className="focus:border-primary w-full rounded-full border border-slate-200 px-4 py-3 transition outline-none"
           />
 
           {errors.passwordCurrent && (
@@ -55,7 +55,7 @@ export default function UpdatePasswordForm() {
           <input
             type="password"
             {...register("password")}
-            className="w-full rounded-xl border border-slate-200 px-4 py-3 transition outline-none focus:border-[#172033]"
+            className="focus:border-primary w-full rounded-full border border-slate-200 px-4 py-3 transition outline-none"
           />
 
           {errors.password && (
@@ -73,7 +73,7 @@ export default function UpdatePasswordForm() {
           <input
             type="password"
             {...register("passwordConfirm")}
-            className="w-full rounded-xl border border-slate-200 px-4 py-3 transition outline-none focus:border-[#172033]"
+            className="focus:border-primary w-full rounded-full border border-slate-200 px-4 py-3 transition outline-none"
           />
 
           {errors.passwordConfirm && (
@@ -86,7 +86,7 @@ export default function UpdatePasswordForm() {
         <button
           type="submit"
           disabled={isUpdatingPassword}
-          className="bg-primary hover:bg-primary/90 w-full rounded-xl py-3 font-medium text-white transition disabled:opacity-50"
+          className="bg-primary hover:bg-primary/90 w-full rounded-full py-3 font-medium text-white transition disabled:opacity-50"
         >
           {isUpdatingPassword ? "Updating..." : "Update Password"}
         </button>

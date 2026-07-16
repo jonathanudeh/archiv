@@ -56,7 +56,7 @@ export default function CreateSchoolForm() {
         <input
           {...register("name")}
           placeholder="University of Benin"
-          className="w-full rounded-xl border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
+          className="w-full rounded-full border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
         />
 
         <p className="mt-1 text-sm text-red-500">{errors.name?.message}</p>
@@ -70,7 +70,7 @@ export default function CreateSchoolForm() {
         <input
           {...register("acronym")}
           placeholder="UNIBEN"
-          className="w-full rounded-xl border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
+          className="w-full rounded-full border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
         />
 
         <p className="mt-1 text-sm text-red-500">{errors.acronym?.message}</p>
@@ -84,7 +84,7 @@ export default function CreateSchoolForm() {
         <input
           {...register("aliases")}
           placeholder="Ugbowo Campus, University of Benin"
-          className="w-full rounded-xl border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
+          className="w-full rounded-full border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
         />
 
         <p className="mt-1 text-xs text-slate-500">
@@ -100,7 +100,7 @@ export default function CreateSchoolForm() {
         <textarea
           rows={4}
           {...register("description")}
-          className="w-full rounded-xl border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
+          className="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
         />
 
         <p className="mt-1 text-sm text-red-500">
@@ -117,7 +117,7 @@ export default function CreateSchoolForm() {
           <input
             {...register("location")}
             placeholder="Benin City"
-            className="w-full rounded-xl border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
+            className="w-full rounded-full border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
           />
 
           <p className="mt-1 text-sm text-red-500">
@@ -131,7 +131,7 @@ export default function CreateSchoolForm() {
           <input
             {...register("country")}
             placeholder="Nigeria"
-            className="w-full rounded-xl border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
+            className="w-full rounded-full border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
           />
 
           <p className="mt-1 text-sm text-red-500">{errors.country?.message}</p>
@@ -146,7 +146,7 @@ export default function CreateSchoolForm() {
         <input
           {...register("website")}
           placeholder="https://uniben.edu"
-          className="w-full rounded-xl border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
+          className="w-full rounded-full border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
         />
 
         <p className="mt-1 text-sm text-red-500">{errors.website?.message}</p>
@@ -163,7 +163,7 @@ export default function CreateSchoolForm() {
           <input
             {...register("contactEmail")}
             placeholder="info@school.edu"
-            className="w-full rounded-xl border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
+            className="w-full rounded-full border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
           />
 
           <p className="mt-1 text-sm text-red-500">
@@ -179,7 +179,7 @@ export default function CreateSchoolForm() {
           <input
             {...register("contactPhone")}
             placeholder="+234..."
-            className="w-full rounded-xl border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
+            className="w-full rounded-full border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
           />
 
           <p className="mt-1 text-sm text-red-500">
@@ -213,7 +213,7 @@ export default function CreateSchoolForm() {
         </label>
 
         {selectedLogo && (
-          <div className="mt-3 flex items-center gap-2 rounded-xl bg-slate-50 p-3">
+          <div className="mt-3 flex items-center gap-2 rounded-full bg-slate-50 p-3">
             <School className="h-4 w-4" />
             <span>{selectedLogo.name}</span>
           </div>
@@ -224,7 +224,7 @@ export default function CreateSchoolForm() {
 
       <button
         disabled={isCreatingSchool}
-        className="bg-primary hover:bg-primary/90 w-full rounded-xl py-3 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-50"
+        className="bg-primary hover:bg-primary/90 w-full rounded-full py-3 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isCreatingSchool ? "Creating School..." : "Create School"}
       </button>

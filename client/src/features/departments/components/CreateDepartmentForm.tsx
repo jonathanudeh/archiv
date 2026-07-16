@@ -108,7 +108,7 @@ export default function CreateDepartmentForm() {
         <input
           {...register("name")}
           placeholder="Computer Science"
-          className="w-full rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
+          className="w-full rounded-full border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
         />
 
         <p className="mt-1 text-sm text-red-500">{errors.name?.message}</p>
@@ -125,7 +125,7 @@ export default function CreateDepartmentForm() {
           {...register("numberOfLevels", {
             valueAsNumber: true,
           })}
-          className="w-full rounded-xl border border-slate-300 px-4 py-3"
+          className="w-full rounded-full border border-slate-300 px-4 py-3"
         >
           <option value={1}>1</option>
           <option value={2}>2</option>
@@ -147,7 +147,7 @@ export default function CreateDepartmentForm() {
       <button
         type="submit"
         disabled={isCreatingDepartment}
-        className="bg-primary hover:bg-primary/90 flex w-full items-center justify-center rounded-xl py-3 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-50"
+        className="bg-primary hover:bg-primary/90 flex w-full items-center justify-center rounded-full py-3 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isCreatingDepartment ? <MiniSpinner /> : "Create Department"}
       </button>

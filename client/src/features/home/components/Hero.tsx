@@ -1,15 +1,11 @@
 "use client";
 
 import { Search } from "lucide-react";
-import { useState } from "react";
-import SearchModal from "@/src/features/search/components/SearchModal";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 function Hero() {
   const router = useRouter();
-  const [openSearch, setOpenSearch] = useState(false);
-  console.log("Hero");
 
   return (
     <>
@@ -59,18 +55,19 @@ function Hero() {
                 </svg>
               </div>
 
-              <motion.div layoutId="global-search">
-                <div className="relative flex items-center border shadow-md">
-                  <div className="pointer-events-none pl-6">
-                    <Search className="h-5 w-5 text-slate-400" />
-                  </div>
+              <motion.div
+                layoutId="global-search"
+                onClick={() => router.push("/search")}
+                className="relative h-16 cursor-pointer rounded-full border border-slate-200 bg-white/80 shadow-2xl shadow-slate-200/40 backdrop-blur-xl"
+              >
+                <Search className="absolute top-1/2 left-6 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
-                  <button
-                    onClick={() => router.push("/search")}
-                    className="w-full bg-transparent py-6 pr-6 pl-4 text-left text-sm text-slate-400"
-                  >
-                    Search Materials, schools, department...
-                  </button>
+                <div className="flex h-full items-center pl-14 text-sm text-slate-400">
+                  Search materials, schools, departments...
+                </div>
+
+                <div className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-slate-900 px-5 py-3 text-sm font-medium text-white">
+                  Search
                 </div>
               </motion.div>
             </div>
@@ -149,7 +146,6 @@ function Hero() {
           />
         </div>
       </section>
-      <SearchModal open={openSearch} onClose={() => setOpenSearch(false)} />
     </>
   );
 }

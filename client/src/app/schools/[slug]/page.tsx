@@ -150,46 +150,39 @@ const SchoolPage = () => {
           </div>
 
           {/* SEARCH */}
-          <div className="w-full md:w-96">
-            <div className="flex gap-3">
-              <div className="relative flex-1">
-                <Search
-                  size={18}
-                  className="absolute top-1/2 left-4 -translate-y-1/2 text-slate-400"
-                />
+          <div className="mx-auto mb-5 w-full max-w-5xl">
+            <div className="relative">
+              <Search className="absolute top-1/2 left-6 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
-                <input
-                  value={input}
-                  onChange={(e) => {
-                    const value = e.target.value;
+              <input
+                value={input}
+                onChange={(e) => {
+                  const value = e.target.value;
 
-                    setInput(value);
+                  setInput(value);
 
-                    // clear search automatically
-                    if (!value.trim() && search) {
-                      const params = new URLSearchParams(
-                        searchParams.toString(),
-                      );
+                  // clear search automatically
+                  if (!value.trim() && search) {
+                    const params = new URLSearchParams(searchParams.toString());
 
-                      params.delete("search");
-                      params.set("page", "1");
+                    params.delete("search");
+                    params.set("page", "1");
 
-                      router.push(`/schools/${slug}?${params.toString()}`);
-                    }
-                  }}
-                  placeholder="Search departments..."
-                  className="w-full rounded-xl border border-slate-200 py-3 pr-4 pl-11 outline-none focus:border-slate-400"
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter") {
-                      handleSearch();
-                    }
-                  }}
-                />
-              </div>
+                    router.push(`/schools/${slug}?${params.toString()}`);
+                  }
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    handleSearch();
+                  }
+                }}
+                placeholder="Search departments..."
+                className="h-13 w-full rounded-full border border-slate-200 bg-white pr-36 pl-14 text-lg shadow-sm transition outline-none focus:border-slate-400 focus:ring-4 focus:ring-slate-100"
+              />
 
               <button
                 onClick={handleSearch}
-                className="rounded-xl bg-slate-900 px-5 py-3 text-white transition hover:bg-slate-800"
+                className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-slate-900 px-6 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
               >
                 Search
               </button>

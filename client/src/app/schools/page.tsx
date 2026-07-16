@@ -62,8 +62,10 @@ const SchoolsPage = () => {
         <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-center">
           <h1 className="text-3xl font-bold text-slate-900">Browse Schools</h1>
 
-          <div className="w-full md:w-96">
-            <div className="flex gap-3">
+          <div className="mx-auto mb-5 w-full max-w-5xl">
+            <div className="relative">
+              <Search className="absolute top-1/2 left-6 h-5 w-5 -translate-y-1/2 text-slate-400" />
+
               <input
                 value={input}
                 onChange={(e) => {
@@ -80,14 +82,13 @@ const SchoolsPage = () => {
                     handleSearch();
                   }
                 }}
-                className="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm focus:ring-2 focus:ring-slate-900 focus:outline-none"
+                className="h-13 w-full rounded-full border border-slate-200 bg-white pr-36 pl-14 text-lg shadow-sm transition outline-none focus:border-slate-400 focus:ring-4 focus:ring-slate-100"
               />
 
               <button
                 onClick={handleSearch}
-                className="flex items-center gap-2 rounded-xl bg-slate-900 px-5 py-3 text-white"
+                className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-slate-900 px-6 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
               >
-                <Search size={16} />
                 Search
               </button>
             </div>

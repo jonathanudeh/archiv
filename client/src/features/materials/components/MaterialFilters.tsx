@@ -114,9 +114,9 @@ export default function MaterialFilters({
         </select>
 
         {/* Search */}
-        <div className="relative ml-auto flex w-full gap-2 sm:w-auto">
-          <div className="relative flex-1 sm:w-72">
-            <Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" />
+        <div className="mx-auto mb-5 w-full max-w-5xl">
+          <div className="relative">
+            <Search className="absolute top-1/2 left-6 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
             <input
               value={input}
@@ -142,21 +142,21 @@ export default function MaterialFilters({
                 }
               }}
               placeholder="Search materials..."
-              className="focus:border-primary w-full rounded-lg border border-slate-200 py-2 pr-4 pl-10 outline-none"
+              className="h-13 w-full rounded-full border border-slate-200 bg-white pr-36 pl-14 text-lg shadow-sm transition outline-none focus:border-slate-400 focus:ring-4 focus:ring-slate-100"
             />
-          </div>
 
-          <button
-            onClick={() =>
-              setFilters({
-                search: input.trim(),
-                page: "1",
-              })
-            }
-            className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
-          >
-            Search
-          </button>
+            <button
+              onClick={() =>
+                setFilters({
+                  search: input.trim(),
+                  page: "1",
+                })
+              }
+              className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-slate-900 px-6 py-2 text-sm font-medium text-white transition hover:bg-slate-800"
+            >
+              Search
+            </button>
+          </div>
         </div>
       </div>
     </div>

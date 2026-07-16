@@ -6,6 +6,7 @@ const {
   deleteMaterial,
   getMaterial,
   uploadMaterial,
+  downloadMaterial,
 } = require("../../controllers/materialController");
 const {
   protect,
@@ -39,5 +40,7 @@ router
   .route("/:materialId")
   .get(optionalProtect, getMaterial)
   .delete(protect, requireVerified, deleteMaterial);
+
+router.get("/:materialId/download", optionalProtect, downloadMaterial);
 
 module.exports = router;

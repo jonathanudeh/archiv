@@ -47,7 +47,7 @@ export default function SearchableSchoolSelect({ value, onChange }: Props) {
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
-        className="flex w-full items-center justify-between rounded-xl border border-slate-300 bg-white px-4 py-3 text-left"
+        className="flex w-full items-center justify-between rounded-full border border-slate-300 bg-white px-4 py-3 text-left"
       >
         <span className="truncate">
           {selectedSchool?.name ?? "Select school"}
@@ -59,7 +59,7 @@ export default function SearchableSchoolSelect({ value, onChange }: Props) {
       {open && (
         <div className="absolute z-50 mt-2 w-full rounded-2xl border border-slate-200 bg-white shadow-lg">
           <div className="border-b border-slate-100 p-3">
-            <div className="flex items-center gap-2 rounded-xl border border-slate-200 px-3">
+            <div className="flex items-center gap-2 rounded-full border border-slate-200 px-3">
               <Search className="h-4 w-4 text-slate-500" />
 
               <input
@@ -111,7 +111,7 @@ export default function SearchableSchoolSelect({ value, onChange }: Props) {
 
                 <Link
                   href="/contribute/school"
-                  className="bg-primary inline-flex rounded-xl px-4 py-2 text-sm font-medium text-white"
+                  className="bg-primary inline-flex rounded-full px-4 py-2 text-sm font-medium text-white"
                 >
                   Create School
                 </Link>
