@@ -56,22 +56,6 @@ exports.getMaterial = catchAsync(async (req, res, next) => {
     return next(new AppError("No material found with that ID", 404));
   }
 
-  await Promise.all([
-    School.findByIdAndUpdate(material.school, {
-      $inc: {
-        "stats.viewsCount": 1,
-        "stats.popularityScore": 1,
-      },
-    }),
-
-    Department.findByIdAndUpdate(material.department, {
-      $inc: {
-        "stats.viewsCount": 1,
-        "stats.popularityScore": 1,
-      },
-    }),
-  ]);
-
   const isSaved = await SavedMaterial.exists({
     user: req.user?.id,
     material: material._id,
@@ -317,5 +301,19 @@ exports.deleteMaterial = catchAsync(async (req, res, next) => {
   res.status(204).json({
     status: "success",
     data: null,
+  });
+});
+
+exports.viewMaterial = catchAsync(async (req, res, next) => {
+  const material = await Material.findById(req.params.materialId);
+
+  if (!material) {
+    return next(new AppError("No material found with that ID.", 404));
+  }
+
+  AnalyticsService.runInBackground(AnalyticsService.trackView(material));
+
+  res.status(204).json({
+    status: "success",
   });
 });

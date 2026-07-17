@@ -9,6 +9,7 @@ import MaterialPreview from "./MaterialPreview";
 import { Material } from "../types/material";
 import { useToggleSaveMaterial } from "../../profile/hooks/useToggleSave";
 import { useState } from "react";
+import { useDownloadMaterial } from "../hooks/useDownloadMaterial";
 
 type Props = {
   material: Material;
@@ -16,6 +17,7 @@ type Props = {
 
 export default function MaterialDetails({ material }: Props) {
   const { saveMaterial, unsaveMaterial, isSaving } = useToggleSaveMaterial();
+  const { startDownload, isDownloading } = useDownloadMaterial();
   const [saved, setSaved] = useState(material.isSaved);
 
   async function handleSave() {
@@ -40,19 +42,27 @@ export default function MaterialDetails({ material }: Props) {
           </div>
 
           <div className="flex gap-3">
+            <button
+              onClick={() => startDownload(material._id)}
+              disabled={isDownloading}
+              className="bg-primary inline-flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 font-medium text-white"
+            >
+              <Download size={18} />
+            </button>
+
             <a
               href={material.fileUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-primary inline-flex items-center gap-2 rounded-xl px-3 py-2 font-medium text-white"
+              className="inline-flex items-center gap-2 rounded-full border px-3 py-2"
             >
-              <Download size={18} />
+              Open
             </a>
 
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 font-medium transition ${
+              className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 font-medium transition ${
                 saved
                   ? "border-primary bg-primary/10 text-primary"
                   : "border-slate-300"
@@ -69,6 +79,7 @@ export default function MaterialDetails({ material }: Props) {
         {/* Preview */}
         <div className="p-2">
           <MaterialPreview
+            materialId={material._id}
             fileUrl={material.fileUrl}
             fileType={material.fileType}
             title={material.title}

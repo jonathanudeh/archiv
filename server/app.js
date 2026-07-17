@@ -40,11 +40,7 @@ const limiter = rateLimit({
 
 app.use("/api", limiter);
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://172.20.10.5:3000",
-  "http://172.26.192.1:3000",
-];
+const allowedOrigins = ["http://localhost:3000", "http://172.20.10.5:3000"];
 
 app.use(
   cors({

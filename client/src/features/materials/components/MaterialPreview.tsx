@@ -4,14 +4,22 @@
 import Image from "next/image";
 import { FileText } from "lucide-react";
 import { getPreviewType } from "../utils/filePreview";
+import { useViewMaterial } from "../hooks/useViewMaterial";
 
 type Props = {
+  materialId: string;
   fileUrl: string;
   fileType: string;
   title: string;
 };
 
-export default function MaterialPreview({ fileUrl, fileType, title }: Props) {
+export default function MaterialPreview({
+  materialId,
+  fileUrl,
+  fileType,
+  title,
+}: Props) {
+  const { trackView } = useViewMaterial();
   const previewType = getPreviewType(fileType);
 
   if (previewType === "pdf") {
@@ -19,6 +27,7 @@ export default function MaterialPreview({ fileUrl, fileType, title }: Props) {
       <iframe
         src={fileUrl}
         title={title}
+        onLoad={() => trackView(materialId)} //count view when preview actually loads
         className="h-100 w-full rounded-2xl border border-slate-200 md:h-225"
       />
     );
@@ -32,6 +41,7 @@ export default function MaterialPreview({ fileUrl, fileType, title }: Props) {
           alt={title}
           width={1200}
           height={1600}
+          onLoad={() => trackView(materialId)} //count view when preview actually loads
           className="h-auto w-full"
         />
       </div>
@@ -48,6 +58,7 @@ export default function MaterialPreview({ fileUrl, fileType, title }: Props) {
         src={`https://view.officeapps.live.com/op/embed.aspx?src=${encodeURIComponent(fileUrl)}`}
         className="h-225 w-full rounded-2xl border border-slate-200"
         title={title}
+        onLoad={() => trackView(materialId)} //count view when preview actually loads
       />
     );
   }
