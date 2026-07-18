@@ -17,7 +17,7 @@ import {
 } from "../schemas/createDepartmentSchema";
 
 import { useCreateDepartment } from "../hooks/useCreateDepartment";
-import SearchableSchoolSelect from "@/src/components/ui/searchableSchoolSelect";
+import SearchableSchoolSelect from "@/src/components/ui/SearchableSchoolSelect";
 
 export default function CreateDepartmentForm() {
   const { user } = useAuth();

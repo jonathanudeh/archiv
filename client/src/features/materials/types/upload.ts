@@ -9,11 +9,16 @@ export interface Semester {
 }
 
 export interface UploadMaterialInput {
+  school: string;
+  department: string;
+
   title: string;
   description?: string;
   category: string;
+
   levelId: string;
   semester: string;
+
   file: File;
 
   onProgress?: (progress: number) => void;

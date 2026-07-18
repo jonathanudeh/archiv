@@ -32,13 +32,13 @@ const SchoolCard = ({ school }: { school: School }) => {
 
       <div className="relative z-10 flex items-start gap-4">
         {/* Logo */}
-        <div className="ring-border flex h-14 w-14 shrink-0 items-center justify-center rounded-xl bg-white shadow-sm ring-1 transition-transform group-hover:rotate-2">
+        <div className="ring-border flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-white p-1 shadow-sm ring-1 transition-transform group-hover:rotate-2">
           <Image
             src={school.logo?.url ?? "/default-school-logo.png"}
             alt={school.name}
             width={48}
             height={48}
-            className="h-full w-full object-contain"
+            className="h-full w-full rounded-full object-contain"
           />
         </div>
 

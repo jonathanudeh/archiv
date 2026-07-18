@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getDepartmentsBySchool } from "../api/getDepartmentsBySchool";
 
 export function useDepartments(
-  schoolId: string,
+  schoolId?: string,
   page = 1,
   limit = 12,
   search = "",
@@ -13,7 +13,8 @@ export function useDepartments(
     error: departmentsError,
   } = useQuery({
     queryKey: ["departments", schoolId, page, limit, search],
-    queryFn: () => getDepartmentsBySchool(schoolId, page, limit, search),
+    queryFn: () =>
+      getDepartmentsBySchool(schoolId as string, page, limit, search),
     enabled: !!schoolId,
   });
 

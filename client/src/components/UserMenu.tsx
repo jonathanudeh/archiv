@@ -19,6 +19,9 @@ export default function UserMenu() {
 
   if (!user) return null;
 
+  const isAdminorContributor =
+    user?.role === "admin" || user?.role === "contributor";
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -38,7 +41,7 @@ export default function UserMenu() {
         className="flex w-64 flex-col gap-2 rounded-2xl p-2"
       >
         <div className="px-2 py-3">
-          <p className="font-semibold text-[#172033]">{user.name}</p>
+          <p className="text-primary font-semibold">{user.name}</p>
 
           <p className="text-muted-foreground truncate text-xs">{user.email}</p>
         </div>
@@ -51,6 +54,24 @@ export default function UserMenu() {
             Profile
           </Link>
         </DropdownMenuItem>
+
+        {isAdminorContributor && (
+          <DropdownMenuItem asChild>
+            <Link href="/contribute/school" className="cursor-pointer">
+              <User className="mr-2 h-4 w-4" />
+              Create School
+            </Link>
+          </DropdownMenuItem>
+        )}
+
+        {isAdminorContributor && (
+          <DropdownMenuItem asChild>
+            <Link href="/contribute/department" className="cursor-pointer">
+              <User className="mr-2 h-4 w-4" />
+              Create department
+            </Link>
+          </DropdownMenuItem>
+        )}
 
         <DropdownMenuItem asChild>
           <Link href="/upload" className="cursor-pointer">

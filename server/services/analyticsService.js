@@ -1,6 +1,7 @@
 const Material = require("../models/materialModel");
 const School = require("../models/schoolModel");
 const Department = require("../models/departmentModel");
+const User = require("../models/userModel");
 
 exports.trackDownload = async (material) => {
   await Promise.all([
@@ -88,6 +89,12 @@ exports.trackUnsave = async (material) => {
 
 exports.trackUpload = async (material) => {
   await Promise.all([
+    User.findByIdAndUpdate(material.uploadedBy, {
+      $inc: {
+        materialsUploaded: 1,
+      },
+    }),
+
     School.findByIdAndUpdate(material.school, {
       $inc: {
         "stats.materialsCount": 1,
@@ -106,6 +113,12 @@ exports.trackUpload = async (material) => {
 
 exports.trackDelete = async (material) => {
   await Promise.all([
+    User.findByIdAndUpdate(material.uploadedBy, {
+      $inc: {
+        materialsUploaded: -1,
+      },
+    }),
+
     School.findByIdAndUpdate(material.school, {
       $inc: {
         "stats.materialsCount": -1,

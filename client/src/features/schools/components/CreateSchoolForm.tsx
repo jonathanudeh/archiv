@@ -83,7 +83,7 @@ export default function CreateSchoolForm() {
 
         <input
           {...register("aliases")}
-          placeholder="Ugbowo Campus, University of Benin"
+          placeholder="Former acronyms"
           className="w-full rounded-full border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
         />
 

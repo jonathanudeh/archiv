@@ -1,7 +1,12 @@
 import { z } from "zod";
 
 export const uploadMaterialSchema = z.object({
-  title: z.string().min(3, "Title is required").max(120),
+  school: z.string().min(1, "Please select a school."),
+  department: z.string().min(1, "Please select a department."),
+  title: z
+    .string()
+    .min(3, "Title must be at least 3 characters.")
+    .max(150, "Title cannot exceed 150 characters."),
   description: z.string().max(500).optional(),
   category: z.enum([
     "material",
@@ -16,7 +21,13 @@ export const uploadMaterialSchema = z.object({
 
   levelId: z.string().min(1, "Select a level"),
   semester: z.string().min(1, "Select a semester"),
-  file: z.any(),
+  file: z
+    .instanceof(File, {
+      message: "Please select a file.",
+    })
+    .refine((file) => file.size > 0, {
+      message: "Please select a file.",
+    }),
 });
 
 export type UploadMaterialSchema = z.infer<typeof uploadMaterialSchema>;

@@ -169,49 +169,96 @@ exports.uploadMaterial = catchAsync(async (req, res, next) => {
   if (!req.file) {
     return next(new AppError("Please upload a file", 400));
   }
+
   if (!req.body.levelId) {
     return next(new AppError("Please select a level.", 400));
   }
+
   if (!req.body.semester) {
     return next(new AppError("Please select a semester.", 400));
   }
-  const [semester, level, user] = await Promise.all([
-    Semester.findById(req.body.semester),
-    Level.findById(req.body.levelId),
-    User.findById(req.user.id),
-  ]);
+
+  const user = await User.findById(req.user.id);
 
   if (!user) {
     return next(new AppError("No user found.", 404));
-  }
-  if (!level) {
-    return next(new AppError("Invalid level", 404));
-  }
-  if (!semester) {
-    return next(new AppError("Invalid semester", 404));
   }
 
   if (!req.user.isVerified) {
     return next(new AppError("Verify your email before uploading.", 403));
   }
 
-  if (!user.school || !user.department) {
+  let schoolId;
+  let departmentId;
+
+  if (user.role === "admin") {
+    schoolId = req.body.school;
+    departmentId = req.body.department;
+
+    if (!schoolId) {
+      return next(new AppError("Please select a school.", 400));
+    }
+
+    if (!departmentId) {
+      return next(new AppError("Please select a department.", 400));
+    }
+  } else {
+    if (!user.school || !user.department) {
+      return next(
+        new AppError("Complete your profile before uploading materials.", 400),
+      );
+    }
+
+    schoolId = user.school;
+    departmentId = user.department;
+  }
+
+  const [school, department, level, semester] = await Promise.all([
+    School.findById(schoolId),
+    Department.findById(departmentId),
+    Level.findById(req.body.levelId),
+    Semester.findById(req.body.semester),
+  ]);
+
+  if (!school) {
+    return next(new AppError("Invalid school.", 404));
+  }
+
+  if (!department) {
+    return next(new AppError("Invalid department.", 404));
+  }
+
+  if (!level) {
+    return next(new AppError("Invalid level.", 404));
+  }
+
+  if (!semester) {
+    return next(new AppError("Invalid semester.", 404));
+  }
+
+  if (department.school.toString() !== school._id.toString()) {
     return next(
-      new AppError("Complete your profile before uploading materials.", 400),
+      new AppError("Selected department does not belong to that school.", 400),
     );
   }
 
-  if (level.department.toString() !== user.department.toString()) {
-    return next(new AppError("Invalid level selected.", 400));
-  }
-  if (semester.level.toString() !== level._id.toString()) {
-    return next(new AppError("Invalid semester selected.", 400));
+  if (level.department.toString() !== department._id.toString()) {
+    return next(
+      new AppError("Selected level does not belong to that department.", 400),
+    );
   }
 
-  // Convert file if necessary
+  if (semester.level.toString() !== level._id.toString()) {
+    return next(
+      new AppError("Selected semester does not belong to that level.", 400),
+    );
+  }
+
+  // Convert Office docs to PDF
   const convertedFile = await convertToPdf(req.file);
 
   const folder = getFolder(convertedFile.mimetype);
+
   const resourceType = getResourceType(convertedFile.mimetype);
 
   const uploadResult = await uploadToCloudinary(
@@ -235,10 +282,11 @@ exports.uploadMaterial = catchAsync(async (req, res, next) => {
     originalFileName: req.file.originalname,
     wasConverted: convertedFile.wasConverted,
 
-    school: user.school,
-    department: user.department,
+    school: school._id,
+    department: department._id,
     level: level._id,
-    semester: semester._id ?? req.body.semester,
+    semester: semester._id,
+
     uploadedBy: req.user.id,
   });
 

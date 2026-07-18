@@ -27,20 +27,13 @@ export default function Navbar() {
         <div className="hidden items-center gap-8 md:flex">
           <Link
             href="/schools"
-            className="text-muted hover:text-foreground text-sm font-medium transition-colors"
+            className="text-muted hover:text-foreground text-sm font-medium transition-colors hover:underline"
           >
             Schools
           </Link>
 
           <Link
-            href="/discover"
-            className="text-muted hover:text-foreground text-sm font-medium transition-colors"
-          >
-            Discover
-          </Link>
-
-          <Link
-            href="/contribute"
+            href="/contribute/department"
             className="text-muted hover:text-foreground text-sm font-medium transition-colors"
           >
             Contribute

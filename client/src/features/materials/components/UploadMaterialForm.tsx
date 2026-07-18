@@ -4,22 +4,36 @@ import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadCloud, FileText, School, GraduationCap } from "lucide-react";
+
 import { useAuth } from "@/src/providers/AuthProvider";
 import { isPopulatedDepartment, isPopulatedSchool } from "@/src/types/user";
+
+import SearchableSchoolSelect from "@/src/components/ui/SearchableSchoolSelect";
+import SearchableDepartmentSelect from "@/src/components/ui/SearchableDepartmentSelect";
+
 import { useLevels } from "../hooks/useLevels";
 import { useSemesters } from "../hooks/useSemesters";
+
 import {
   uploadMaterialSchema,
   UploadMaterialSchema,
 } from "../schema/uploadMaterialSchema";
+
 import { useUploadMaterial } from "../hooks/useUpload";
 
 export default function UploadMaterialForm() {
   const [progress, setProgress] = useState(0);
+
   const { user } = useAuth();
 
-  const departmentId = isPopulatedDepartment(user?.department)
-    ? user?.department?._id
+  const isAdmin = user?.role !== "admin";
+
+  const profileSchool = isPopulatedSchool(user?.school)
+    ? user.school
+    : undefined;
+
+  const profileDepartment = isPopulatedDepartment(user?.department)
+    ? user.department
     : undefined;
 
   const {
@@ -32,17 +46,81 @@ export default function UploadMaterialForm() {
     formState: { errors },
   } = useForm<UploadMaterialSchema>({
     resolver: zodResolver(uploadMaterialSchema),
+
+    defaultValues: {
+      school: "",
+      department: "",
+    },
   });
 
-  const selectedLevel = useWatch({ control, name: "levelId" });
-  const selectedFile = useWatch({ control, name: "file" });
-  const { levels } = useLevels(departmentId);
-  const { semesters } = useSemesters(departmentId, selectedLevel);
-  const { uploadMaterial, isUploading } = useUploadMaterial();
+  /**
+   * Watchers
+   */
+
+  const selectedSchool = useWatch({
+    control,
+    name: "school",
+  });
+
+  const selectedDepartment = useWatch({
+    control,
+    name: "department",
+  });
+
+  const selectedLevel = useWatch({
+    control,
+    name: "levelId",
+  });
+
+  const selectedFile = useWatch({
+    control,
+    name: "file",
+  });
+
+  /**
+   * Lock contributor/user to their profile
+   */
+
+  useEffect(() => {
+    if (!isAdmin) {
+      if (profileSchool) {
+        setValue("school", profileSchool._id);
+      }
+
+      if (profileDepartment) {
+        setValue("department", profileDepartment._id);
+      }
+    }
+  }, [isAdmin, profileSchool, profileDepartment, setValue]);
+
+  /**
+   * Reset dependent fields
+   */
+
+  useEffect(() => {
+    resetField("department");
+    resetField("levelId");
+    resetField("semester");
+  }, [selectedSchool, resetField]);
+
+  useEffect(() => {
+    resetField("levelId");
+    resetField("semester");
+  }, [selectedDepartment, resetField]);
 
   useEffect(() => {
     resetField("semester");
   }, [selectedLevel, resetField]);
+
+  /**
+   * Queries
+   */
+
+  const { levels } = useLevels(selectedDepartment);
+
+  const { semesters } = useSemesters(selectedDepartment, selectedLevel);
+
+  const { uploadMaterial, isUploading } = useUploadMaterial();
 
   async function onSubmit(data: UploadMaterialSchema) {
     await uploadMaterial({
@@ -51,7 +129,12 @@ export default function UploadMaterialForm() {
       onProgress: setProgress,
     });
 
-    reset();
+    reset({
+      school: !isAdmin && profileSchool ? profileSchool._id : "",
+
+      department: !isAdmin && profileDepartment ? profileDepartment._id : "",
+    });
+
     setProgress(0);
   }
 
@@ -66,46 +149,80 @@ export default function UploadMaterialForm() {
         <h1 className="text-primary text-2xl font-bold">Upload Material</h1>
 
         <p className="mt-1 text-sm text-slate-500">
-          Upload materials to your department.
+          Upload academic materials to Archiv.
           <span className="block text-amber-500">
-            (Make sure to finish editing your profile to be eligible for
-            uploads)
+            Make sure your profile is complete before uploading.
           </span>
         </p>
       </div>
 
-      {/* Locked School + Department */}
+      {/* School */}
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-          <div className="mb-2 flex items-center gap-2">
-            <School className="h-4 w-4 text-slate-500" />
-            <span className="text-xs font-medium text-slate-500 uppercase">
-              School
-            </span>
+      <div>
+        <label className="mb-2 block text-sm font-medium">School</label>
+
+        {isAdmin ? (
+          <SearchableSchoolSelect
+            value={selectedSchool}
+            onChange={(school) =>
+              setValue("school", school._id, {
+                shouldValidate: true,
+              })
+            }
+          />
+        ) : (
+          <div className="rounded-full border border-slate-200 bg-slate-50 p-4">
+            <div className="mb-2 flex items-center gap-2">
+              <School className="h-4 w-4 text-slate-500" />
+
+              <span className="text-xs font-medium text-slate-500 uppercase">
+                School
+              </span>
+            </div>
+
+            <p className="font-medium capitalize">
+              {profileSchool?.name ?? "No school selected"}
+            </p>
           </div>
+        )}
 
-          <p className="font-medium text-slate-800">
-            {isPopulatedSchool(user?.school)
-              ? user?.school?.name
-              : "No school selected"}
-          </p>
-        </div>
+        <p className="mt-1 text-sm text-red-500">{errors.school?.message}</p>
+      </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4">
-          <div className="mb-2 flex items-center gap-2">
-            <GraduationCap className="h-4 w-4 text-slate-500" />
-            <span className="text-xs font-medium text-slate-500 uppercase">
-              Department
-            </span>
+      {/* Department */}
+
+      <div>
+        <label className="mb-2 block text-sm font-medium">Department</label>
+
+        {isAdmin ? (
+          <SearchableDepartmentSelect
+            schoolId={selectedSchool}
+            value={selectedDepartment}
+            onChange={(department) =>
+              setValue("department", department._id, {
+                shouldValidate: true,
+              })
+            }
+          />
+        ) : (
+          <div className="rounded-full border border-slate-200 bg-slate-50 p-4">
+            <div className="mb-2 flex items-center gap-2">
+              <GraduationCap className="h-4 w-4 text-slate-500" />
+
+              <span className="text-xs font-medium text-slate-500 uppercase">
+                Department
+              </span>
+            </div>
+
+            <p className="font-medium capitalize">
+              {profileDepartment?.name ?? "No department selected"}
+            </p>
           </div>
+        )}
 
-          <p className="font-medium text-slate-800">
-            {isPopulatedDepartment(user?.department)
-              ? user?.department?.name
-              : "No department selected"}
-          </p>
-        </div>
+        <p className="mt-1 text-sm text-red-500">
+          {errors.department?.message}
+        </p>
       </div>
 
       {/* Title */}
@@ -115,8 +232,8 @@ export default function UploadMaterialForm() {
 
         <input
           {...register("title")}
-          placeholder="e.g CSC 202 Data Structures Note"
-          className="w-full rounded-xl border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
+          placeholder="CSC 202 Data Structures Note"
+          className="w-full rounded-full border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
         />
 
         <p className="mt-1 text-sm text-red-500">{errors.title?.message}</p>
@@ -130,8 +247,7 @@ export default function UploadMaterialForm() {
         <textarea
           {...register("description")}
           rows={4}
-          placeholder="Brief description..."
-          className="w-full rounded-xl border border-slate-300 px-4 py-3 transition outline-none focus:border-blue-500"
+          className="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 outline-none focus:border-blue-500"
         />
 
         <p className="mt-1 text-sm text-red-500">
@@ -146,10 +262,10 @@ export default function UploadMaterialForm() {
 
         <select
           {...register("category")}
-          className="w-full rounded-xl border border-slate-300 px-4 py-3"
+          className="w-full rounded-full border border-slate-300 px-4 py-3"
         >
           <option value="">Select category</option>
-          <option value="material">material</option>
+          <option value="material">Material</option>
           <option value="lecture note">Lecture Note</option>
           <option value="past question">Past Question</option>
           <option value="assignment">Assignment</option>
@@ -162,7 +278,7 @@ export default function UploadMaterialForm() {
         <p className="mt-1 text-sm text-red-500">{errors.category?.message}</p>
       </div>
 
-      {/* Level + Semester */}
+      {/* Level & Semester */}
 
       <div className="grid gap-4 md:grid-cols-2">
         <div>
@@ -170,7 +286,8 @@ export default function UploadMaterialForm() {
 
           <select
             {...register("levelId")}
-            className="w-full rounded-xl border border-slate-300 px-4 py-3"
+            disabled={!selectedDepartment}
+            className="w-full rounded-full border border-slate-300 px-4 py-3 disabled:bg-slate-100"
           >
             <option value="">Select level</option>
 
@@ -190,7 +307,7 @@ export default function UploadMaterialForm() {
           <select
             {...register("semester")}
             disabled={!selectedLevel}
-            className="w-full rounded-xl border border-slate-300 px-4 py-3 disabled:bg-slate-100"
+            className="w-full rounded-full border border-slate-300 px-4 py-3 disabled:bg-slate-100"
           >
             <option value="">Select semester</option>
 
@@ -207,7 +324,7 @@ export default function UploadMaterialForm() {
         </div>
       </div>
 
-      {/* File Upload */}
+      {/* File */}
 
       <div>
         <label className="mb-2 block text-sm font-medium">Material File</label>
@@ -218,7 +335,7 @@ export default function UploadMaterialForm() {
           <span className="font-medium">Click to select file</span>
 
           <span className="mt-1 text-sm text-slate-500">
-            PDF, IMAGE, DOCX, PPTX, XLSX, etc...
+            PDF, DOCX, PPTX, XLSX, JPG, PNG...
           </span>
 
           <input
@@ -238,7 +355,7 @@ export default function UploadMaterialForm() {
         </label>
 
         {selectedFile && (
-          <div className="mt-3 flex items-center gap-2 rounded-xl bg-slate-50 p-3">
+          <div className="mt-3 flex items-center gap-2 rounded-full bg-slate-50 p-3">
             <FileText className="h-4 w-4" />
 
             <span className="text-sm">{selectedFile.name}</span>
@@ -250,9 +367,10 @@ export default function UploadMaterialForm() {
         </p>
       </div>
 
-      {/* Submit and progress */}
+      {/* Progress */}
+
       {isUploading && (
-        <div className="mt-4">
+        <div>
           <div className="h-2 overflow-hidden rounded-full bg-slate-200">
             <div
               className="bg-primary h-full transition-all"
@@ -269,7 +387,7 @@ export default function UploadMaterialForm() {
       <button
         type="submit"
         disabled={isUploading}
-        className="bg-primary hover:bg-primary/90 w-full rounded-xl py-3 font-medium text-white transition disabled:cursor-not-allowed disabled:opacity-50"
+        className="bg-primary hover:bg-primary/90 w-full rounded-full py-3 font-medium text-white disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isUploading
           ? progress < 100
