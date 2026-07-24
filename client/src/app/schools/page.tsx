@@ -59,10 +59,10 @@ const SchoolsPage = () => {
   return (
     <div className="flex min-h-screen flex-col bg-gray-100">
       <main className="mx-auto w-full max-w-7xl flex-1 px-6 py-12">
-        <div className="mb-12 flex flex-col justify-between gap-6 md:flex-row md:items-center">
+        <div className="mb-12 flex w-full flex-col justify-between gap-6 md:flex-row">
           <h1 className="text-3xl font-bold text-slate-900">Browse Schools</h1>
 
-          <div className="mx-auto mb-5 w-full max-w-5xl">
+          <div className="mx-auto mb-5 w-3/6 max-w-5xl">
             <div className="relative">
               <Search className="absolute top-1/2 left-6 h-5 w-5 -translate-y-1/2 text-slate-400" />
 

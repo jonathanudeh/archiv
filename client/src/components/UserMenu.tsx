@@ -76,7 +76,14 @@ export default function UserMenu() {
         <DropdownMenuItem asChild>
           <Link href="/upload" className="cursor-pointer">
             <Upload className="mr-2 h-4 w-4" />
-            My Uploads
+            Upload document
+          </Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link href="/profile/my-uploads" className="cursor-pointer">
+            <Upload className="mr-2 h-4 w-4" />
+            My uploads
           </Link>
         </DropdownMenuItem>
 

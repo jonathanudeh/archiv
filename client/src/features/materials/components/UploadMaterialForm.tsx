@@ -26,7 +26,7 @@ export default function UploadMaterialForm() {
 
   const { user } = useAuth();
 
-  const isAdmin = user?.role !== "admin";
+  const isAdmin = user?.role === "admin";
 
   const profileSchool = isPopulatedSchool(user?.school)
     ? user.school
