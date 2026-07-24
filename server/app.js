@@ -40,7 +40,7 @@ const limiter = rateLimit({
 
 app.use("/api", limiter);
 
-const allowedOrigins = ["http://localhost:3000", "http://172.20.10.5:3000"];
+const allowedOrigins = ["http://localhost:3000", process.env.CLIENT_URL];
 
 app.use(
   cors({
@@ -64,23 +64,31 @@ app.use(
   }),
 );
 
-app.use((req, res, next) => {
-  const start = Date.now();
+// app.use((req, res, next) => {
+//   const start = Date.now();
 
-  res.on("finish", () => {
-    console.log(
-      `${req.method} ${req.originalUrl} FINISHED IN`,
-      Date.now() - start,
-      "ms",
-    );
-  });
+//   res.on("finish", () => {
+//     console.log(
+//       `${req.method} ${req.originalUrl} FINISHED IN`,
+//       Date.now() - start,
+//       "ms",
+//     );
+//   });
 
-  next();
-});
+//   next();
+// });
 
 app.use(compression());
 
 // ROUTES
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    environment: process.env.NODE_ENV,
+    uptime: process.uptime(),
+  });
+});
+
 app.use("/api/v1/search", searchRouter);
 app.use("/api/v1/schools", schoolRouter);
 app.use("/api/v1/departments", departmentRouter);

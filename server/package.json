@@ -1,10 +1,10 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
-    "start:prod": "NODE_ENV=production nodemon server.js",
+    "dev": "nodemon server.js",
+    "start": "node server.js",
     "debug": "ndb server.js"
   },
   "keywords": [],
