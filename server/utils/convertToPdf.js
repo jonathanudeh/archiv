@@ -1,8 +1,9 @@
 const libre = require("libreoffice-convert");
 const AppError = require("../utils/appError");
-const { promisify } = require("util");
+// const { promisify } = require("util");
 
-const convert = promisify(libre.convert);
+// const convert = promisify(libre.convert);
+const convert = libre.convert;
 
 exports.convertToPdf = async (file) => {
   const mime = file.mimetype;
