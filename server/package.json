@@ -36,5 +36,8 @@
     "streamifier": "^0.1.1",
     "validator": "^13.15.35",
     "xss-clean": "^0.1.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
   }
 }
