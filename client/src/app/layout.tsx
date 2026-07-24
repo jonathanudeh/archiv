@@ -24,6 +24,9 @@ const sora = Sora({
 export const metadata: Metadata = {
   title: "Archiv",
   description: "Academic materials, structured properly.",
+  icons: {
+    icon: "/archiv-logo/archivIcon.svg",
+  },
 };
 
 export default function RootLayout({
