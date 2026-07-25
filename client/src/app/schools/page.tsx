@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense } from "react";
+import { useEffect, useState, ChangeEvent, KeyboardEvent } from "react";
 import { Search } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -8,8 +9,9 @@ import Spinner from "@/src/components/ui/Spinner";
 import SchoolCard from "@/src/components/SchoolCard";
 import Pagination from "@/src/components/layout/Pagination";
 import { useSchools } from "@/src/features/schools/hooks/useSchools";
+import { School } from "@/src/features/schools/types/schools";
 
-const SchoolsPage = () => {
+const SchoolsPageContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -68,7 +70,7 @@ const SchoolsPage = () => {
 
               <input
                 value={input}
-                onChange={(e) => {
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const value = e.target.value;
                   setInput(value);
 
@@ -77,7 +79,7 @@ const SchoolsPage = () => {
                   }
                 }}
                 placeholder="Search schools..."
-                onKeyDown={(e) => {
+                onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
                   if (e.key === "Enter") {
                     handleSearch();
                   }
@@ -98,7 +100,7 @@ const SchoolsPage = () => {
         {schools.length > 0 ? (
           <>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {schools.map((school: any) => (
+              {schools.map((school: School) => (
                 <SchoolCard key={school._id} school={school} />
               ))}
             </div>
@@ -119,4 +121,10 @@ const SchoolsPage = () => {
   );
 };
 
-export default SchoolsPage;
+export default function SchoolsPage() {
+  return (
+    <Suspense fallback={<Spinner />}>
+      <SchoolsPageContent />
+    </Suspense>
+  );
+}

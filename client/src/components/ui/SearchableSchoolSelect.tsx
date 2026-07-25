@@ -40,7 +40,7 @@ export default function SearchableSchoolSelect({ value, onChange }: Props) {
     };
   }, []);
 
-  const selectedSchool = schools.find((school) => school._id === value);
+  const selectedSchool = schools.find((school: School) => school._id === value);
 
   return (
     <div ref={wrapperRef} className="relative">
@@ -79,7 +79,7 @@ export default function SearchableSchoolSelect({ value, onChange }: Props) {
             )}
 
             {!isLoadingAllSchools &&
-              schools.map((school) => (
+              schools.map((school: School) => (
                 <button
                   key={school._id}
                   type="button"

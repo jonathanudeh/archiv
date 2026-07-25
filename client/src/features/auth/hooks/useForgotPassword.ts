@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { forgotPassword } from "../api/forgotPassword";
 import { useNotification } from "@/src/providers/NotificationProvider";
+import { AxiosError } from "axios";
 
 export function useForgotPassword() {
   const { success, error } = useNotification();
@@ -12,11 +13,11 @@ export function useForgotPassword() {
   } = useMutation({
     mutationFn: forgotPassword,
 
-    onSuccess: (data) => {
+    onSuccess: (data: { message: string }) => {
       success(data.message);
     },
 
-    onError: (err: any) => {
+    onError: (err: AxiosError<{ message: string }>) => {
       error(err?.response?.data?.message || "Something went wrong");
     },
   });

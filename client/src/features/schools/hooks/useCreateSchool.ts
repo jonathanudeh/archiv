@@ -3,6 +3,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNotification } from "@/src/providers/NotificationProvider";
 import { createSchool } from "../apis/createSchool";
+import { AxiosError } from "axios";
 
 export function useCreateSchool() {
   const queryClient = useQueryClient();
@@ -18,7 +19,7 @@ export function useCreateSchool() {
       success("School created successfully.");
     },
 
-    onError(err: any) {
+    onError(err: AxiosError<{ message: string }>) {
       error(err?.response?.data?.message ?? "Failed to create school.");
     },
   });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, ChangeEvent, KeyboardEvent } from "react";
 import { Search, MapPin } from "lucide-react";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
@@ -10,6 +10,7 @@ import Pagination from "@/src/components/layout/Pagination";
 import DepartmentCard from "@/src/features/departments/components/DepartmentCard";
 import { useSchool } from "@/src/features/schools/hooks/useSchoolSlug";
 import { useDepartments } from "@/src/features/departments/hooks/useDeparments";
+import { Department } from "@/src/types/department";
 
 const SchoolPage = () => {
   const { slug } = useParams();
@@ -156,7 +157,7 @@ const SchoolPage = () => {
 
               <input
                 value={input}
-                onChange={(e) => {
+                onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   const value = e.target.value;
 
                   setInput(value);
@@ -171,7 +172,7 @@ const SchoolPage = () => {
                     router.push(`/schools/${slug}?${params.toString()}`);
                   }
                 }}
-                onKeyDown={(e) => {
+                onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
                   if (e.key === "Enter") {
                     handleSearch();
                   }
@@ -200,14 +201,14 @@ const SchoolPage = () => {
         ) : (
           <>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {departments.map((dept) => (
+              {departments.map((dept: Department) => (
                 <DepartmentCard
                   key={dept._id}
                   name={dept.name}
-                  slug={dept.slug}
+                  slug={dept.slug ?? ""}
                   schoolSlug={String(slug)}
-                  materialsCount={dept.stats.materialsCount}
-                  numberOfLevels={dept.numberOfLevels}
+                  materialsCount={dept.stats?.materialsCount ?? 0}
+                  numberOfLevels={dept.numberOfLevels ?? 0}
                 />
               ))}
             </div>

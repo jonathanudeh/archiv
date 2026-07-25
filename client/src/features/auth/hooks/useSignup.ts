@@ -2,6 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 
 import { signup } from "../api/signup";
 import { useNotification } from "@/src/providers/NotificationProvider";
+import { AxiosError } from "axios";
 
 export function useSignup() {
   const { success, error } = useNotification();
@@ -13,10 +14,10 @@ export function useSignup() {
     isSuccess: signupSuccess,
   } = useMutation({
     mutationFn: signup,
-    onSuccess: (data) => {
+    onSuccess: (data: { message: string }) => {
       success(data.message);
     },
-    onError: (err: any) => {
+    onError: (err: AxiosError<{ message: string }>) => {
       error(err.response?.data?.message || "Something went wrong");
     },
   });

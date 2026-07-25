@@ -1,12 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadCloud, FileText, School, GraduationCap } from "lucide-react";
 
 import { useAuth } from "@/src/providers/AuthProvider";
 import { isPopulatedDepartment, isPopulatedSchool } from "@/src/types/user";
+import { School as SchoolType } from "@/src/features/schools/types/schools";
+import { Department } from "@/src/types/department";
 
 import SearchableSchoolSelect from "@/src/components/ui/SearchableSchoolSelect";
 import SearchableDepartmentSelect from "@/src/components/ui/SearchableDepartmentSelect";
@@ -164,7 +166,7 @@ export default function UploadMaterialForm() {
         {isAdmin ? (
           <SearchableSchoolSelect
             value={selectedSchool}
-            onChange={(school) =>
+            onChange={(school: SchoolType) =>
               setValue("school", school._id, {
                 shouldValidate: true,
               })
@@ -198,7 +200,7 @@ export default function UploadMaterialForm() {
           <SearchableDepartmentSelect
             schoolId={selectedSchool}
             value={selectedDepartment}
-            onChange={(department) =>
+            onChange={(department: Department) =>
               setValue("department", department._id, {
                 shouldValidate: true,
               })
@@ -342,7 +344,7 @@ export default function UploadMaterialForm() {
             type="file"
             className="hidden"
             accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.jpg,.jpeg,.png,.webp"
-            onChange={(e) => {
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const file = e.target.files?.[0];
 
               if (!file) return;

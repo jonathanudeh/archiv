@@ -1,5 +1,6 @@
 import API from "@/src/lib/axios";
 import { UploadMaterialInput } from "../types/upload";
+import { AxiosProgressEvent } from "axios";
 
 export async function uploadMaterial(data: UploadMaterialInput) {
   const formData = new FormData();
@@ -21,7 +22,7 @@ export async function uploadMaterial(data: UploadMaterialInput) {
       "Content-Type": "multipart/form-data",
     },
 
-    onUploadProgress: (event) => {
+    onUploadProgress: (event: AxiosProgressEvent) => {
       if (!event.total) return;
 
       const progress = Math.round((event.loaded * 100) / event.total);

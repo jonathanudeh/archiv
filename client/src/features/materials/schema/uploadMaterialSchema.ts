@@ -25,7 +25,7 @@ export const uploadMaterialSchema = z.object({
     .instanceof(File, {
       message: "Please select a file.",
     })
-    .refine((file) => file.size > 0, {
+    .refine((file: File) => file.size > 0, {
       message: "Please select a file.",
     }),
 });

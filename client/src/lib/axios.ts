@@ -1,5 +1,5 @@
 // axios instance
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 const API = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -8,7 +8,7 @@ const API = axios.create({
 
 API.interceptors.response.use(
   (response) => response,
-  (error) => {
+  (error: AxiosError) => {
     if (error.response?.status === 401) {
       console.log("Unauthorized");
     }

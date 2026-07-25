@@ -4,7 +4,7 @@ import { Search } from "lucide-react";
 import { useLevels } from "../hooks/useLevels";
 import { useSemesters } from "../hooks/useSemesters";
 import { MaterialFilterProps } from "../types/material";
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent, KeyboardEvent } from "react";
 
 export default function MaterialFilters({
   departmentId,
@@ -54,7 +54,7 @@ export default function MaterialFilters({
         {/* Category */}
         <select
           value={category}
-          onChange={(e) =>
+          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
             setFilters({
               category: e.target.value,
               page: "1",
@@ -74,7 +74,7 @@ export default function MaterialFilters({
         {/* Level */}
         <select
           value={levelId}
-          onChange={(e) =>
+          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
             setFilters({
               level: e.target.value,
               semester: "",
@@ -96,7 +96,7 @@ export default function MaterialFilters({
         <select
           value={semesterId}
           disabled={!levelId}
-          onChange={(e) =>
+          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
             setFilters({
               semester: e.target.value,
               page: "1",
@@ -120,7 +120,7 @@ export default function MaterialFilters({
 
             <input
               value={input}
-              onChange={(e) => {
+              onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 const value = e.target.value;
 
                 setInput(value);
@@ -133,7 +133,7 @@ export default function MaterialFilters({
                   });
                 }
               }}
-              onKeyDown={(e) => {
+              onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
                 if (e.key === "Enter") {
                   setFilters({
                     search: input.trim(),

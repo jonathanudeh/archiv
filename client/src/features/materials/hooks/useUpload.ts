@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { uploadMaterial } from "../api/uploadMaterial";
 import { useNotification } from "@/src/providers/NotificationProvider";
+import { AxiosError } from "axios";
 
 export function useUploadMaterial() {
   const { success, error } = useNotification();
@@ -12,7 +13,7 @@ export function useUploadMaterial() {
       success("Material uploaded successfully");
     },
 
-    onError(err: any) {
+    onError(err: AxiosError<{ message: string }>) {
       error(err?.response?.data?.message ?? "Upload failed");
     },
   });

@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { verifyEmail as verifyEmailApi } from "../api/verifyEmail";
 import { useNotification } from "@/src/providers/NotificationProvider";
+import { AxiosError } from "axios";
 
 export function useVerifyEmail() {
   const { success, error } = useNotification();
@@ -8,11 +9,11 @@ export function useVerifyEmail() {
   const { mutate: verifyEmail, isPending: isVerifyingEmail } = useMutation({
     mutationFn: verifyEmailApi,
 
-    onSuccess: (data) => {
+    onSuccess: (data: { message: string }) => {
       success(data.message || "Email verified successfully");
     },
 
-    onError: (err: any) => {
+    onError: (err: AxiosError<{ message: string }>) => {
       error(err?.response?.data?.message || "Verification failed");
     },
   });

@@ -1,5 +1,6 @@
 "use client";
 
+import { ChangeEvent } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { UploadCloud, School } from "lucide-react";
@@ -202,7 +203,7 @@ export default function CreateSchoolForm() {
             type="file"
             accept="image/*"
             className="hidden"
-            onChange={(e) => {
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
               const file = e.target.files?.[0];
 
               if (!file) return;

@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { updatePassword } from "../api/updatePassword";
 import { useNotification } from "@/src/providers/NotificationProvider";
+import { AxiosError } from "axios";
 
 export function useUpdatePassword() {
   const { success, error } = useNotification();
@@ -13,7 +14,7 @@ export function useUpdatePassword() {
         success("Password updated successfully");
       },
 
-      onError: (err: any) => {
+      onError: (err: AxiosError<{ message: string }>) => {
         error(err?.response?.data?.message || "Failed to update password");
       },
     });

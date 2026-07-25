@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { useAuth } from "@/src/providers/AuthProvider";
 import { isPopulatedSchool } from "@/src/types/user";
+import { School } from "@/src/features/schools/types/schools";
 
 import { MiniSpinner } from "@/src/components/ui/MiniSpinner";
 
@@ -85,7 +86,7 @@ export default function CreateDepartmentForm() {
         {isAdmin ? (
           <SearchableSchoolSelect
             value={selectedSchoolId}
-            onChange={(school) =>
+            onChange={(school: School) =>
               setValue("school", school._id, {
                 shouldValidate: true,
               })

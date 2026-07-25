@@ -4,6 +4,7 @@ import { saveMaterial as saveMaterialApi } from "../api/saveMaterial";
 import { unsaveMaterial as unsaveMaterialApi } from "../api/unsaveMaterial";
 
 import { useNotification } from "@/src/providers/NotificationProvider";
+import { AxiosError } from "axios";
 
 export function useToggleSaveMaterial() {
   const queryClient = useQueryClient();

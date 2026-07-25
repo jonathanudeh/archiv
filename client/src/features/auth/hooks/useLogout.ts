@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 
 import { logout as logoutApi } from "../api/logout";
 import { useNotification } from "@/src/providers/NotificationProvider";
+import { AxiosError } from "axios";
 
 export function useLogout() {
   const queryClient = useQueryClient();
@@ -35,7 +36,7 @@ export function useLogout() {
       router.refresh();
     },
 
-    onError: (err: any) => {
+    onError: (err: AxiosError<{ message: string }>) => {
       error(err?.response?.data?.message || "Something went wrong");
     },
   });

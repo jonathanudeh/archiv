@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId, useState, ChangeEvent } from "react";
 import Image from "next/image";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,8 +11,10 @@ import {
 import { useAuth } from "@/src/providers/AuthProvider";
 import { useUpdateProfile } from "../hooks/useUpdateProfile";
 import { useSchools } from "../../schools/hooks/useSchools";
-import { useDepartments } from "../../schools/hooks/useDepartments";
+import { useDepartments } from "../../departments/hooks/useDeparments";
+import { School } from "../../schools/types/schools";
 import { Camera } from "lucide-react";
+import { Department } from "@/src/types/department";
 
 export default function EditProfileForm() {
   const { user } = useAuth();
@@ -96,7 +98,7 @@ export default function EditProfileForm() {
           type="file"
           className="hidden"
           accept="image/*"
-          onChange={(e) => {
+          onChange={(e: ChangeEvent<HTMLInputElement>) => {
             const file = e.target.files?.[0];
 
             if (!file) return;
@@ -172,7 +174,7 @@ export default function EditProfileForm() {
           >
             <option value="">Select School</option>
 
-            {schools?.map((school) => (
+            {schools?.map((school: School) => (
               <option key={school._id} value={school._id}>
                 {school.name}
               </option>
@@ -216,7 +218,7 @@ export default function EditProfileForm() {
           >
             <option value="">Select Department</option>
 
-            {departments?.map((department) => (
+            {departments?.map((department: Department) => (
               <option key={department._id} value={department._id}>
                 {department.name}
               </option>

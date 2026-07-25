@@ -1,12 +1,13 @@
 "use client";
 
+import { Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSearch } from "../hooks/useSearch";
 import SearchInput from "./SearchInput";
 import SearchResults from "./SearchResults";
 import { motion } from "framer-motion";
 
-export default function SearchPageView() {
+function SearchPageContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -34,5 +35,15 @@ export default function SearchPageView() {
         onPageChange={handlePageChange}
       />
     </motion.main>
+  );
+}
+
+export default function SearchPageView() {
+  return (
+    <Suspense
+      fallback={<div className="archiv-container pt-5 pb-12">Loading...</div>}
+    >
+      <SearchPageContent />
+    </Suspense>
   );
 }

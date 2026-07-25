@@ -52,7 +52,7 @@ export default function SearchableDepartmentSelect({
   }, []);
 
   const selectedDepartment = departments.find(
-    (department) => department._id === value,
+    (department: Department) => department._id === value,
   );
 
   return (
@@ -93,7 +93,7 @@ export default function SearchableDepartmentSelect({
             )}
 
             {!isLoadingDepartments &&
-              departments.map((department) => (
+              departments.map((department: Department) => (
                 <button
                   key={department._id}
                   type="button"
