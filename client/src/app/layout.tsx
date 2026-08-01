@@ -37,16 +37,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       data-scroll-behavior="smooth"
       className={cn(
         "antialiased",
         inter.variable,
         sora.variable,
-        "font-sans",
         geist.variable,
       )}
     >
-      <body>
+      <body className="bg-background text-foreground min-h-screen font-sans">
         <QueryProvider>
           <AuthProvider>
             <NotificationProvider>
