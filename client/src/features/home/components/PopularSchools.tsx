@@ -4,6 +4,7 @@ import SchoolCard from "../../../components/SchoolCard";
 import Spinner from "../../../components/ui/Spinner";
 import Link from "next/link";
 import { usePopularSchools } from "../../schools/hooks/usePopularSchools";
+import { School } from "../../schools/types/schools";
 
 const PopularSchools = () => {
   const { popularSchools, isLoadingPopularSchools, errorPopularSchools } =
@@ -52,7 +53,7 @@ const PopularSchools = () => {
 
         {/* GRID */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {popularSchools?.map((school: any) => (
+          {popularSchools?.map((school: School) => (
             <SchoolCard key={school._id} school={school} />
           ))}
         </div>
