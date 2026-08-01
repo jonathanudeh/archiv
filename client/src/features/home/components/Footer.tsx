@@ -88,14 +88,14 @@ function Footer() {
                 </Link>
               </li>
 
-              <li>
+              {/* <li>
                 <Link
                   href="/guidelines"
                   className="hover:text-foreground transition-colors"
                 >
                   Contribution Guidelines
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 
@@ -108,7 +108,7 @@ function Footer() {
             <ul className="text-muted space-y-3 text-sm">
               <li>
                 <Link
-                  href="/privacy"
+                  href="/privacy-policy"
                   className="hover:text-foreground transition-colors"
                 >
                   Privacy Policy
@@ -124,14 +124,14 @@ function Footer() {
                 </Link>
               </li>
 
-              <li>
+              {/* <li>
                 <Link
                   href="/contact"
                   className="hover:text-foreground transition-colors"
                 >
                   Contact
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>
