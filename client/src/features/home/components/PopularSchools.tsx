@@ -21,7 +21,7 @@ const PopularSchools = () => {
 
   return (
     <section className="bg-background">
-      <div className="archiv-container py-20">
+      <div className="archiv-container pt-3 pb-20">
         {/* HEADER */}
         <div className="mb-12 flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
           <div>

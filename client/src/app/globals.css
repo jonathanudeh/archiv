@@ -220,6 +220,31 @@ p {
   line-height: 1.6;
 }
 
+.light-rays {
+  width: 900px;
+  height: 900px;
+  border-radius: 9999px;
+
+  background: repeating-conic-gradient(
+    from -90deg,
+    rgba(99, 102, 241, 0.08) 0deg,
+    rgba(99, 102, 241, 0.08) 1deg,
+    transparent 7deg,
+    transparent 16deg
+  );
+
+  filter: blur(2px);
+  opacity: 0.7;
+
+  mask-image: radial-gradient(
+    circle,
+    white 0%,
+    white 18%,
+    rgba(255, 255, 255, 0.75) 45%,
+    transparent 75%
+  );
+}
+
 /* ========================================
    REUSABLE LAYOUT UTILITIES
 ======================================== */

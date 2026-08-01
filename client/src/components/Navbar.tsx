@@ -9,7 +9,7 @@ export default function Navbar() {
   const { loading, isAuthenticated } = useAuth();
 
   return (
-    <header className="border-border/70 bg-background sticky top-0 z-50 border-b backdrop-blur-xl">
+    <header className="border-border/70 bg-background sticky top-0 z-50 backdrop-blur-xl">
       <nav className="archiv-container flex h-20 items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex h-full w-30 items-center gap-3">
@@ -40,26 +40,33 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Actions */}
-        {!isAuthenticated && !loading ? (
-          <div className="flex items-center gap-1 md:gap-3">
-            <Link
-              href={"/login"}
-              className="text-muted hover:text-foreground rounded-full border bg-amber-300 px-4 py-2 text-sm font-medium transition-colors md:px-5"
-            >
-              Login
-            </Link>
+        <div className="flex min-w-35 items-center justify-end">
+          {loading ? (
+            /* Invisible spacer or skeleton while auth initializes */
+            <>
+              <div className="mr-4 h-9 w-20 animate-pulse rounded-full bg-slate-100/50" />
+              <div className="h-9 w-29 animate-pulse rounded-full bg-slate-100/50" />
+            </>
+          ) : !isAuthenticated ? (
+            <div className="flex items-center gap-1 md:gap-3">
+              <Link
+                href={"/login"}
+                className="text-muted hover:text-foreground rounded-full border px-4 py-2 text-sm font-medium transition-colors md:px-5"
+              >
+                Login
+              </Link>
 
-            <Link
-              href={"/signup"}
-              className="bg-primary hover:bg-primary-light rounded-full border px-4 py-2.5 text-sm font-semibold text-white transition-all hover:scale-[1.02] md:px-5"
-            >
-              Join Archiv
-            </Link>
-          </div>
-        ) : (
-          <UserMenu />
-        )}
+              <Link
+                href={"/signup"}
+                className="bg-primary hover:bg-primary-light rounded-full border px-4 py-2.5 text-sm font-semibold text-white transition-all hover:scale-[1.02] md:px-5"
+              >
+                Join Archiv
+              </Link>
+            </div>
+          ) : (
+            <UserMenu />
+          )}
+        </div>
       </nav>
     </header>
   );
