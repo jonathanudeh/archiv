@@ -11,7 +11,7 @@ import { cn } from "@/src/lib/utils";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 const siteUrl =
-  process.env.NEXT_PUBLIC_API_URL ?? "https://archiv-academy.vercel.app";
+  process.env.NEXT_PUBLIC_APP_URL ?? "https://archiv-academy.vercel.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -50,12 +50,6 @@ export const metadata: Metadata = {
 
   category: "Education",
 
-  icons: {
-    icon: "/archiv-logo/archivIcon.svg",
-    shortcut: "/archiv-logo/archivIcon.svg",
-    apple: "/archiv-logo/archivIcon.svg",
-  },
-
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -87,9 +81,20 @@ export const metadata: Metadata = {
     images: ["/og/archiv-og.png"],
   },
 
+  alternates: {
+    canonical: "/",
+  },
+
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
   },
 };
 

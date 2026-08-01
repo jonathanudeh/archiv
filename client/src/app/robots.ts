@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 const baseUrl =
-  process.env.NEXT_PUBLIC_API_URL ?? "https://archiv-academy.vercel.app";
+  process.env.NEXT_PUBLIC_APP_URL ?? "https://archiv-academy.vercel.app";
 
 export default function robots(): MetadataRoute.Robots {
   return {
