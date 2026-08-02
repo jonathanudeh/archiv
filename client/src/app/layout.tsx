@@ -6,7 +6,6 @@ import { QueryProvider } from "../providers/QueryProvider";
 import { AuthProvider } from "../providers/AuthProvider";
 import { NotificationProvider } from "../providers/NotificationProvider";
 import Notification from "../components/ui/Notification";
-import Navbar from "../components/Navbar";
 import { cn } from "@/src/lib/utils";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
@@ -52,18 +51,14 @@ export const metadata: Metadata = {
 
   openGraph: {
     type: "website",
-    locale: "en_US",
     url: siteUrl,
     siteName: "Archiv",
-
-    title: "Archiv",
-
+    title: "Archiv | Academic Resources, Notes & Past Questions",
     description:
       "Find, share, and download verified academic materials from your school.",
-
     images: [
       {
-        url: "/og/archiv-og.png",
+        url: `${siteUrl}/og/archiv-og.png`,
         width: 1200,
         height: 630,
         alt: "Archiv",
@@ -73,12 +68,10 @@ export const metadata: Metadata = {
 
   twitter: {
     card: "summary_large_image",
-    title: "Archiv",
-
+    title: "Archiv | Academic Resources, Notes & Past Questions",
     description:
       "Find, share, and download verified academic materials from your school.",
-
-    images: ["/og/archiv-og.png"],
+    images: [`${siteUrl}/og/archiv-og.png`],
   },
 
   alternates: {
@@ -130,7 +123,6 @@ export default function RootLayout({
           <AuthProvider>
             <NotificationProvider>
               <Notification />
-              <Navbar />
               {children}
             </NotificationProvider>
           </AuthProvider>

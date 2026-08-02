@@ -1,5 +1,6 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useAuth } from "@/src/providers/AuthProvider";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,6 +8,17 @@ import UserMenu from "./UserMenu";
 
 export default function Navbar() {
   const { loading, isAuthenticated } = useAuth();
+  const pathname = usePathname();
+
+  const protectedRoutes = ["/profile", "/upload", "/settings", "/contribute"];
+
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
+
+  if (isProtectedRoute) {
+    return null;
+  }
 
   return (
     <header className="border-border/70 bg-background sticky top-0 z-50 backdrop-blur-xl">

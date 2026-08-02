@@ -2,9 +2,9 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-
-import Spinner from "@/src/components/ui/Spinner";
 import { useAuth } from "@/src/providers/AuthProvider";
+import Spinner from "@/src/components/ui/Spinner";
+import AppShell from "@/src/components/layout/AppShell";
 
 export default function ProtectedLayout({
   children,
@@ -27,5 +27,5 @@ export default function ProtectedLayout({
     return null;
   }
 
-  return <>{children}</>;
+  return <AppShell>{children}</AppShell>;
 }

@@ -58,7 +58,7 @@ word-break: break-word !important;
   `;
 
   return (
-    <main className="prose mx-auto max-w-4xl py-10">
+    <main className="prose mx-auto max-w-4xl px-10 py-10">
       <div dangerouslySetInnerHTML={{ __html: privacyPolicy }} />
     </main>
   );
