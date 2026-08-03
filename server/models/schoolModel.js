@@ -54,12 +54,19 @@ const schoolSchema = new mongoose.Schema(
     },
 
     location: {
-      type: String,
-      trim: true,
-      maxlength: [
-        100,
-        "A school's location must have less or equal than 100 characters",
-      ],
+      city: {
+        type: String,
+        trim: true,
+        maxlength: 50,
+        default: "",
+      },
+
+      state: {
+        type: String,
+        trim: true,
+        maxlength: 50,
+        default: "",
+      },
     },
 
     website: {
@@ -98,6 +105,14 @@ const schoolSchema = new mongoose.Schema(
         "A school's country must have less or equal than 50 characters",
       ],
     },
+
+    ownership: {
+      type: String,
+      enum: ["Federal", "State", "Private"],
+      required: true,
+    },
+
+    yearEstablished: Number,
 
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
