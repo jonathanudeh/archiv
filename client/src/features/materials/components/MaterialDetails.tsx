@@ -10,6 +10,7 @@ import { Material } from "../types/material";
 import { useToggleSaveMaterial } from "../../profile/hooks/useToggleSave";
 import { useState } from "react";
 import { useDownloadMaterial } from "../hooks/useDownloadMaterial";
+import ShareButton from "@/src/components/ui/ShareButton";
 
 type Props = {
   material: Material;
@@ -33,44 +34,48 @@ export default function MaterialDetails({ material }: Props) {
   return (
     <div className="space-y-8 p-5">
       {/* Header */}
-      <section className="rounded-2xl py-6">
-        <div className="flex justify-between gap-4">
-          <div>
-            <h1 className="text-primary text-3xl font-bold uppercase">
-              {material.title}
-            </h1>
-          </div>
+      <section className="space-y-6 rounded-2xl py-6">
+        <div>
+          <h1 className="text-primary text-3xl font-bold uppercase">
+            {material.title}
+          </h1>
+        </div>
 
-          <div className="flex gap-3">
-            <button
-              onClick={() => startDownload(material._id)}
-              disabled={isDownloading}
-              className="bg-primary inline-flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 font-medium text-white"
-            >
-              <Download size={18} />
-            </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => startDownload(material._id)}
+            disabled={isDownloading}
+            className="bg-primary inline-flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 font-medium text-white"
+          >
+            <Download size={18} />
+            Download
+          </button>
 
-            <a
-              href={material.fileUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full border px-3 py-2"
-            >
-              Open
-            </a>
+          <a
+            href={material.fileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-full border px-4 py-2"
+          >
+            Open
+          </a>
 
-            <button
-              onClick={handleSave}
-              disabled={isSaving}
-              className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 font-medium transition ${
-                saved
-                  ? "border-primary bg-primary/10 text-primary"
-                  : "border-slate-300"
-              }`}
-            >
-              <Bookmark size={18} fill={saved ? "currentColor" : "none"} />
-            </button>
-          </div>
+          <button
+            onClick={handleSave}
+            disabled={isSaving}
+            className={`inline-flex items-center gap-2 rounded-full border px-3 py-2 font-medium transition ${
+              saved
+                ? "border-primary bg-primary/10 text-primary"
+                : "border-slate-300"
+            }`}
+          >
+            <Bookmark size={18} fill={saved ? "currentColor" : "none"} />
+          </button>
+
+          <ShareButton
+            title={material.title}
+            text={`Check out "${material.title}" on Archiv.`}
+          />
         </div>
       </section>
 

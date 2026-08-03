@@ -1,64 +1,47 @@
 import {
-  Home,
   School,
+  Search,
   Bookmark,
-  Upload,
   FolderOpen,
+  Upload,
   Settings,
+  Home,
 } from "lucide-react";
 
-export const sidebarSections = [
+export const sidebarItems = [
   {
-    title: "Discover",
-    items: [
-      {
-        title: "Home",
-        href: "/",
-        icon: Home,
-      },
-      {
-        title: "Browse Schools",
-        href: "/schools",
-        icon: School,
-      },
-    ],
+    title: "Home",
+    href: "/",
+    icon: Home,
   },
-
   {
-    title: "Library",
-    items: [
-      {
-        title: "Saved Materials",
-        href: "/profile/saved",
-        icon: Bookmark,
-      },
-      {
-        title: "My Uploads",
-        href: "/profile/my-uploads",
-        icon: FolderOpen,
-      },
-    ],
+    title: "Browse Schools",
+    href: "/schools",
+    icon: School,
   },
-
   {
-    title: "Create",
-    items: [
-      {
-        title: "Upload Material",
-        href: "/upload",
-        icon: Upload,
-      },
-    ],
+    title: "Search",
+    href: "/search",
+    icon: Search,
   },
-
   {
-    title: "General",
-    items: [
-      {
-        title: "Settings",
-        href: "/settings",
-        icon: Settings,
-      },
-    ],
+    title: "Saved Materials",
+    href: "/profile/saved",
+    icon: Bookmark,
+  },
+  {
+    title: "My Uploads",
+    href: "/profile/my-uploads",
+    icon: FolderOpen,
+  },
+  {
+    title: "Upload Material",
+    href: "/upload",
+    icon: Upload,
+  },
+  {
+    title: "Settings",
+    href: "/settings",
+    icon: Settings,
   },
 ];

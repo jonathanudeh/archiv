@@ -10,11 +10,12 @@
 
 :root {
   /* backgrounds */
-  --surface: #fcfbf8;
+  --surface: #f3f4f6;
+  --light: #fffffe;
   --surface-alt: #f7f4ee;
 
   /* text */
-  --foreground: oklch(0.985 0 0);
+  --foreground: #f3f4f6;
   --muted: oklch(0.269 0 0);
 
   /* borders */
@@ -37,7 +38,7 @@
   --radius-sm: 10px;
   --radius-md: 18px;
   --radius-lg: 26px;
-  --background: oklch(1 0 0);
+  --background: #fafdf8;
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.145 0 0);
@@ -79,7 +80,7 @@
   --surface-alt: #1e293b;
 
   /* text */
-  --foreground: oklch(0.985 0 0);
+  --foreground: #f3f4f6;
   --muted: oklch(0.269 0 0);
 
   /* borders */
@@ -127,6 +128,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);
+  --color-light: var(--light);
   --color-surface-alt: var(--surface-alt);
 
   --color-foreground: var(--foreground);

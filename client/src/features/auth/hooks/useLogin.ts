@@ -21,7 +21,7 @@ export function useLogin() {
       queryClient.invalidateQueries({
         queryKey: ["me"],
       });
-      success(data.message);
+      success(data.message ?? "Logged in successfully");
       router.replace("/profile");
     },
 
