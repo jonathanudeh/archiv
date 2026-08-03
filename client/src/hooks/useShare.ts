@@ -9,7 +9,7 @@ interface ShareOptions {
 }
 
 export function useShare() {
-  const { success } = useNotification();
+  const { success, error } = useNotification();
 
   async function share({
     title,
@@ -17,9 +17,7 @@ export function useShare() {
     url = window.location.href,
   }: ShareOptions) {
     try {
-      console.log("navigator.share", navigator.share);
-      console.log("navigator.share", navigator.clipboard);
-      if (navigator.share) {
+      if (typeof navigator.share === "function") {
         await navigator.share({
           title,
           text,
@@ -29,11 +27,32 @@ export function useShare() {
         return;
       }
 
-      await navigator.clipboard.writeText(url);
+      if (typeof navigator.clipboard?.writeText === "function") {
+        await navigator.clipboard.writeText(url);
+
+        success("Link copied to clipboard.");
+
+        return;
+      }
+
+      // Legacy fallback
+      const input = document.createElement("input");
+
+      input.value = url;
+
+      document.body.appendChild(input);
+
+      input.select();
+
+      document.execCommand("copy");
+
+      document.body.removeChild(input);
 
       success("Link copied to clipboard.");
-    } catch {
-      // User cancelled the share sheet or clipboard failed.
+    } catch (err) {
+      console.error(err);
+
+      error("Couldn't share this page.");
     }
   }
 

@@ -8,7 +8,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
     <>
       <Navbar />
 
-      <main>{children}</main>
+      <main className="bg-background">{children}</main>
 
       <Footer />
     </>

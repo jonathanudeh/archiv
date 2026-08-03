@@ -32,7 +32,7 @@ export default function MaterialDetails({ material }: Props) {
   }
 
   return (
-    <div className="space-y-8 p-5">
+    <div className="bg-background space-y-8 p-5">
       {/* Header */}
       <section className="space-y-6 rounded-2xl py-6">
         <div>
@@ -82,7 +82,7 @@ export default function MaterialDetails({ material }: Props) {
       {/* Preview + Sidebar */}
       <section className="grid gap-8 md:grid-cols-[1fr_320px]">
         {/* Preview */}
-        <div className="p-2">
+        <div className="px-4 py-2">
           <MaterialPreview
             materialId={material._id}
             fileUrl={material.fileUrl}

@@ -21,7 +21,7 @@ export default function Navbar() {
   // }
 
   return (
-    <header className="border-border/70 bg-background sticky top-0 z-50 backdrop-blur-xl">
+    <header className="border-border/70 bg-light sticky top-0 z-50 backdrop-blur-xl">
       <nav className="archiv-container flex h-20 items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex h-full w-30 items-center gap-3">

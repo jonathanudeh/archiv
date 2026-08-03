@@ -32,7 +32,7 @@ export default function ShareButton({
       className={`border-border hover:bg-muted flex h-11 items-center gap-2 rounded-full border px-3 text-sm font-medium transition-colors hover:text-slate-100 ${className}`}
     >
       <Share2 className="h-4 w-4" />
-      Share
+      <span className="hidden sm:inline">Share</span>
     </button>
   );
 }
