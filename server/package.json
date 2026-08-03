@@ -6,7 +6,9 @@
     "dev": "nodemon server.js",
     "start": "node server.js",
     "debug": "ndb server.js",
-    "scrape:schools": "node scripts/scrape/schools.js"
+    "scrape:schools": "node scripts/scrape/schools.js",
+    "transform:schools": "node scripts/transform/schools.js",
+    "seed:schools": "node scripts/seed/schools.js"
   },
   "keywords": [],
   "author": "Jonathan Udeh",

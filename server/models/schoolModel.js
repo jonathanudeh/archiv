@@ -12,7 +12,7 @@ const schoolSchema = new mongoose.Schema(
       lowercase: true,
       minlength: [5, "A school name must have more or equal than 5 characters"],
       maxlength: [
-        50,
+        150,
         "A school name must have less or equal than 50 characters",
       ],
     },
@@ -73,7 +73,9 @@ const schoolSchema = new mongoose.Schema(
       type: String,
       trim: true,
       validate: {
-        validator: validator.isURL,
+        validator: function (value) {
+          return !value || validator.isURL(value);
+        },
         message: "Please provide a valid website URL",
       },
     },
@@ -82,8 +84,13 @@ const schoolSchema = new mongoose.Schema(
       type: String,
       trim: true,
       lowercase: true,
-      unique: true,
-      validate: [validator.isEmail, "Please provide a valid email"],
+      sparse: true,
+      validate: {
+        validator: function (value) {
+          return !value || validator.isEmail(value);
+        },
+        message: "Please provide a valid email",
+      },
     },
 
     contactPhone: {
@@ -169,7 +176,12 @@ const schoolSchema = new mongoose.Schema(
 
 // INDEXES
 schoolSchema.index({ country: 1 });
-schoolSchema.index({ name: "text", description: "text", location: "text" });
+schoolSchema.index({
+  name: "text",
+  description: "text",
+  "location.city": "text",
+  "location.state": "text",
+});
 schoolSchema.index({ acronym: 1 });
 schoolSchema.index({ aliases: 1 });
 
