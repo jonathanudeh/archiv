@@ -8,7 +8,8 @@
     "debug": "ndb server.js",
     "scrape:schools": "node scripts/scrape/schools.js",
     "transform:schools": "node scripts/transform/schools.js",
-    "seed:schools": "node scripts/seed/schools.js"
+    "seed:schools": "node scripts/seed/schools.js",
+    "scrape:departments": "node scripts/scrape/departments/index.js"
   },
   "keywords": [],
   "author": "Jonathan Udeh",
@@ -36,6 +37,8 @@
     "morgan": "^1.10.1",
     "multer": "^2.1.1",
     "nodemailer": "^8.0.10",
+    "p-limit": "^7.3.1",
+    "playwright": "^1.62.1",
     "pug": "^3.0.4",
     "slugify": "^1.6.9",
     "streamifier": "^0.1.1",
