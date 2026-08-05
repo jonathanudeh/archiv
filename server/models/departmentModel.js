@@ -14,6 +14,14 @@ const departmentSchema = new mongoose.Schema(
       lowercase: true,
     },
 
+    aliases: [
+      {
+        type: String,
+        trim: true,
+        uppercase: true,
+      },
+    ],
+
     school: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "School",

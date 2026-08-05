@@ -9,7 +9,11 @@
     "scrape:schools": "node scripts/scrape/schools.js",
     "transform:schools": "node scripts/transform/schools.js",
     "seed:schools": "node scripts/seed/schools.js",
-    "scrape:departments": "node scripts/scrape/departments/index.js"
+    "scrape:departments": "node scripts/scrape/departments/index.js",
+    "match:schools": "node scripts/matchSchools.js",
+    "fix:departmentSchools": "node scripts/fixDepartmentSchools.js",
+    "transform:departments": "node scripts/transform/departments.js",
+    "seed:departments": "node scripts/seed/departments.js"
   },
   "keywords": [],
   "author": "Jonathan Udeh",

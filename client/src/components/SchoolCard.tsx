@@ -6,6 +6,8 @@ import { School } from "@/src/features/schools/types/schools";
 import { BookCheck, SchoolIcon } from "lucide-react";
 
 const SchoolCard = ({ school }: { school: School }) => {
+  console.log(school.logo?.url);
+
   return (
     <Link
       href={`/schools/${school.slug}`}

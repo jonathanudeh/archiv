@@ -27,8 +27,44 @@ function sleep(ms) {
   });
 }
 
+const DEFAULT_LEVELS = 4;
+
+const FIVE_YEAR = [
+  "ARCHITECTURE",
+  "BUILDING",
+  "QUANTITY SURVEYING",
+  "ESTATE MANAGEMENT",
+  "SURVEYING AND GEOINFORMATICS",
+  "URBAN AND REGIONAL PLANNING",
+  "LAW",
+  "CIVIL LAW",
+  "ISLAMIC/SHARIA LAW",
+  "NURSING",
+  "NURSING SCIENCE",
+  "PHARMACY",
+  "DENTAL SURGERY",
+  "VETERINARY MEDICINE",
+  "MEDICAL LABORATORY SCIENCE",
+  "RADIOGRAPHY",
+  "OPTOMETRY",
+  "PHYSIOTHERAPY",
+];
+
+const SIX_YEAR = ["MEDICINE", "MEDICINE AND SURGERY"];
+
+function getNumberOfLevels(name) {
+  const department = name.toUpperCase();
+
+  if (SIX_YEAR.some((x) => department.includes(x))) return 6;
+
+  if (FIVE_YEAR.some((x) => department.includes(x))) return 5;
+
+  return DEFAULT_LEVELS;
+}
+
 module.exports = {
   saveResults,
   saveFailed,
   sleep,
+  getNumberOfLevels,
 };
