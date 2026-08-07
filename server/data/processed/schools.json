@@ -2,7 +2,7 @@
   {
     "name": "Abubakar Tafawa Balewa University, Bauchi",
     "slug": "abubakar-tafawa-balewa-university-bauchi",
-    "acronym": "ATBU",
+    "acronym": "ABSU",
     "aliases": [
       "ABUBAKAR TAFAWA BALEWA UNIVERSITY BAUCHI",
       "ATBU",
@@ -493,7 +493,7 @@
   {
     "name": "National Open University of Nigeria, Abuja",
     "slug": "national-open-university-of-nigeria-abuja",
-    "acronym": "ABU",
+    "acronym": "NOUN",
     "aliases": [
       "NATIONAL OPEN UNIVERSITY OF NIGERIA ABUJA",
       "ABU",
@@ -516,8 +516,8 @@
   {
     "name": "Nigeria Police Academy Wudil",
     "slug": "nigeria-police-academy-wudil",
-    "acronym": "EDU",
-    "aliases": ["NIGERIA POLICE ACADEMY WUDIL", "EDU"],
+    "acronym": "NPA",
+    "aliases": ["NIGERIA POLICE ACADEMY WUDIL", "NPA"],
     "ownership": "Federal",
     "yearEstablished": 2013,
     "country": "Nigeria",
@@ -575,7 +575,7 @@
   {
     "name": "Obafemi Awolowo University,Ile-Ife",
     "slug": "obafemi-awolowo-universityile-ife",
-    "acronym": "OAUIFE",
+    "acronym": "OAU",
     "aliases": [
       "OBAFEMI AWOLOWO UNIVERSITYILE IFE",
       "OAUIFE",
@@ -622,7 +622,7 @@
   {
     "name": "Federal University of Agriculture, Abeokuta",
     "slug": "federal-university-of-agriculture-abeokuta",
-    "acronym": "UNAAB",
+    "acronym": "FUNAAB",
     "aliases": [
       "FEDERAL UNIVERSITY OF AGRICULTURE ABEOKUTA",
       "UNAAB",
@@ -1139,7 +1139,7 @@
   {
     "name": "African Aviation and Aerospace University",
     "slug": "african-aviation-and-aerospace-university",
-    "acronym": "EDU",
+    "acronym": "AAAU",
     "aliases": [
       "AFRICAN AVIATION AND AEROSPACE UNIVERSITY",
       "EDU",
@@ -1512,7 +1512,7 @@
   {
     "name": "Tai Solarin Federal University of Education, Ijagun, Ijebu Ode",
     "slug": "tai-solarin-federal-university-of-education-ijagun-ijebu-ode",
-    "acronym": "",
+    "acronym": "TASUED",
     "aliases": [
       "TAI SOLARIN FEDERAL UNIVERSITY OF EDUCATION IJAGUN IJEBU ODE",
       "TAI SOLARIN FEDERAL UNIVERSITY OF EDUCATION",
@@ -1685,7 +1685,7 @@
   {
     "name": "Rivers State University",
     "slug": "rivers-state-university",
-    "acronym": "RSU",
+    "acronym": "RSUST",
     "aliases": ["RIVERS STATE UNIVERSITY", "RSU", "RIVERS", "RIVERS STATE"],
     "ownership": "State",
     "yearEstablished": 1979,
@@ -1703,7 +1703,7 @@
   {
     "name": "Ambrose Alli University, Ekpoma",
     "slug": "ambrose-alli-university-ekpoma",
-    "acronym": "AUSU",
+    "acronym": "AAU",
     "aliases": [
       "AMBROSE ALLI UNIVERSITY EKPOMA",
       "AUSU",
@@ -1792,7 +1792,7 @@
   {
     "name": "Olabisi Onabanjo University, Ago Iwoye",
     "slug": "olabisi-onabanjo-university-ago-iwoye",
-    "acronym": "OOUAGOIWOYE",
+    "acronym": "OOU",
     "aliases": [
       "OLABISI ONABANJO UNIVERSITY AGO IWOYE",
       "OOUAGOIWOYE",
@@ -1979,7 +1979,7 @@
   {
     "name": "Chukwuemeka Odumegwu Ojukwu University, Uli",
     "slug": "chukwuemeka-odumegwu-ojukwu-university-uli",
-    "acronym": "EDU",
+    "acronym": "COOU",
     "aliases": [
       "CHUKWUEMEKA ODUMEGWU OJUKWU UNIVERSITY ULI",
       "EDU",
@@ -2347,7 +2347,7 @@
   {
     "name": "Taraba State University, Jalingo",
     "slug": "taraba-state-university-jalingo",
-    "acronym": "TSUNIVERSITY",
+    "acronym": "TASU",
     "aliases": [
       "TARABA STATE UNIVERSITY JALINGO",
       "TSUNIVERSITY",
@@ -2861,7 +2861,7 @@
   {
     "name": "Lagos State University of Education, Ijanikin",
     "slug": "lagos-state-university-of-education-ijanikin",
-    "acronym": "",
+    "acronym": "LASUED",
     "aliases": [
       "LAGOS STATE UNIVERSITY OF EDUCATION IJANIKIN",
       "LAGOS STATE UNIVERSITY OF EDUCATION",
@@ -2883,7 +2883,7 @@
   {
     "name": "Lagos State University of Science and Technology Ikorodu",
     "slug": "lagos-state-university-of-science-and-technology-ikorodu",
-    "acronym": "",
+    "acronym": "LASUSTECH",
     "aliases": [
       "LAGOS STATE UNIVERSITY OF SCIENCE AND TECHNOLOGY IKORODU",
       "LAGOS OF SCIENCE AND TECHNOLOGY IKORODU",
@@ -3272,7 +3272,7 @@
   {
     "name": "Madonna University, Okija",
     "slug": "madonna-university-okija",
-    "acronym": "MADONNAUNIVERSITY",
+    "acronym": "MU",
     "aliases": [
       "MADONNA UNIVERSITY OKIJA",
       "MADONNAUNIVERSITY",
@@ -3449,7 +3449,7 @@
   {
     "name": "Al-Qalam University, Katsina",
     "slug": "al-qalam-university-katsina",
-    "acronym": "AUK (AL-QALAM UNIVERSITY KATSINA)",
+    "acronym": "AUK",
     "aliases": [
       "AL QALAM UNIVERSITY KATSINA",
       "AUK AL QALAM UNIVERSITY KATSINA",
@@ -3472,7 +3472,7 @@
   {
     "name": "Bells University of Technology, Otta",
     "slug": "bells-university-of-technology-otta",
-    "acronym": "BELLSUNIVERSITY",
+    "acronym": "BUT",
     "aliases": [
       "BELLS UNIVERSITY OF TECHNOLOGY OTTA",
       "BELLSUNIVERSITY",
@@ -3689,7 +3689,7 @@
   {
     "name": "University of Mkar, Mkar",
     "slug": "university-of-mkar-mkar",
-    "acronym": "UMM (UNIVERSITY OF MKAR, MKAR)",
+    "acronym": "UMM",
     "aliases": [
       "UNIVERSITY OF MKAR MKAR",
       "UMM UNIVERSITY OF MKAR MKAR",
@@ -3735,7 +3735,7 @@
   {
     "name": "Achievers University, Owo",
     "slug": "achievers-university-owo",
-    "acronym": "AUO (ACHIEVERS UNIVERSITY OWO)",
+    "acronym": "AUO",
     "aliases": [
       "ACHIEVERS UNIVERSITY OWO",
       "AUO ACHIEVERS UNIVERSITY OWO",
@@ -3857,10 +3857,10 @@
   {
     "name": "Tansian University, Umunya",
     "slug": "tansian-university-umunya",
-    "acronym": "EDU",
+    "acronym": "TANU",
     "aliases": [
       "TANSIAN UNIVERSITY UMUNYA",
-      "EDU",
+      "TANU",
       "TANSIAN UNIVERSITY",
       "TANSIAN UMUNYA"
     ],
@@ -3970,7 +3970,7 @@
   {
     "name": "Godfrey Okoye University, Ugwuomu-Nike - Enugu State",
     "slug": "godfrey-okoye-university-ugwuomu-nike-enugu-state",
-    "acronym": "GOUNI",
+    "acronym": "GOU",
     "aliases": [
       "GODFREY OKOYE UNIVERSITY UGWUOMU NIKE ENUGU STATE",
       "GOUNI",
@@ -4017,7 +4017,7 @@
   {
     "name": "Oduduwa University, Ipetumodu - Osun State",
     "slug": "oduduwa-university-ipetumodu-osun-state",
-    "acronym": "ODUDUWAUNIVERSITY",
+    "acronym": "OUI",
     "aliases": [
       "ODUDUWA UNIVERSITY IPETUMODU OSUN STATE",
       "ODUDUWAUNIVERSITY",
@@ -4111,7 +4111,7 @@
   {
     "name": "Adeleke University, Ede",
     "slug": "adeleke-university-ede",
-    "acronym": "ADELEKEUNIVERSITY",
+    "acronym": "AU",
     "aliases": [
       "ADELEKE UNIVERSITY EDE",
       "ADELEKEUNIVERSITY",
@@ -4199,7 +4199,7 @@
   {
     "name": "Elizade University, Ilara-Mokin",
     "slug": "elizade-university-ilara-mokin",
-    "acronym": "ELIZADEUNIVERSITY",
+    "acronym": "EU",
     "aliases": [
       "ELIZADE UNIVERSITY ILARA MOKIN",
       "ELIZADEUNIVERSITY",
@@ -4244,7 +4244,7 @@
   {
     "name": "Gregory University, Uturu",
     "slug": "gregory-university-uturu",
-    "acronym": "GUU (GREGORY UNIVERSITY UTURU )",
+    "acronym": "GUU",
     "aliases": [
       "GREGORY UNIVERSITY UTURU",
       "GUU GREGORY UNIVERSITY UTURU",
@@ -4312,7 +4312,7 @@
   {
     "name": "Augustine University",
     "slug": "augustine-university",
-    "acronym": "AUI (AUGUSTINE UNIVERSITY ILARA)",
+    "acronym": "AUI",
     "aliases": [
       "AUGUSTINE UNIVERSITY",
       "AUI AUGUSTINE UNIVERSITY ILARA",
@@ -4439,7 +4439,7 @@
     }
   },
   {
-    "name": "Micheal & Cecilia Ibru University",
+    "name": "Micheal AND Cecilia Ibru University",
     "slug": "micheal-and-cecilia-ibru-university",
     "acronym": "MCIU",
     "aliases": [
@@ -4822,7 +4822,7 @@
   {
     "name": "Eko University of Medical and Health Sciences Ijanikin, Lagos",
     "slug": "eko-university-of-medical-and-health-sciences-ijanikin-lagos",
-    "acronym": "EKOUNIVMED",
+    "acronym": "EKOUNIMED",
     "aliases": [
       "EKO UNIVERSITY OF MEDICAL AND HEALTH SCIENCES IJANIKIN LAGOS",
       "EKOUNIVMED",
@@ -5091,7 +5091,7 @@
   {
     "name": "Havilla University, Nde-Ikom, Cross River State",
     "slug": "havilla-university-nde-ikom-cross-river-state",
-    "acronym": "EDU",
+    "acronym": "HUNI",
     "aliases": [
       "HAVILLA UNIVERSITY NDE IKOM CROSS RIVER STATE",
       "EDU",
@@ -5115,7 +5115,7 @@
   {
     "name": "Claretian University of Nigeria, Nekede, Imo State",
     "slug": "claretian-university-of-nigeria-nekede-imo-state",
-    "acronym": "",
+    "acronym": "CUN",
     "aliases": [
       "CLARETIAN UNIVERSITY OF NIGERIA NEKEDE IMO STATE",
       "CLARETIAN UNIVERSITY OF NIGERIA",

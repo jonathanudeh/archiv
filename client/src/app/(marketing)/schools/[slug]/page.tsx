@@ -94,12 +94,18 @@ const SchoolPage = () => {
                   </p>
                 )}
 
-                {(school.location || school.country) && (
+                {(school.location?.city ||
+                  school.location?.state ||
+                  school.country) && (
                   <div className="mt-3 flex items-center gap-2 text-sm text-slate-500">
                     <MapPin size={16} />
 
                     <span>
-                      {[school.location, school.country]
+                      {[
+                        school.location?.city,
+                        school.location?.state,
+                        school?.country,
+                      ]
                         .filter(Boolean)
                         .join(", ")}
                     </span>

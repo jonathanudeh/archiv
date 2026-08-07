@@ -49,11 +49,7 @@ export function useShare() {
       document.body.removeChild(input);
 
       success("Link copied to clipboard.");
-    } catch (err) {
-      console.error(err);
-
-      error("Couldn't share this page.");
-    }
+    } catch (err) {}
   }
 
   return { share };

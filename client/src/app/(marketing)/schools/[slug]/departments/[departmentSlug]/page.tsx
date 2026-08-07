@@ -9,14 +9,19 @@ import { useDepartmentBySlug } from "@/src/features/departments/hooks/useDepartm
 import { useParams } from "next/navigation";
 import { useMaterialFilters } from "@/src/hooks/useMaterialFilters";
 import { MiniSpinner } from "@/src/components/ui/MiniSpinner";
+import { useSchool } from "@/src/features/schools/hooks/useSchoolSlug";
 
 export default function DepartmentPage() {
-  const { departmentSlug } = useParams();
+  const { departmentSlug, slug } = useParams();
+
+  // SCHOOL
+  const { school, isLoadingSchool } = useSchool(slug as string);
 
   const { levelId, semesterId, category, search, page, setFilters } =
     useMaterialFilters();
 
   const { departmentBySlug, isLoadingDeptBySlug } = useDepartmentBySlug(
+    school?._id,
     departmentSlug as string,
   );
 
@@ -31,6 +36,9 @@ export default function DepartmentPage() {
     category,
   });
 
+  if (isLoadingSchool) {
+    return <Spinner />;
+  }
   if (isLoadingDeptBySlug) {
     return <Spinner />;
   }
@@ -44,7 +52,7 @@ export default function DepartmentPage() {
       <MaterialFilters
         departmentId={departmentId}
         departmentName={departmentBySlug.name}
-        schoolName={departmentBySlug.school?.name ?? ""}
+        schoolName={departmentBySlug.school?.acronym ?? ""}
         levelId={levelId}
         semesterId={semesterId}
         search={search}

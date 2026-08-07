@@ -82,6 +82,7 @@ exports.getDepartment = catchAsync(async (req, res, next) => {
 
 exports.getDepartmentBySlug = catchAsync(async (req, res, next) => {
   const department = await Department.findOne({
+    school: req.params.schoolId,
     slug: req.params.slug,
   }).populate("school");
 
