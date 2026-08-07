@@ -40,6 +40,7 @@ const SchoolCard = ({ school }: { school: School }) => {
             alt={school.name}
             width={48}
             height={48}
+            unoptimized
             className="h-full w-full rounded-full object-contain"
           />
         </div>
