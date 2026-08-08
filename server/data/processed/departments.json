@@ -18968,7 +18968,6 @@
     "school": "6a75820bc08182155763adf1",
     "numberOfLevels": 4
   },
-
   {
     "name": "anatomy",
     "slug": "anatomy",
@@ -18988,27 +18987,6 @@
     "numberOfLevels": 4
   },
   {
-    "name": "architecture",
-    "slug": "architecture",
-    "aliases": ["ARCHITECTURE"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 5
-  },
-  {
-    "name": "banking and finance",
-    "slug": "banking-and-finance",
-    "aliases": ["BANKING AND FINANCE", "BANKING & FINANCE"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "biochemistry",
-    "slug": "biochemistry",
-    "aliases": ["BIOCHEMISTRY"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
     "name": "botany",
     "slug": "botany",
     "aliases": ["BOTANY"],
@@ -19016,23 +18994,9 @@
     "numberOfLevels": 4
   },
   {
-    "name": "building technology",
-    "slug": "building-technology",
-    "aliases": ["BUILDING TECHNOLOGY"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 5
-  },
-  {
     "name": "business administration",
     "slug": "business-administration",
     "aliases": ["BUSINESS ADMINISTRATION"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "business education",
-    "slug": "business-education",
-    "aliases": ["BUSINESS EDUCATION"],
     "school": "6a75820bc08182155763adf1",
     "numberOfLevels": 4
   },
@@ -19047,13 +19011,6 @@
     "numberOfLevels": 4
   },
   {
-    "name": "civil engineering",
-    "slug": "civil-engineering",
-    "aliases": ["CIVIL ENGINEERING"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
     "name": "computer engineering",
     "slug": "computer-engineering",
     "aliases": ["COMPUTER ENGINEERING"],
@@ -19064,13 +19021,6 @@
     "name": "computer engineering technology",
     "slug": "computer-engineering-technology",
     "aliases": ["COMPUTER ENGINEERING TECHNOLOGY"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "computer science",
-    "slug": "computer-science",
-    "aliases": ["COMPUTER SCIENCE", "COMPUTER SCI."],
     "school": "6a75820bc08182155763adf1",
     "numberOfLevels": 4
   },
@@ -19110,48 +19060,9 @@
     "numberOfLevels": 4
   },
   {
-    "name": "education and biology",
-    "slug": "education-and-biology",
-    "aliases": ["EDUCATION AND BIOLOGY", "EDUCATION & BIOLOGY"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "education and chemistry",
-    "slug": "education-and-chemistry",
-    "aliases": ["EDUCATION AND CHEMISTRY", "EDUCATION & CHEMISTRY"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
     "name": "education and government",
     "slug": "education-and-government",
     "aliases": ["EDUCATION AND GOVERNMENT", "EDUCATION & GOVERNMENT"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "education and integrated science",
-    "slug": "education-and-integrated-science",
-    "aliases": [
-      "EDUCATION AND INTEGRATED SCIENCE",
-      "EDUCATION & INTEGRATED SCIENCE",
-      "EDUCATION AND INTEGRATED SCI."
-    ],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "education and mathematics",
-    "slug": "education-and-mathematics",
-    "aliases": ["EDUCATION AND MATHEMATICS", "EDUCATION & MATHEMATICS"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "education and physics",
-    "slug": "education-and-physics",
-    "aliases": ["EDUCATION AND PHYSICS", "EDUCATION & PHYSICS"],
     "school": "6a75820bc08182155763adf1",
     "numberOfLevels": 4
   },
@@ -19191,16 +19102,6 @@
     "numberOfLevels": 4
   },
   {
-    "name": "electrical and electronics engineering",
-    "slug": "electrical-and-electronics-engineering",
-    "aliases": [
-      "ELECTRICAL AND ELECTRONICS ENGINEERING",
-      "ELECTRICAL & ELECTRONICS ENGINEERING"
-    ],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
     "name": "english language and literature",
     "slug": "english-language-and-literature",
     "aliases": [
@@ -19223,13 +19124,6 @@
     "aliases": ["ENVIRONMENTAL SCIENCE", "ENVIRONMENTAL SCI."],
     "school": "6a75820bc08182155763adf1",
     "numberOfLevels": 4
-  },
-  {
-    "name": "estate management",
-    "slug": "estate-management",
-    "aliases": ["ESTATE MANAGEMENT"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 5
   },
   {
     "name": "fine/applied arts",
@@ -19336,17 +19230,6 @@
     "numberOfLevels": 5
   },
   {
-    "name": "library and information science",
-    "slug": "library-and-information-science",
-    "aliases": [
-      "LIBRARY AND INFORMATION SCIENCE",
-      "LIBRARY & INFORMATION SCIENCE",
-      "LIBRARY AND INFORMATION SCI."
-    ],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
     "name": "library science",
     "slug": "library-science",
     "aliases": ["LIBRARY SCIENCE", "LIBRARY SCI."],
@@ -19385,39 +19268,11 @@
     "numberOfLevels": 4
   },
   {
-    "name": "mathematics",
-    "slug": "mathematics",
-    "aliases": ["MATHEMATICS"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "mechanical engineering",
-    "slug": "mechanical-engineering",
-    "aliases": ["MECHANICAL ENGINEERING"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
     "name": "medical laboratory science",
     "slug": "medical-laboratory-science",
     "aliases": ["MEDICAL LABORATORY SCIENCE", "MEDICAL LABORATORY SCI."],
     "school": "6a75820bc08182155763adf1",
     "numberOfLevels": 5
-  },
-  {
-    "name": "medicine and surgery",
-    "slug": "medicine-and-surgery",
-    "aliases": ["MEDICINE AND SURGERY", "MEDICINE & SURGERY"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 6
-  },
-  {
-    "name": "microbiology",
-    "slug": "microbiology",
-    "aliases": ["MICROBIOLOGY"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
   },
   {
     "name": "nursing science",
@@ -19501,13 +19356,6 @@
     "numberOfLevels": 4
   },
   {
-    "name": "statistics",
-    "slug": "statistics",
-    "aliases": ["STATISTICS"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 4
-  },
-  {
     "name": "surveying and geo-informatics",
     "slug": "surveying-and-geo-informatics",
     "aliases": [
@@ -19517,13 +19365,6 @@
     ],
     "school": "6a75820bc08182155763adf1",
     "numberOfLevels": 4
-  },
-  {
-    "name": "urban and regional planning",
-    "slug": "urban-and-regional-planning",
-    "aliases": ["URBAN AND REGIONAL PLANNING", "URBAN & REGIONAL PLANNING"],
-    "school": "6a75820bc08182155763adf1",
-    "numberOfLevels": 5
   },
   {
     "name": "zoology",
@@ -49758,20 +49599,6 @@
     "numberOfLevels": 4
   },
   {
-    "name": "accounting",
-    "slug": "accounting",
-    "aliases": ["ACCOUNTING"],
-    "school": "6a75820bc08182155763aea8",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "banking and finance",
-    "slug": "banking-and-finance",
-    "aliases": ["BANKING AND FINANCE", "BANKING & FINANCE"],
-    "school": "6a75820bc08182155763aea8",
-    "numberOfLevels": 4
-  },
-  {
     "name": "biochemistry",
     "slug": "biochemistry",
     "aliases": ["BIOCHEMISTRY"],
@@ -49786,30 +49613,9 @@
     "numberOfLevels": 4
   },
   {
-    "name": "business administration",
-    "slug": "business-administration",
-    "aliases": ["BUSINESS ADMINISTRATION"],
-    "school": "6a75820bc08182155763aea8",
-    "numberOfLevels": 4
-  },
-  {
     "name": "chemistry",
     "slug": "chemistry",
     "aliases": ["CHEMISTRY"],
-    "school": "6a75820bc08182155763aea8",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "computer science",
-    "slug": "computer-science",
-    "aliases": ["COMPUTER SCIENCE", "COMPUTER SCI."],
-    "school": "6a75820bc08182155763aea8",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "economics",
-    "slug": "economics",
-    "aliases": ["ECONOMICS"],
     "school": "6a75820bc08182155763aea8",
     "numberOfLevels": 4
   },
@@ -49855,13 +49661,6 @@
       "MANAGEMENT AND ENTREPRENEURSHIP",
       "MANAGEMENT & ENTREPRENEURSHIP"
     ],
-    "school": "6a75820bc08182155763aea8",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "mass communication",
-    "slug": "mass-communication",
-    "aliases": ["MASS COMMUNICATION"],
     "school": "6a75820bc08182155763aea8",
     "numberOfLevels": 4
   },
@@ -53064,76 +52863,6 @@
     "numberOfLevels": 4
   },
   {
-    "name": "accounting",
-    "slug": "accounting",
-    "aliases": ["ACCOUNTING"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "banking and finance",
-    "slug": "banking-and-finance",
-    "aliases": ["BANKING AND FINANCE", "BANKING & FINANCE"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "biochemistry",
-    "slug": "biochemistry",
-    "aliases": ["BIOCHEMISTRY"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "biology",
-    "slug": "biology",
-    "aliases": ["BIOLOGY"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "business administration",
-    "slug": "business-administration",
-    "aliases": ["BUSINESS ADMINISTRATION"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "chemistry",
-    "slug": "chemistry",
-    "aliases": ["CHEMISTRY"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "computer science",
-    "slug": "computer-science",
-    "aliases": ["COMPUTER SCIENCE", "COMPUTER SCI."],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "cyber security",
-    "slug": "cyber-security",
-    "aliases": ["CYBER SECURITY"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "economics",
-    "slug": "economics",
-    "aliases": ["ECONOMICS"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "english language",
-    "slug": "english-language",
-    "aliases": ["ENGLISH LANGUAGE"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
     "name": "history and diplomatic studies",
     "slug": "history-and-diplomatic-studies",
     "aliases": [
@@ -53154,13 +52883,6 @@
     "name": "information technology",
     "slug": "information-technology",
     "aliases": ["INFORMATION TECHNOLOGY"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "international relations",
-    "slug": "international-relations",
-    "aliases": ["INTERNATIONAL RELATIONS"],
     "school": "6a75820bc08182155763aeb9",
     "numberOfLevels": 4
   },
@@ -53186,41 +52908,6 @@
     "name": "marketing",
     "slug": "marketing",
     "aliases": ["MARKETING"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "mass communication",
-    "slug": "mass-communication",
-    "aliases": ["MASS COMMUNICATION"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "mathematics",
-    "slug": "mathematics",
-    "aliases": ["MATHEMATICS"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "microbiology",
-    "slug": "microbiology",
-    "aliases": ["MICROBIOLOGY"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "physics",
-    "slug": "physics",
-    "aliases": ["PHYSICS"],
-    "school": "6a75820bc08182155763aeb9",
-    "numberOfLevels": 4
-  },
-  {
-    "name": "political science",
-    "slug": "political-science",
-    "aliases": ["POLITICAL SCIENCE", "POLITICAL SCI."],
     "school": "6a75820bc08182155763aeb9",
     "numberOfLevels": 4
   },

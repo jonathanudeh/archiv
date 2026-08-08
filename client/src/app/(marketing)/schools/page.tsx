@@ -64,7 +64,7 @@ const SchoolsPageContent = () => {
         <div className="mb-12 flex w-full flex-col justify-between gap-6 md:flex-row">
           <h1 className="text-3xl font-bold text-slate-900">Browse Schools</h1>
 
-          <div className="mx-auto mb-5 w-3/6 max-w-5xl">
+          <div className="mx-auto mb-5 max-w-5xl md:w-3/6">
             <div className="relative">
               <Search className="absolute top-1/2 left-6 h-5 w-5 -translate-y-1/2 text-slate-400" />
 

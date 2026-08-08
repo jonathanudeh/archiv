@@ -79,6 +79,7 @@ const SchoolPage = () => {
                   src={school.logo?.url ?? "/default-school-logo.png"}
                   alt={school.name}
                   fill
+                  unoptimized
                   className="object-contain p-1"
                 />
               </div>
