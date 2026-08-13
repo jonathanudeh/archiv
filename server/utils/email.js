@@ -51,6 +51,7 @@ class Email {
     // 2) Define email options
     const mailOptions = {
       from: this.from,
+      replyTo: process.env.EMAIL_FROM,
       to: this.to,
       subject,
       html,
