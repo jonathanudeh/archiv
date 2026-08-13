@@ -31,6 +31,7 @@ class Email {
     //   },
     // });
     // SENDGRID
+
     return nodeMailer.createTransport({
       service: "SendGrid",
       auth: {
