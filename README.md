@@ -190,3 +190,26 @@ Archiv
     ├── JWT Authentication
     └── Cloudinary
 ```
+
+---
+
+## 🤝 Contributing
+
+Archiv welcomes contributors and contributions.
+
+Whether you're interested in improving the frontend, backend, documentation, developer experience, or adding new features, you can help make Archiv better for students.
+
+### Ways to contribute
+
+You can contribute by:
+
+- 🐛 Reporting bugs
+- 💡 Suggesting new features
+- 🎨 Improving the UI/UX
+- ⚡ Improving performance
+- 🔐 Improving security
+- 📚 Improving documentation
+- 🧪 Adding tests
+- 🧹 Refactoring and improving existing code
+- 🔧 Fixing issues
+- 🚀 Building new features
