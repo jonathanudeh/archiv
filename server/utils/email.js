@@ -31,7 +31,17 @@ class Email {
     };
 
     // 3. Send through SendGrid Web API
-    await sgMail.send(mailOptions);
+    try {
+      await sgMail.send(mailOptions);
+    } catch (err) {
+      console.error("SendGrid error:", {
+        message: err.message,
+        code: err.code,
+        response: err.response?.body,
+      });
+
+      throw err;
+    }
   }
   async sendWelcome() {
     await this.send("welcome", "Welcome to the Archiv family");
