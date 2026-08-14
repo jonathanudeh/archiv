@@ -42,6 +42,19 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
+  console.log({
+    NODE_ENV: process.env.NODE_ENV,
+    CLIENT_URL: process.env.CLIENT_URL,
+    JWT_SECRET: !!process.env.JWT_SECRET,
+    JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN,
+    JWT_COOKIE_EXPIRES_IN: process.env.JWT_COOKIE_EXPIRES_IN,
+    SENDGRID_USERNAME: !!process.env.SENDGRID_USERNAME,
+    SENDGRID_PASSWORD: process.env.SENDGRID_PASSWORD,
+    EMAIL_FROM: process.env.EMAIL_FROM,
+  });
+
+  console.log("1. Signup request received");
+
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -49,13 +62,26 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
   });
 
+  console.log("2. User created:", newUser.email);
+
   const verificationToken = newUser.createEmailVerificationToken();
+
+  console.log("3. Verification token created");
+
   await newUser.save({ validateBeforeSave: false });
 
+  console.log("4. User saved with verification token");
+
   const url = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
+
+  console.log("5. Verification URL:", url);
+
+  console.log("6. About to send verification email");
+
   await new Email(newUser, url).sendEmailVerification();
 
-  // createSendToken(newUser, 201, res);
+  console.log("7. Verification email sent");
+
   res.status(200).json({
     status: "success",
     message: "Verification email sent. Please check your inbox.",
