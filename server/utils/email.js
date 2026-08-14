@@ -1,5 +1,4 @@
 const sgMail = require("@sendgrid/mail");
-const nodeMailer = require("nodemailer");
 const pug = require("pug");
 const htmlToText = require("html-to-text");
 
@@ -12,54 +11,6 @@ class Email {
     this.url = url;
     this.from = `Archiv <${process.env.EMAIL_FROM}>`;
   }
-
-  // newTransport() {
-  //   if (process.env.NODE_ENV === "production") {
-  //     // SENDGRID
-  //     // return nodeMailer.createTransport({
-  //     //   host: "smtp.sendgrid.net",
-  //     //   port: 587,
-  //     //   secure: false,
-  //     //   auth: {
-  //     //     user: process.env.SENDGRID_USERNAME,
-  //     //     pass: process.env.SENDGRID_PASSWORD,
-  //     //   },
-  //     // });
-
-  //     const transport = nodeMailer.createTransport({
-  //       host: "smtp.sendgrid.net",
-  //       port: 587,
-  //       secure: false,
-  //       auth: {
-  //         user: process.env.SENDGRID_USERNAME,
-  //         pass: process.env.SENDGRID_PASSWORD,
-  //       },
-  //       connectionTimeout: 10000,
-  //       greetingTimeout: 10000,
-  //       socketTimeout: 10000,
-  //     });
-
-  //     return transport;
-  //   }
-
-  //   // return nodeMailer.createTransport({
-  //   //   host: process.env.EMAIL_HOST,
-  //   //   port: process.env.EMAIL_PORT,
-  //   //   auth: {
-  //   //     user: process.env.EMAIL_USERNAME,
-  //   //     pass: process.env.EMAIL_PASSWORD,
-  //   //   },
-  //   // });
-  //   // SENDGRID
-
-  //   return nodeMailer.createTransport({
-  //     service: "SendGrid",
-  //     auth: {
-  //       user: process.env.SENDGRID_USERNAME,
-  //       pass: process.env.SENDGRID_PASSWORD,
-  //     },
-  //   });
-  // }
 
   async send(template, subject) {
     // 1. Render HTML based on a Pug template
