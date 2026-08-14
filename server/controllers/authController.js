@@ -48,8 +48,8 @@ exports.signup = catchAsync(async (req, res, next) => {
     JWT_SECRET: !!process.env.JWT_SECRET,
     JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN,
     JWT_COOKIE_EXPIRES_IN: process.env.JWT_COOKIE_EXPIRES_IN,
-    SENDGRID_USERNAME: !!process.env.SENDGRID_USERNAME,
-    SENDGRID_PASSWORD: process.env.SENDGRID_PASSWORD,
+    SENDGRID_USERNAME: process.env.SENDGRID_USERNAME,
+    SENDGRID_PASSWORD: !!process.env.SENDGRID_PASSWORD,
     EMAIL_FROM: process.env.EMAIL_FROM,
   });
 

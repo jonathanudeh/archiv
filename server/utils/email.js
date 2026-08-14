@@ -14,7 +14,9 @@ class Email {
     if (process.env.NODE_ENV === "production") {
       // SENDGRID
       return nodeMailer.createTransport({
-        service: "SendGrid",
+        host: "smtp.sendgrid.net",
+        port: 587,
+        secure: false,
         auth: {
           user: process.env.SENDGRID_USERNAME,
           pass: process.env.SENDGRID_PASSWORD,
@@ -60,7 +62,12 @@ class Email {
     };
 
     // 3) Create a transport and send email
-    await this.newTransport().sendMail(mailOptions);
+    const transport = this.newTransport();
+    console.log("Email transport createed");
+    console.log("Attempting to send to: ", this.to);
+    const info = await transport.sendMail(mailOptions);
+    console.log("Email sent: ", info.messageId);
+    // await this.newTransport().sendMail(mailOptions);
   }
 
   async sendWelcome() {
