@@ -13,7 +13,17 @@ class Email {
   newTransport() {
     if (process.env.NODE_ENV === "production") {
       // SENDGRID
-      return nodeMailer.createTransport({
+      // return nodeMailer.createTransport({
+      //   host: "smtp.sendgrid.net",
+      //   port: 587,
+      //   secure: false,
+      //   auth: {
+      //     user: process.env.SENDGRID_USERNAME,
+      //     pass: process.env.SENDGRID_PASSWORD,
+      //   },
+      // });
+
+      const transport = nodeMailer.createTransport({
         host: "smtp.sendgrid.net",
         port: 587,
         secure: false,
@@ -21,7 +31,12 @@ class Email {
           user: process.env.SENDGRID_USERNAME,
           pass: process.env.SENDGRID_PASSWORD,
         },
+        connectionTimeout: 10000,
+        greetingTimeout: 10000,
+        socketTimeout: 10000,
       });
+
+      return transport;
     }
 
     // return nodeMailer.createTransport({
