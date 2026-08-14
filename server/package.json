@@ -20,6 +20,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@getbrevo/brevo": "^6.0.3",
     "@sendgrid/mail": "^8.1.6",
     "axios": "^1.19.0",
     "bcryptjs": "^3.0.3",

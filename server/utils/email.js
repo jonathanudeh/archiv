@@ -1,8 +1,10 @@
-const sgMail = require("@sendgrid/mail");
+const { BrevoClient } = require("@getbrevo/brevo");
 const pug = require("pug");
 const htmlToText = require("html-to-text");
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const brevo = new BrevoClient({
+  apiKey: process.env.BREVO_API_KEY,
+});
 
 class Email {
   constructor(user, url) {
@@ -13,36 +15,47 @@ class Email {
   }
 
   async send(template, subject) {
-    // 1. Render HTML based on a Pug template
+    // 1. Render HTML from Pug template
     const html = pug.renderFile(`${__dirname}/../views/email/${template}.pug`, {
       firstName: this.firstName,
       url: this.url,
       subject,
     });
 
-    // 2. Define email options
-    const mailOptions = {
-      from: this.from,
-      replyTo: process.env.EMAIL_FROM,
-      to: this.to,
+    // 2. Define Brevo email
+    const emailData = {
+      sender: {
+        name: "Archiv",
+        email: process.env.EMAIL_FROM,
+      },
+      to: [
+        {
+          email: this.to,
+          name: this.firstName,
+        },
+      ],
       subject,
-      html,
-      text: htmlToText.convert(html),
+      htmlContent: html,
+      textContent: htmlToText.convert(html),
     };
 
-    // 3. Send through SendGrid Web API
+    // 3. Send through Brevo Web API
     try {
-      await sgMail.send(mailOptions);
+      const response =
+        await brevo.transactionalEmails.sendTransacEmail(emailData);
+
+      console.log("Brevo email sent:", response);
     } catch (err) {
-      console.error("SendGrid error:", {
+      console.error("Brevo error:", {
         message: err.message,
-        code: err.code,
-        response: err.response?.body,
+        statusCode: err.statusCode,
+        response: err.response,
       });
 
       throw err;
     }
   }
+
   async sendWelcome() {
     await this.send("welcome", "Welcome to the Archiv family");
   }
