@@ -7,8 +7,15 @@ import { useVerifyEmail } from "@/src/features/auth/hooks/useVerifyEmail";
 export default function VerifyEmailPage() {
   const router = useRouter();
   const params = useParams();
+
   const token = params.token as string;
-  const { verifyEmail, isVerifyingEmail } = useVerifyEmail();
+
+  const {
+    verifyEmail,
+    isVerifyingEmail,
+    verificationSuccess,
+    verificationError,
+  } = useVerifyEmail();
 
   useEffect(() => {
     if (token) {
@@ -17,14 +24,14 @@ export default function VerifyEmailPage() {
   }, [token, verifyEmail]);
 
   useEffect(() => {
-    if (!isVerifyingEmail) {
+    if (verificationSuccess) {
       const timer = setTimeout(() => {
         router.push("/profile");
       }, 1500);
 
       return () => clearTimeout(timer);
     }
-  }, [router, isVerifyingEmail]);
+  }, [verificationSuccess, router]);
 
   return (
     <main className="flex min-h-screen items-center justify-center">
@@ -39,7 +46,7 @@ export default function VerifyEmailPage() {
           </>
         )}
 
-        {!isVerifyingEmail && (
+        {verificationSuccess && (
           <>
             <h1 className="text-2xl font-bold">Email Verified 🎉</h1>
 
@@ -49,7 +56,7 @@ export default function VerifyEmailPage() {
           </>
         )}
 
-        {!isVerifyingEmail && (
+        {verificationError && (
           <>
             <h1 className="text-2xl font-bold">Verification Failed</h1>
 

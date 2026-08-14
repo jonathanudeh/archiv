@@ -18,19 +18,16 @@ export function useLogout() {
     mutationFn: logoutApi,
 
     onSuccess: async () => {
-      // await queryClient.removeQueries({
-      //   queryKey: ["me"],
-      // });
+      await queryClient.cancelQueries({
+        queryKey: ["me"],
+      });
 
-      await queryClient.cancelQueries({ queryKey: ["me"] });
-
-      queryClient.setQueryData(["me"], null);
-
-      queryClient.invalidateQueries({
+      queryClient.removeQueries({
         queryKey: ["me"],
       });
 
       success("Logged out successfully");
+
       router.push("/");
       router.replace("/");
       router.refresh();

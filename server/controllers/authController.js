@@ -42,8 +42,6 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  console.log("1. Signup request received");
-
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -51,25 +49,13 @@ exports.signup = catchAsync(async (req, res, next) => {
     passwordConfirm: req.body.passwordConfirm,
   });
 
-  console.log("2. User created:", newUser.email);
-
   const verificationToken = newUser.createEmailVerificationToken();
-
-  console.log("3. Verification token created");
 
   await newUser.save({ validateBeforeSave: false });
 
-  console.log("4. User saved with verification token");
-
   const url = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
 
-  console.log("5. Verification URL:", url);
-
-  console.log("6. About to send verification email");
-
   await new Email(newUser, url).sendEmailVerification();
-
-  console.log("7. Verification email sent");
 
   res.status(200).json({
     status: "success",
@@ -163,12 +149,15 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.logout = (req, res) => {
-  res.cookie("jwt", "loggedout", {
-    expires: new Date(Date.now() + 10 * 1000),
+  res.clearCookie("jwt", {
     httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   });
 
-  res.status(200).json({ status: "success" });
+  res.status(200).json({
+    status: "success",
+  });
 };
 
 exports.protect = catchAsync(async (req, res, next) => {

@@ -6,7 +6,12 @@ import { AxiosError } from "axios";
 export function useVerifyEmail() {
   const { success, error } = useNotification();
 
-  const { mutate: verifyEmail, isPending: isVerifyingEmail } = useMutation({
+  const {
+    mutate: verifyEmail,
+    isPending: isVerifyingEmail,
+    isSuccess: verificationSuccess,
+    isError: verificationError,
+  } = useMutation({
     mutationFn: verifyEmailApi,
 
     onSuccess: (data: { message: string }) => {
@@ -18,5 +23,10 @@ export function useVerifyEmail() {
     },
   });
 
-  return { verifyEmail, isVerifyingEmail };
+  return {
+    verifyEmail,
+    isVerifyingEmail,
+    verificationSuccess,
+    verificationError,
+  };
 }

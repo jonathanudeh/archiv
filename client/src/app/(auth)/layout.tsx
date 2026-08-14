@@ -22,9 +22,5 @@ export default function ProtectedLayout({
 
   if (loading) return <Spinner />;
 
-  if (!loading && isAuthenticated) {
-    router.replace("/profile");
-  }
-
   return <>{children}</>;
 }
