@@ -5,12 +5,21 @@ export function useCurrentUser() {
   const {
     data: currentUser,
     isLoading: isLoadingCurrentUser,
+    isError: isCurrentUserError,
+    error: currentUserError,
     refetch: refetchCurrentUser,
   } = useQuery({
     queryKey: ["me"],
     queryFn: getMe,
     retry: false,
+    staleTime: 0,
   });
 
-  return { currentUser, isLoadingCurrentUser, refetchCurrentUser };
+  return {
+    currentUser: currentUser ?? null,
+    isLoadingCurrentUser,
+    isCurrentUserError,
+    currentUserError,
+    refetchCurrentUser,
+  };
 }

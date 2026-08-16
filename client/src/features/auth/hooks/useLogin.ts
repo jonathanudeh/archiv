@@ -3,6 +3,7 @@ import { login } from "../api/login";
 import { useNotification } from "@/src/providers/NotificationProvider";
 import { useRouter } from "next/navigation";
 import { AxiosError } from "axios";
+import { getMe } from "../api/getMe";
 
 export function useLogin() {
   const router = useRouter();
@@ -17,10 +18,12 @@ export function useLogin() {
   } = useMutation({
     mutationFn: login,
 
-    onSuccess: (data: { message: string }) => {
-      queryClient.invalidateQueries({
+    onSuccess: async (data) => {
+      await queryClient.fetchQuery({
         queryKey: ["me"],
+        queryFn: getMe,
       });
+
       success(data.message ?? "Logged in successfully");
       router.replace("/profile");
     },

@@ -22,15 +22,16 @@ export function useLogout() {
         queryKey: ["me"],
       });
 
+      queryClient.setQueryData(["me"], null);
+
       queryClient.removeQueries({
         queryKey: ["me"],
       });
 
       success("Logged out successfully");
 
-      router.push("/");
-      router.replace("/");
       router.refresh();
+      router.replace("/");
     },
 
     onError: (err: AxiosError<{ message: string }>) => {
