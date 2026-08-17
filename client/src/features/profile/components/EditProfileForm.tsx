@@ -4,24 +4,37 @@ import { useId, useState, ChangeEvent } from "react";
 import Image from "next/image";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Camera } from "lucide-react";
+
 import {
   updateProfileSchema,
   UpdateProfileSchema,
 } from "../schemas/updateProfileSchema";
+
 import { useAuth } from "@/src/providers/AuthProvider";
 import { useUpdateProfile } from "../hooks/useUpdateProfile";
-import { useSchools } from "../../schools/hooks/useSchools";
-import { useDepartments } from "../../departments/hooks/useDeparments";
+
 import { School } from "../../schools/types/schools";
-import { Camera } from "lucide-react";
 import { Department } from "@/src/types/department";
+
+import SearchableSchoolSelect from "@/src/components/ui/SearchableSchoolSelect";
+import SearchableDepartmentSelect from "@/src/components/ui/SearchableDepartmentSelect";
 
 export default function EditProfileForm() {
   const { user } = useAuth();
+
   const inputId = useId();
+
   const [preview, setPreview] = useState<string>();
+
   const { updateUser, isUpdatingUser } = useUpdateProfile();
+
+  /**
+   * Determine whether school/department
+   * has already been selected.
+   */
   const schoolLocked = !!user?.school && typeof user.school !== "string";
+
   const departmentLocked =
     !!user?.department && typeof user.department !== "string";
 
@@ -37,7 +50,9 @@ export default function EditProfileForm() {
     defaultValues: {
       name: user?.name,
       bio: user?.bio,
+
       school: typeof user?.school !== "string" ? user?.school?._id : undefined,
+
       department:
         typeof user?.department !== "string"
           ? user?.department?._id
@@ -45,10 +60,27 @@ export default function EditProfileForm() {
     },
   });
 
-  const selectedSchool = useWatch({ control, name: "school" });
-  const { schools } = useSchools();
-  const { departments } = useDepartments(selectedSchool);
+  /**
+   * Watch selected school and department
+   */
+  const selectedSchool = useWatch({
+    control,
+    name: "school",
+  });
 
+  const selectedDepartment = useWatch({
+    control,
+    name: "department",
+  });
+
+  const bio = useWatch({
+    control,
+    name: "bio",
+  });
+
+  /**
+   * Submit
+   */
   async function onSubmit(values: UpdateProfileSchema) {
     const formData = new FormData();
 
@@ -67,6 +99,7 @@ export default function EditProfileForm() {
     }
 
     const photo = values.photo as File;
+
     if (photo) {
       formData.append("photo", photo);
     }
@@ -76,6 +109,8 @@ export default function EditProfileForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      {/* Profile Photo */}
+
       <div className="relative h-35 w-35 shrink-0">
         <Image
           src={preview || user?.photo?.url || "/default.jpg"}
@@ -88,7 +123,7 @@ export default function EditProfileForm() {
 
         <label
           htmlFor={inputId}
-          className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-black/40 opacity-100 transition-opacity"
+          className="absolute inset-0 flex cursor-pointer items-center justify-center rounded-full bg-black/40 transition-opacity hover:bg-black/50"
         >
           <Camera size={30} className="text-white" />
         </label>
@@ -110,6 +145,8 @@ export default function EditProfileForm() {
         />
       </div>
 
+      {/* Full Name */}
+
       <div className="space-y-2">
         <label className="text-sm font-medium text-slate-700">Full Name</label>
 
@@ -124,6 +161,8 @@ export default function EditProfileForm() {
         )}
       </div>
 
+      {/* Bio */}
+
       <div className="space-y-2">
         <label className="text-sm font-medium text-slate-700">Bio</label>
 
@@ -131,7 +170,7 @@ export default function EditProfileForm() {
           {...register("bio")}
           rows={5}
           maxLength={300}
-          className="focus:ring-primary/20 focus:border-primary w-full resize-none rounded-xl border border-slate-200 bg-white px-4 py-3 transition outline-none focus:ring-4"
+          className="focus:ring-primary/20 focus:border-primary w-full resize-none rounded-2xl border border-slate-200 bg-white px-4 py-3 transition outline-none focus:ring-4"
           placeholder="Tell people about yourself..."
         />
 
@@ -141,10 +180,12 @@ export default function EditProfileForm() {
           )}
 
           <span className="ml-auto text-xs text-slate-400">
-            {useWatch({ control, name: "bio" })?.length ?? 0}/300
+            {bio?.length ?? 0}/300
           </span>
         </div>
       </div>
+
+      {/* School */}
 
       {schoolLocked ? (
         <div className="space-y-2">
@@ -154,7 +195,7 @@ export default function EditProfileForm() {
             <div>
               {user?.school && (
                 <p className="text-primary font-medium capitalize">
-                  {typeof user.school !== "string" ? user?.school.name : ""}
+                  {typeof user.school !== "string" ? user.school.name : ""}
                 </p>
               )}
 
@@ -168,20 +209,22 @@ export default function EditProfileForm() {
         <div className="space-y-2">
           <label className="text-sm font-medium text-slate-700">School</label>
 
-          <select
-            {...register("school")}
-            className="focus:ring-primary/20 focus:border-primary w-full rounded-full border border-slate-200 bg-white px-4 py-3 capitalize transition outline-none focus:ring-4"
-          >
-            <option value="">Select School</option>
+          <SearchableSchoolSelect
+            value={selectedSchool}
+            onChange={(school: School) =>
+              setValue("school", school._id, {
+                shouldValidate: true,
+              })
+            }
+          />
 
-            {schools?.map((school: School) => (
-              <option key={school._id} value={school._id}>
-                {school.name}
-              </option>
-            ))}
-          </select>
+          {errors.school && (
+            <p className="text-sm text-red-500">{errors.school.message}</p>
+          )}
         </div>
       )}
+
+      {/* Department */}
 
       {departmentLocked ? (
         <div className="space-y-2">
@@ -192,9 +235,9 @@ export default function EditProfileForm() {
           <div className="flex items-center justify-between rounded-full border border-blue-100 bg-blue-50 px-4 py-3">
             <div>
               {user?.department && (
-                <p className="text-primary font-medium">
+                <p className="text-primary font-medium capitalize">
                   {typeof user.department !== "string"
-                    ? user?.department.name
+                    ? user.department.name
                     : ""}
                 </p>
               )}
@@ -211,36 +254,38 @@ export default function EditProfileForm() {
             Department
           </label>
 
-          <select
-            {...register("department")}
-            disabled={!selectedSchool}
-            className="focus:ring-primary/20 focus:border-primary w-full rounded-lg border border-slate-200 bg-white p-4 px-4 py-3 transition outline-none focus:ring-4 disabled:bg-slate-100"
-          >
-            <option value="">Select Department</option>
+          <SearchableDepartmentSelect
+            schoolId={selectedSchool}
+            value={selectedDepartment}
+            onChange={(department: Department) =>
+              setValue("department", department._id, {
+                shouldValidate: true,
+              })
+            }
+          />
 
-            {departments?.map((department: Department) => (
-              <option key={department._id} value={department._id}>
-                {department.name}
-              </option>
-            ))}
-          </select>
+          {errors.department && (
+            <p className="text-sm text-red-500">{errors.department.message}</p>
+          )}
         </div>
       )}
 
-      <div className="p-3 text-xs">
+      {/* Selection Notice */}
+
+      <div className="rounded-2xl bg-slate-50 p-3 text-xs">
         {schoolLocked ? (
-          <>
-            <p className="mt-1 text-amber-700">
-              * School & Department Selection Can only be done once. Contact
-              support if you need a correction.
-            </p>
-          </>
+          <p className="text-amber-700">
+            * School & Department selection can only be done once. Contact
+            support if you need a correction.
+          </p>
         ) : (
           <p className="text-red-600">
             School and department can only be selected once.
           </p>
         )}
       </div>
+
+      {/* Submit */}
 
       <button
         type="submit"

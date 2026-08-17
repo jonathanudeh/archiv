@@ -153,7 +153,7 @@ export default function UploadMaterialForm() {
         <p className="mt-1 text-sm text-slate-500">
           Upload academic materials to Archiv.
           <span className="block text-amber-500">
-            Make sure your profile is complete before uploading.
+            You must finish editing your before you can upload.
           </span>
         </p>
       </div>
