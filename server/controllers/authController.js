@@ -24,9 +24,22 @@ const createSendToken = (user, statusCode, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    path: "/",
   };
 
+  // In production, allow setting a top-level domain for cookies (e.g. ".example.com")
+  // so the cookie is shared across subdomains (api.example.com -> app.example.com).
+  if (process.env.NODE_ENV === "production" && process.env.COOKIE_DOMAIN) {
+    cookieOptions.domain = process.env.COOKIE_DOMAIN;
+  }
+
   res.cookie("jwt", token, cookieOptions);
+
+  // Helpful debug: include cookie options in server logs when in non-production
+  if (process.env.NODE_ENV !== "production") {
+    // eslint-disable-next-line no-console
+    console.log("[auth] set-cookie options:", cookieOptions);
+  }
 
   // Remove password from output
   user.password = undefined;
@@ -153,6 +166,7 @@ exports.logout = (req, res) => {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
     sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    path: "/",
   });
 
   res.status(200).json({
@@ -161,11 +175,6 @@ exports.logout = (req, res) => {
 };
 
 exports.protect = catchAsync(async (req, res, next) => {
-  console.log("=== PROTECT ===");
-  console.log("Origin:", req.headers.origin);
-  console.log("Cookies:", req.cookies);
-  console.log("Authorization:", req.headers.authorization);
-
   // 1) Getting token and check of it's there
   let token;
   if (
