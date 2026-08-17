@@ -22,7 +22,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="bg-light border-border hidden h-screen w-64 shrink-0 md:flex md:flex-col">
+    <aside className="bg-light border-border hidden h-screen w-64 shrink-0 border-r md:flex md:flex-col">
       {/* Logo */}
 
       <div className="border-border flex h-20 items-center border-b px-6">

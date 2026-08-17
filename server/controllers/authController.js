@@ -27,8 +27,8 @@ const createSendToken = (user, statusCode, res) => {
     path: "/",
   };
 
-  // In production, allow setting a top-level domain for cookies (e.g. ".example.com")
-  // so the cookie is shared across subdomains (api.example.com -> app.example.com).
+  // In production, allow setting a top-level domain for cookies
+  // so the cookie is shared across subdomains
   if (process.env.NODE_ENV === "production" && process.env.COOKIE_DOMAIN) {
     cookieOptions.domain = process.env.COOKIE_DOMAIN;
   }
