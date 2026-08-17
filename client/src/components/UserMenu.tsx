@@ -40,6 +40,7 @@ export default function UserMenu() {
         align="end"
         className="flex w-64 flex-col gap-2 rounded-2xl p-2"
       >
+        {/* User information */}
         <div className="px-2 py-3">
           <p className="text-primary font-semibold">{user.name}</p>
 
@@ -48,6 +49,7 @@ export default function UserMenu() {
 
         <DropdownMenuSeparator />
 
+        {/* Profile - visible on mobile and desktop */}
         <DropdownMenuItem asChild>
           <Link href="/profile" className="cursor-pointer">
             <User className="mr-2 h-4 w-4" />
@@ -55,62 +57,58 @@ export default function UserMenu() {
           </Link>
         </DropdownMenuItem>
 
-        {isAdminorContributor && (
+        {/* Mobile-only navigation */}
+        <div className="md:hidden">
+          {isAdminorContributor && (
+            <DropdownMenuItem asChild>
+              <Link href="/contribute/school" className="cursor-pointer">
+                <User className="mr-2 h-4 w-4" />
+                Create School
+              </Link>
+            </DropdownMenuItem>
+          )}
+
+          {isAdminorContributor && (
+            <DropdownMenuItem asChild>
+              <Link href="/contribute/department" className="cursor-pointer">
+                <User className="mr-2 h-4 w-4" />
+                Create Department
+              </Link>
+            </DropdownMenuItem>
+          )}
+
           <DropdownMenuItem asChild>
-            <Link href="/contribute/school" className="cursor-pointer">
-              <User className="mr-2 h-4 w-4" />
-              Create School
+            <Link href="/upload" className="cursor-pointer">
+              <Upload className="mr-2 h-4 w-4" />
+              Upload document
             </Link>
           </DropdownMenuItem>
-        )}
 
-        {isAdminorContributor && (
           <DropdownMenuItem asChild>
-            <Link href="/contribute/department" className="cursor-pointer">
-              <User className="mr-2 h-4 w-4" />
-              Create department
+            <Link href="/profile/my-uploads" className="cursor-pointer">
+              <Upload className="mr-2 h-4 w-4" />
+              My uploads
             </Link>
           </DropdownMenuItem>
-        )}
 
-        <DropdownMenuItem asChild>
-          <Link href="/upload" className="cursor-pointer">
-            <Upload className="mr-2 h-4 w-4" />
-            Upload document
-          </Link>
-        </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/profile/saved" className="cursor-pointer">
+              <Bookmark className="mr-2 h-4 w-4" />
+              Saved Materials
+            </Link>
+          </DropdownMenuItem>
 
-        <DropdownMenuItem asChild>
-          <Link href="/profile/my-uploads" className="cursor-pointer">
-            <Upload className="mr-2 h-4 w-4" />
-            My uploads
-          </Link>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem asChild>
-          <Link href="/profile/saved" className="cursor-pointer">
-            <Bookmark className="mr-2 h-4 w-4" />
-            Saved Materials
-          </Link>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem asChild>
-          <Link href="/settings" className="cursor-pointer">
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
-          </Link>
-        </DropdownMenuItem>
-
-        {/* <DropdownMenuSeparator /> */}
-        {/* <DropdownMenuItem asChild>
-          <Link href="/support" className="cursor-pointer">
-            <Heart className="mr-2 h-4 w-4" />
-            Support Archiv
-          </Link>
-        </DropdownMenuItem> */}
+          <DropdownMenuItem asChild>
+            <Link href="/settings" className="cursor-pointer">
+              <Settings className="mr-2 h-4 w-4" />
+              Settings
+            </Link>
+          </DropdownMenuItem>
+        </div>
 
         <DropdownMenuSeparator />
 
+        {/* Logout - visible on mobile and desktop */}
         <DropdownMenuItem
           onClick={() => logoutUser()}
           disabled={isLoggingOut}
