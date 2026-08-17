@@ -30,7 +30,18 @@ const createSendToken = (user, statusCode, res) => {
   // In production, allow setting a top-level domain for cookies
   // so the cookie is shared across subdomains
   if (process.env.NODE_ENV === "production" && process.env.COOKIE_DOMAIN) {
-    cookieOptions.domain = process.env.COOKIE_DOMAIN;
+    // Normalize COOKIE_DOMAIN so users can set it with or without protocol/port.
+    // Examples accepted: "https://archiv-academy.vercel.app", "archiv-academy.vercel.app", ".archiv-academy.vercel.app"
+    let domain = process.env.COOKIE_DOMAIN;
+    domain = domain.replace(/^https?:\/\//i, "");
+    domain = domain.split("/")[0].split(":")[0];
+    if (!domain.startsWith(".")) domain = `.${domain}`;
+    cookieOptions.domain = domain;
+
+    if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.log("[auth] normalized cookie domain:", domain);
+    }
   }
 
   res.cookie("jwt", token, cookieOptions);
