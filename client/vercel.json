@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://archiv-e0fm.onrender.com/api/v1"
+    }
+  ]
+}

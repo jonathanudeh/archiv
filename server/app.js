@@ -42,7 +42,7 @@ const limiter = rateLimit({
 
 app.use("/api", limiter);
 
-const allowedOrigins = ["http://localhost:3000", process.env.CLIENT_URL].filter(
+const allowedOrigins = [process.env.CLIENT_URL, "http://localhost:3000"].filter(
   Boolean,
 );
 
@@ -52,11 +52,6 @@ app.use(
     credentials: true,
   }),
 );
-
-if (process.env.NODE_ENV !== "production") {
-  // eslint-disable-next-line no-console
-  console.log("[cors] allowed origins:", allowedOrigins);
-}
 
 app.use(express.json({ limit: "10kb" }));
 
