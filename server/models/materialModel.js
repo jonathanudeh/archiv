@@ -33,10 +33,13 @@ const materialSchema = new mongoose.Schema(
 
     fileUrl: {
       type: String,
-      required: true,
     },
 
     filePublicId: String,
+
+    fileKey: {
+      type: String,
+    },
 
     fileType: {
       type: String,
@@ -44,7 +47,6 @@ const materialSchema = new mongoose.Schema(
     },
 
     fileSize: Number,
-    originalFileName: String,
 
     school: {
       type: mongoose.Schema.Types.ObjectId,

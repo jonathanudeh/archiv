@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const Material = require("../models/materialModel");
 const School = require("../models/schoolModel");
 const Department = require("../models/departmentModel");
@@ -10,8 +11,15 @@ const AppError = require("../utils/appError");
 const APIFeatures = require("../utils/apiFeatures");
 const cloudinary = require("../config/cloudinary");
 const AnalyticsService = require("../services/analyticsService");
+const createB2Key = require("../utils/b2Key");
+
 const { uploadToCloudinary } = require("../utils/uploadToCloudinary");
 const { convertToPdf } = require("../utils/convertToPdf");
+const {
+  uploadToB2,
+  deleteFromB2,
+  getB2SignedUrl,
+} = require("../utils/b2Storage");
 
 const getFolder = (mimeType) => {
   if (mimeType.includes("pdf")) return "archiv/materials/pdf";
@@ -63,6 +71,11 @@ exports.getMaterial = catchAsync(async (req, res, next) => {
 
   const materialObj = material.toObject();
   materialObj.isSaved = !!isSaved;
+
+  // Generate a temporary preview URL for B2 materials
+  if (material.fileKey) {
+    materialObj.fileUrl = await getB2SignedUrl(material.fileKey, 900, "inline");
+  }
 
   res.status(200).json({
     status: "success",
@@ -257,38 +270,59 @@ exports.uploadMaterial = catchAsync(async (req, res, next) => {
   // Convert Office docs to PDF
   const convertedFile = await convertToPdf(req.file);
 
-  const folder = getFolder(convertedFile.mimetype);
+  // Generate the Material ID BEFORE uploading to B2.
+  // This lets the B2 object key and MongoDB document share the same ID.
+  const materialId = new mongoose.Types.ObjectId();
 
-  const resourceType = getResourceType(convertedFile.mimetype);
-
-  const uploadResult = await uploadToCloudinary(
-    convertedFile.buffer,
-    folder,
-    resourceType,
+  // Generate the B2 object key
+  const fileKey = createB2Key(
+    materialId.toString(),
     convertedFile.filename,
+    convertedFile.mimetype,
   );
 
-  const material = await Material.create({
-    title: req.body.title,
-    description: req.body.description,
-    category: req.body.category,
+  // Upload the converted/original file to B2
+  await uploadToB2(convertedFile.buffer, fileKey, convertedFile.mimetype);
 
-    fileUrl: uploadResult.secure_url,
-    filePublicId: uploadResult.public_id,
+  let material;
 
-    fileType: convertedFile.mimetype,
-    fileSize: convertedFile.buffer.length,
+  try {
+    material = await Material.create({
+      _id: materialId,
+      title: req.body.title,
+      description: req.body.description,
+      category: req.body.category,
 
-    originalFileName: req.file.originalname,
-    wasConverted: convertedFile.wasConverted,
+      // B2 storage information
+      fileKey,
 
-    school: school._id,
-    department: department._id,
-    level: level._id,
-    semester: semester._id,
+      fileType: convertedFile.mimetype,
+      fileSize: convertedFile.buffer.length,
 
-    uploadedBy: req.user.id,
-  });
+      originalFileName: req.file.originalname,
+      wasConverted: convertedFile.wasConverted,
+
+      school: school._id,
+      department: department._id,
+      level: level._id,
+      semester: semester._id,
+
+      uploadedBy: req.user.id,
+    });
+  } catch (error) {
+    // MongoDB creation failed after B2 upload.
+    // Remove the B2 object so we don't leave an orphaned file.
+    try {
+      await deleteFromB2(fileKey);
+    } catch (cleanupError) {
+      console.error(
+        "Failed to clean up B2 object after MongoDB failure:",
+        cleanupError,
+      );
+    }
+
+    throw error;
+  }
 
   await AnalyticsService.trackUpload(material);
 

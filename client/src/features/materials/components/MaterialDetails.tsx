@@ -126,11 +126,8 @@ export default function MaterialDetails({ material }: Props) {
 
             <div className="space-y-4 text-sm">
               <InfoRow label="School" value={material.school?.name} />
-
               <InfoRow label="Department" value={material.department?.name} />
-
               <InfoRow label="Level" value={material.level?.name} />
-
               <InfoRow label="Semester" value={material.semester?.name} />
             </div>
           </div>
@@ -141,9 +138,7 @@ export default function MaterialDetails({ material }: Props) {
 
             <div className="space-y-4 text-sm">
               <InfoRow label="Type" value={material.fileType} />
-
               <InfoRow label="Views" value={String(material.viewCount)} />
-
               <InfoRow
                 label="Downloads"
                 value={String(material.downloadCount)}
