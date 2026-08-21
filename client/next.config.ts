@@ -12,6 +12,10 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
+        hostname: "s3.eu-central-003.backblazeb2.com",
+      },
+      {
+        protocol: "https",
         hostname: "myschoolgist.com",
         pathname: "/**",
       },
