@@ -28,11 +28,18 @@ const deleteFromB2 = async (key) => {
   return await b2.send(command);
 };
 
-const getB2SignedUrl = async (key, expiresIn = 900, disposition = "inline") => {
+const getB2SignedUrl = async (
+  key,
+  expiresIn = 900,
+  disposition = "inline",
+  filename,
+) => {
   const command = new GetObjectCommand({
     Bucket: process.env.B2_BUCKET_NAME,
     Key: key,
-    ResponseContentDisposition: disposition,
+    ResponseContentDisposition: filename
+      ? `${disposition}; filename="${filename}"`
+      : disposition,
   });
 
   return await getSignedUrl(b2, command, {

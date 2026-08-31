@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import UserMenu from "../UserMenu";
+import { motion } from "framer-motion";
 import { Bell, Plus, Search } from "lucide-react";
 
 export default function Topbar() {
@@ -26,7 +27,10 @@ export default function Topbar() {
 
       {/* Desktop */}
       <header className="bg-light border-border hidden h-20 items-center justify-between px-8 md:flex">
-        <div className="flex w-3/3 items-center justify-center">
+        <motion.div
+          className="flex w-3/3 items-center justify-center"
+          layoutId="global-search"
+        >
           <Link
             href="/search"
             className="border-border text-muted-foreground bg-background hover:border-primary flex h-11 w-full max-w-lg items-center justify-between rounded-full border px-4 transition-colors"
@@ -41,7 +45,7 @@ export default function Topbar() {
               Ctrl K
             </kbd>
           </Link>
-        </div>
+        </motion.div>
 
         <div className="bg- flex w-1/3 items-center gap-4">
           <Link

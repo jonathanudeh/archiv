@@ -6,7 +6,7 @@ import { Search } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import HeroBackground from "@/src/components/hero/HeroBackground";
-import LightBeam from "@/src/components/hero/LightBeam";
+// import LightBeam from "@/src/components/hero/LightBeam";
 
 const RESOURCE_TILES = [
   // Left Side

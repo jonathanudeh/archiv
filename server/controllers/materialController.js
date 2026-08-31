@@ -37,6 +37,17 @@ const getResourceType = (mimeType) => {
   return "raw";
 };
 
+const mimeToExtension = (mimeType) => {
+  const extensions = {
+    "application/pdf": ".pdf",
+    "image/jpeg": ".jpg",
+    "image/png": ".png",
+    "image/webp": ".webp",
+  };
+
+  return extensions[mimeType] || "";
+};
+
 exports.getMaterial = catchAsync(async (req, res, next) => {
   const material = await Material.findById(req.params.materialId)
     .populate({
@@ -74,7 +85,15 @@ exports.getMaterial = catchAsync(async (req, res, next) => {
 
   // Generate a temporary preview URL for B2 materials
   if (material.fileKey) {
-    materialObj.fileUrl = await getB2SignedUrl(material.fileKey, 900, "inline");
+    const extension = mimeToExtension(material.fileType);
+    const filename = `${material.title}${extension}`;
+
+    materialObj.fileUrl = await getB2SignedUrl(
+      material.fileKey,
+      900,
+      "inline",
+      filename,
+    );
   }
 
   res.status(200).json({
@@ -341,10 +360,29 @@ exports.downloadMaterial = catchAsync(async (req, res, next) => {
     return next(new AppError("No material found with that ID.", 404));
   }
 
-  const downloadUrl = material.fileUrl.replace(
-    "/upload/",
-    "/upload/fl_attachment/",
-  );
+  let downloadUrl;
+
+  if (material.fileKey) {
+    // B2 material
+    const extension = mimeToExtension(material.fileType);
+
+    const filename = `${material.title}${extension}`;
+
+    downloadUrl = await getB2SignedUrl(
+      material.fileKey,
+      900,
+      "attachment",
+      filename,
+    );
+  } else if (material.fileUrl) {
+    // Legacy Cloudinary material
+    downloadUrl = material.fileUrl.replace(
+      "/upload/",
+      "/upload/fl_attachment/",
+    );
+  } else {
+    return next(new AppError("No file associated with this material.", 404));
+  }
 
   AnalyticsService.runInBackground(() =>
     AnalyticsService.trackDownload(material),
