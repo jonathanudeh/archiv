@@ -407,14 +407,25 @@ exports.deleteMaterial = catchAsync(async (req, res, next) => {
     );
   }
 
-  //   cloudinary delete logic
   try {
-    await cloudinary.uploader.destroy(material.filePublicId);
+    if (material.fileKey) {
+      // New B2 material
+      await deleteFromB2(material.fileKey);
+    } else if (material.filePublicId) {
+      // Legacy Cloudinary material
+      await cloudinary.uploader.destroy(material.filePublicId);
+    } else {
+      return next(
+        new AppError("No storage reference found for this material", 500),
+      );
+    }
   } catch (err) {
+    console.error("Storage deletion failed:", err);
+
     return next(new AppError("Failed to delete file from cloud storage", 500));
   }
 
-  await Material.findByIdAndDelete(req.params.materialId);
+  await Material.findByIdAndDelete(material._id);
 
   await AnalyticsService.trackDelete(material);
 
