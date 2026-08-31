@@ -4,13 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { Download, Bookmark, Calendar } from "lucide-react";
 import { format } from "date-fns";
+import { useRouter } from "next/navigation";
 
 import MaterialPreview from "./MaterialPreview";
 import { Material } from "../types/material";
 import { useToggleSaveMaterial } from "../../profile/hooks/useToggleSave";
 import { useState } from "react";
 import { useDownloadMaterial } from "../hooks/useDownloadMaterial";
+import { useDeleteMaterial } from "../hooks/useDeleteMaterial";
 import ShareButton from "@/src/components/ui/ShareButton";
+import { useAuth } from "@/src/providers/AuthProvider";
 
 type Props = {
   material: Material;
@@ -19,6 +22,9 @@ type Props = {
 export default function MaterialDetails({ material }: Props) {
   const { saveMaterial, unsaveMaterial, isSaving } = useToggleSaveMaterial();
   const { startDownload, isDownloading } = useDownloadMaterial();
+  const { deleteMaterial, isDeleting } = useDeleteMaterial();
+  const { user } = useAuth();
+  const router = useRouter();
   const [saved, setSaved] = useState(material.isSaved);
 
   async function handleSave() {
@@ -30,6 +36,25 @@ export default function MaterialDetails({ material }: Props) {
       setSaved(true);
     }
   }
+
+  async function handleDelete() {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${material.title}"? This action cannot be undone.`,
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await deleteMaterial(material._id);
+
+      router.push("/materials");
+    } catch (error) {
+      console.error("Failed to delete material:", error);
+    }
+  }
+
+  const canDelete =
+    !!user && (user.role === "admin" || user._id === material.uploadedBy?._id);
 
   return (
     <div className="bg-background space-y-8 p-5">
@@ -76,6 +101,16 @@ export default function MaterialDetails({ material }: Props) {
             title={material.title}
             text={`Check out "${material.title}" on Archiv.`}
           />
+
+          {canDelete && (
+            <button
+              onClick={handleDelete}
+              disabled={isDeleting}
+              className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-red-600 bg-red-400 px-4 py-2 font-medium text-white transition hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {isDeleting ? "Deleting..." : "Delete"}
+            </button>
+          )}
         </div>
       </section>
 
@@ -109,7 +144,7 @@ export default function MaterialDetails({ material }: Props) {
               </div>
 
               <div className="flex flex-col">
-                <span className="font-medium">
+                <span className="font-medium capitalize">
                   {material?.uploadedBy?.name}
                 </span>
                 <span className="flex items-center gap-1 text-xs">
@@ -180,7 +215,7 @@ function InfoRow({ label, value }: { label: string; value?: string }) {
     <div className="flex justify-between gap-4 border-b border-slate-100 pb-2">
       <span className="text-slate-500">{label}</span>
 
-      <span className="text-right font-medium">{value ?? "-"}</span>
+      <span className="text-right font-medium capitalize">{value ?? "-"}</span>
     </div>
   );
 }
