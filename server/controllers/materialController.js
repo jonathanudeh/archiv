@@ -393,7 +393,7 @@ exports.viewMaterial = catchAsync(async (req, res, next) => {
     return next(new AppError("No material found with that ID.", 404));
   }
 
-  AnalyticsService.runInBackground(AnalyticsService.trackView(material));
+  AnalyticsService.runInBackground(() => AnalyticsService.trackView(material));
 
   res.status(204).json({
     status: "success",

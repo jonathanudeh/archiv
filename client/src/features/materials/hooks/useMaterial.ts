@@ -12,6 +12,9 @@ export function useMaterial(materialId: string) {
     queryKey: ["material", materialId],
     queryFn: () => getMaterial(materialId),
     enabled: !!materialId,
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
   });
 
   return {
