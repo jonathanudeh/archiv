@@ -25,9 +25,13 @@ export async function uploadMaterial(data: UploadMaterialInput) {
     onUploadProgress: (event: AxiosProgressEvent) => {
       if (!event.total) return;
 
-      const progress = Math.round((event.loaded * 100) / event.total);
+      const percentage = Math.round((event.loaded * 100) / event.total);
 
-      data.onProgress?.(progress);
+      data.onProgress?.({
+        percentage,
+        loaded: event.loaded,
+        total: event.total,
+      });
     },
   });
 

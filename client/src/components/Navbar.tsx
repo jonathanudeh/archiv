@@ -39,14 +39,21 @@ export default function Navbar() {
         <div className="hidden items-center gap-8 md:flex">
           <Link
             href="/schools"
-            className="text-muted hover:text-foreground text-sm font-medium transition-colors hover:underline"
+            className="text-muted hover:text-foreground hover:bg-primary rounded-full border px-3 py-2 text-sm font-medium transition-colors hover:text-white"
           >
             Schools
           </Link>
 
           <Link
-            href="/contribute/department"
-            className="text-muted hover:text-foreground text-sm font-medium transition-colors"
+            href="/materials"
+            className="text-muted hover:text-foreground hover:bg-primary rounded-full border px-3 py-2 text-sm font-medium transition-colors hover:text-white"
+          >
+            Materials
+          </Link>
+
+          <Link
+            href="/upload"
+            className="text-muted hover:text-foreground hover:bg-primary rounded-full border px-3 py-2 text-sm font-medium transition-colors hover:text-white"
           >
             Contribute
           </Link>

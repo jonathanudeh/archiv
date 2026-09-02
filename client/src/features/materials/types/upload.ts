@@ -21,5 +21,9 @@ export interface UploadMaterialInput {
 
   file: File;
 
-  onProgress?: (progress: number) => void;
+  onProgress?: (progress: {
+    percentage: number;
+    loaded: number;
+    total: number;
+  }) => void;
 }

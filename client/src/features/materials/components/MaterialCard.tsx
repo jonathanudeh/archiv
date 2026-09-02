@@ -1,6 +1,6 @@
 "use client";
 
-import { Calendar, Download, Eye } from "lucide-react";
+import { Bookmark, Calendar, Download, Eye } from "lucide-react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 
@@ -69,6 +69,11 @@ export default function MaterialCard({ material }: Props) {
           <span className="flex items-center gap-1">
             <Download size={14} />
             {material.downloadCount ?? 0}
+          </span>
+
+          <span className="flex items-center gap-1">
+            <Bookmark size={14} />
+            {material.saveCount ?? 0}
           </span>
         </div>
 

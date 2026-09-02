@@ -30,6 +30,10 @@ exports.saveMaterial = catchAsync(async (req, res, next) => {
     material: material._id,
   });
 
+  await Material.findByIdAndUpdate(material._id, {
+    $inc: { saveCount: 1 },
+  });
+
   await AnalyticsService.trackSave(material);
 
   res.status(201).json({
@@ -50,6 +54,10 @@ exports.unsaveMaterial = catchAsync(async (req, res, next) => {
   if (!saved) {
     return next(new AppError("Saved material not found", 404));
   }
+
+  await Material.findByIdAndUpdate(req.params.materialId, {
+    $inc: { saveCount: -1 },
+  });
 
   await AnalyticsService.trackUnsave(material);
 

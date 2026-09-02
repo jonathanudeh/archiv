@@ -7,6 +7,7 @@ export type Material = {
   fileType: string;
   fileSize?: number;
   downloadCount: number;
+  saveCount: number;
   viewCount: number;
   createdAt: string;
   isSaved: boolean;
