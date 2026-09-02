@@ -7,9 +7,7 @@ const School = require("../models/schoolModel");
 const data = require("../data/raw/departments.json");
 
 /*
-|--------------------------------------------------------------------------
 | Normalize
-|--------------------------------------------------------------------------
 */
 
 function normalize(value = "") {
@@ -25,9 +23,7 @@ function normalize(value = "") {
 }
 
 /*
-|--------------------------------------------------------------------------
 | Scraper aliases
-|--------------------------------------------------------------------------
 */
 
 const SCRAPER_ALIASES = {
@@ -92,9 +88,7 @@ const SCRAPER_ALIASES = {
 };
 
 /*
-|--------------------------------------------------------------------------
 | Build searchable values for one school
-|--------------------------------------------------------------------------
 */
 
 function getSearchValues(school) {
@@ -112,9 +106,7 @@ function getSearchValues(school) {
 }
 
 /*
-|--------------------------------------------------------------------------
 | Matching Algorithm
-|--------------------------------------------------------------------------
 */
 
 function findSchool(search, schools) {
@@ -197,9 +189,7 @@ function findSchool(search, schools) {
 }
 
 /*
-|--------------------------------------------------------------------------
 | Main
-|--------------------------------------------------------------------------
 */
 
 async function main() {
@@ -231,25 +221,21 @@ async function main() {
       });
     }
 
-    console.log("======================================");
     console.log("MATCH REPORT");
-    console.log("======================================\n");
 
     console.log(`Matched   : ${matched.length}`);
     console.log(`Unmatched : ${unmatched.length}`);
 
-    console.log("\n======================================");
+    console.log("\n");
     console.log("SAMPLE MATCHES");
-    console.log("======================================\n");
 
     matched.slice(0, 30).forEach((m) => {
       console.log(`✓ ${m.scraped}  ->  ${m.db}`);
     });
 
     if (unmatched.length) {
-      console.log("\n======================================");
+      console.log("\n");
       console.log("UNMATCHED");
-      console.log("======================================\n");
 
       unmatched.sort().forEach((school) => {
         console.log(`✗ ${school}`);

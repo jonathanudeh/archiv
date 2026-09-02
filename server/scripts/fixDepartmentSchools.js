@@ -14,14 +14,12 @@ function inferSchool(item) {
 
   const title = item.title.trim();
 
-  //----------------------------------------------------------
   // 1. Acronym inside parentheses
   //
   // Example:
   // Crescent University Abeokuta (CUAB)
   // FUO (Fountain University Osogbo)
   // EU (Elizade University)
-  //----------------------------------------------------------
 
   const acronym = title.match(/\(([A-Z][A-Z0-9-]{1,})\)/);
 
@@ -29,11 +27,9 @@ function inferSchool(item) {
     return acronym[1];
   }
 
-  //----------------------------------------------------------
   // 2. "... Offered by University Name"
   //
   // Complete List of Courses Offered by Edwin Clark University
-  //----------------------------------------------------------
 
   let match = title.match(/Offered by (.+)$/i);
 
@@ -41,9 +37,7 @@ function inferSchool(item) {
     return match[1].trim();
   }
 
-  //----------------------------------------------------------
   // 3. "List of XYZ University Degree Courses"
-  //----------------------------------------------------------
 
   match = title.match(/List of (.+?) Degree Courses/i);
 
@@ -51,9 +45,7 @@ function inferSchool(item) {
     return match[1].trim();
   }
 
-  //----------------------------------------------------------
   // 4. "... University Courses"
-  //----------------------------------------------------------
 
   match = title.match(/(.+?) Courses$/i);
 
@@ -61,9 +53,7 @@ function inferSchool(item) {
     return match[1].trim();
   }
 
-  //----------------------------------------------------------
   // 5. "Explore the Range of Degree Courses at ..."
-  //----------------------------------------------------------
 
   match = title.match(/Courses at (.+)$/i);
 
@@ -71,9 +61,7 @@ function inferSchool(item) {
     return match[1].trim();
   }
 
-  //----------------------------------------------------------
   // 6. "Courses in Bowen University ..."
-  //----------------------------------------------------------
 
   match = title.match(/Courses in (.+?)\s*&/i);
 
@@ -81,9 +69,7 @@ function inferSchool(item) {
     return match[1].trim();
   }
 
-  //----------------------------------------------------------
   // 7. "Courses Offered at Landmark University ..."
-  //----------------------------------------------------------
 
   match = title.match(/Courses Offered at (.+?) with/i);
 
@@ -91,9 +77,7 @@ function inferSchool(item) {
     return match[1].trim();
   }
 
-  //----------------------------------------------------------
   // 8. "Courses in XYZ University"
-  //----------------------------------------------------------
 
   match = title.match(/Courses in (.+)$/i);
 
@@ -101,9 +85,7 @@ function inferSchool(item) {
     return match[1].trim();
   }
 
-  //----------------------------------------------------------
   // Couldn't infer
-  //----------------------------------------------------------
 
   return "";
 }
@@ -130,11 +112,9 @@ const output = departments.map((item) => {
 
 fs.writeFileSync(OUTPUT, JSON.stringify(output, null, 2));
 
-console.log("------------------------------------");
 console.log(`Total schools : ${departments.length}`);
 console.log(`Fixed         : ${fixed}`);
 console.log(`Still missing : ${unresolved.length}`);
-console.log("------------------------------------");
 
 if (unresolved.length) {
   console.log("\nCouldn't infer:\n");

@@ -22,7 +22,6 @@ export default function ShareButton({
   return (
     <button
       onClick={() => {
-        console.log("share btn clicked ");
         share({
           title,
           text,

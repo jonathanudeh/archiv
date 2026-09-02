@@ -9,7 +9,7 @@ interface ShareOptions {
 }
 
 export function useShare() {
-  const { success, error } = useNotification();
+  const { success } = useNotification();
 
   async function share({
     title,

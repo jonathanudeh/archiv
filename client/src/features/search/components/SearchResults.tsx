@@ -30,8 +30,6 @@ export default function SearchResults({
     );
   }
 
-  console.log("SearchResults");
-
   return (
     <>
       <div className="mb-6 text-sm text-slate-500">

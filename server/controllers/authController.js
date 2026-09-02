@@ -30,10 +30,10 @@ const createSendToken = (user, statusCode, res) => {
   res.cookie("jwt", token, cookieOptions);
 
   // Helpful debug: include cookie options in server logs when in non-production
-  if (process.env.NODE_ENV !== "production") {
-    // eslint-disable-next-line no-console
-    console.log("[auth] set-cookie options:", cookieOptions);
-  }
+  // if (process.env.NODE_ENV !== "production") {
+  //   // eslint-disable-next-line no-console
+  //   console.log("[auth] set-cookie options:", cookieOptions);
+  // }
 
   // Remove password from output
   user.password = undefined;
@@ -61,7 +61,6 @@ exports.signup = catchAsync(async (req, res, next) => {
   await newUser.save({ validateBeforeSave: false });
 
   const url = `${process.env.CLIENT_URL}/verify-email/${verificationToken}`;
-
   await new Email(newUser, url).sendEmailVerification();
 
   res.status(200).json({

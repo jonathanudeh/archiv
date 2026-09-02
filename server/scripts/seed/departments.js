@@ -153,7 +153,7 @@ async function main() {
         if (err.code === 11000) {
           duplicateErrorCount++;
 
-          console.log("  ↳ Duplicate key detected. Skipping.");
+          console.log("  Duplicate key detected. Skipping.");
 
           continue;
         }
@@ -162,7 +162,7 @@ async function main() {
 
         failedCount++;
 
-        console.error("  ↳ Failed to create department.");
+        console.error("  Failed to create department.");
 
         console.error(err);
 
