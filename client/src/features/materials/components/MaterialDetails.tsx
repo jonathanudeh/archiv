@@ -101,16 +101,6 @@ export default function MaterialDetails({ material }: Props) {
             title={material.title}
             text={`Check out "${material.title}" on Archiv.`}
           />
-
-          {canDelete && (
-            <button
-              onClick={handleDelete}
-              disabled={isDeleting}
-              className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-red-600 bg-red-400 px-4 py-2 font-medium text-white transition hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              {isDeleting ? "Deleting..." : "Delete"}
-            </button>
-          )}
         </div>
       </section>
 
@@ -129,7 +119,7 @@ export default function MaterialDetails({ material }: Props) {
         {/* Sidebar */}
         <aside className="space-y-6">
           {/* Uploaded By */}
-          <div className="rounded-2xl border border-slate-200 p-5">
+          <div className="rounded-2xl border border-slate-200 bg-white p-5">
             <h3 className="mb-4 font-semibold">Uploaded By</h3>
 
             <div className="flex items-center gap-3">
@@ -156,7 +146,7 @@ export default function MaterialDetails({ material }: Props) {
           </div>
 
           {/* Academic Info */}
-          <div className="rounded-2xl border border-slate-200 p-5">
+          <div className="rounded-2xl border border-slate-200 bg-white p-5">
             <h3 className="mb-4 font-semibold">Academic Information</h3>
 
             <div className="space-y-4 text-sm">
@@ -180,6 +170,27 @@ export default function MaterialDetails({ material }: Props) {
               />
             </div>
           </div>
+
+          {canDelete && (
+            <div className="rounded-2xl border border-red-100 bg-white p-5">
+              <h3 className="mb-2 text-sm font-semibold text-red-600">
+                Danger Zone
+              </h3>
+
+              <p className="mb-4 text-xs leading-relaxed text-slate-500">
+                Permanently delete this material and its associated file from
+                Archiv.
+              </p>
+
+              <button
+                onClick={handleDelete}
+                disabled={isDeleting}
+                className="rounded-full border border-red-700 p-2 text-sm font-medium text-red-600 transition hover:bg-red-700 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                {isDeleting ? "Deleting..." : "Delete material"}
+              </button>
+            </div>
+          )}
         </aside>
       </section>
 
