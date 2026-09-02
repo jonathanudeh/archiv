@@ -6,6 +6,7 @@ import {
   Upload,
   Settings,
   Home,
+  BookText,
 } from "lucide-react";
 
 export const sidebarItems = [
@@ -13,6 +14,11 @@ export const sidebarItems = [
     title: "Home",
     href: "/",
     icon: Home,
+  },
+  {
+    title: "Browse Materials",
+    href: "/materials",
+    icon: BookText,
   },
   {
     title: "Browse Schools",

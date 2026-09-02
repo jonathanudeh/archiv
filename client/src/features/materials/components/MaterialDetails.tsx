@@ -53,6 +53,10 @@ export default function MaterialDetails({ material }: Props) {
     }
   }
 
+  const fileSize = material.fileSize
+    ? (material.fileSize / (1024 * 1024)).toFixed(2)
+    : null;
+
   const canDelete =
     !!user && (user.role === "admin" || user._id === material.uploadedBy?._id);
 
@@ -73,7 +77,7 @@ export default function MaterialDetails({ material }: Props) {
             className="bg-primary inline-flex cursor-pointer items-center gap-2 rounded-full px-3 py-2 font-medium text-white"
           >
             <Download size={18} />
-            Download
+            {isDownloading ? ` ${fileSize} MB · Downloading...` : `Download`}
           </button>
 
           <a
@@ -163,6 +167,10 @@ export default function MaterialDetails({ material }: Props) {
 
             <div className="space-y-4 text-sm">
               <InfoRow label="Type" value={material.fileType} />
+              <InfoRow
+                label="Size"
+                value={fileSize ? `${fileSize} MB` : undefined}
+              />
               <InfoRow label="Views" value={String(material.viewCount)} />
               <InfoRow
                 label="Downloads"
