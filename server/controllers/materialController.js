@@ -150,7 +150,7 @@ exports.getAllMaterials = catchAsync(async (req, res, next) => {
       }),
     req.query,
   )
-    .search(["title", "description", "category", "tags", "school"])
+    .search(["title", "description", "category", "tags"])
     .filter()
     .sort()
     .limitFields()
