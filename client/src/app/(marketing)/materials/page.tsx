@@ -78,7 +78,7 @@ const MaterialsPageContent = () => {
   return (
     <main className="min-h-screen bg-gray-50">
       {/* HEADER */}
-      <section className="border-b border-slate-200 bg-white">
+      <section className="">
         <div className="mx-auto max-w-7xl px-6 py-12">
           <div className="text-center">
             <h1 className="text-3xl font-extrabold text-slate-900 md:text-4xl">
@@ -145,7 +145,7 @@ const MaterialsPageContent = () => {
         {/* GRID */}
         {materials.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:grid-cols-3">
               {materials.map((material: Material) => (
                 <MaterialCard key={material._id} material={material} />
               ))}
@@ -159,7 +159,7 @@ const MaterialsPageContent = () => {
           </>
         ) : (
           <div className="rounded-2xl border border-dashed border-slate-300 bg-white py-20 text-center">
-            <h3 className="text-lg font-semibold text-slate-900">
+            <h3 className="text-md font-semibold text-slate-900">
               No materials found
             </h3>
 

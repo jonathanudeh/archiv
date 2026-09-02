@@ -14,6 +14,7 @@ export type Material = {
   school: {
     _id: string;
     name: string;
+    acronym?: string;
   };
 
   department: {

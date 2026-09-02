@@ -130,8 +130,27 @@ exports.getAllMaterials = catchAsync(async (req, res, next) => {
     filter.category = req.query.category;
   }
 
-  const features = new APIFeatures(Material.find(filter), req.query)
-    .search(["title", "description", "category", "tags"])
+  const features = new APIFeatures(
+    Material.find(filter)
+      .populate({
+        path: "school",
+        select: "name acronym",
+      })
+      .populate({
+        path: "department",
+        select: "name",
+      })
+      .populate({
+        path: "level",
+        select: "name",
+      })
+      .populate({
+        path: "semester",
+        select: "name",
+      }),
+    req.query,
+  )
+    .search(["title", "description", "category", "tags", "school"])
     .filter()
     .sort()
     .limitFields()

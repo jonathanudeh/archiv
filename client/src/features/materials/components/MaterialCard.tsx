@@ -1,6 +1,6 @@
 "use client";
 
-import { Bookmark, Calendar, Download, Eye, FileText } from "lucide-react";
+import { Calendar, Download, Eye } from "lucide-react";
 import { format } from "date-fns";
 import { useRouter } from "next/navigation";
 
@@ -20,12 +20,22 @@ export default function MaterialCard({ material }: Props) {
   return (
     <article
       onClick={handleClick}
-      className="group cursor-pointer rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-md"
+      className="group cursor-pointer rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-slate-300 hover:shadow-md"
     >
       {/* FILE TYPE */}
       <div className="mb-5 flex items-center justify-between">
-        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-slate-100">
-          <FileText className="h-5 w-5 text-slate-600" />
+        {/* TITLE */}
+        <div>
+          <h2 className="group-hover:text-primary line-clamp-2 text-lg font-bold text-slate-900 transition">
+            {material.title}
+          </h2>
+
+          {/* DESCRIPTION */}
+          {material.description && (
+            <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-500">
+              {material.description}
+            </p>
+          )}
         </div>
 
         <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-600 uppercase">
@@ -33,40 +43,19 @@ export default function MaterialCard({ material }: Props) {
         </span>
       </div>
 
-      {/* TITLE */}
-      <h2 className="group-hover:text-primary line-clamp-2 text-lg font-bold text-slate-900 transition">
-        {material.title}
-      </h2>
-
-      {/* DESCRIPTION */}
-      {material.description && (
-        <p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-500">
-          {material.description}
-        </p>
-      )}
-
       {/* CATEGORY */}
-      <div className="mt-5">
+      <div className="mt-5 flex gap-2">
+        {material.school?.acronym && (
+          <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 uppercase">
+            {material.school.acronym}
+          </span>
+        )}
         <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 capitalize">
           {material.category}
         </span>
-      </div>
-
-      {/* ACADEMIC INFO */}
-      <div className="mt-5 space-y-2 text-sm text-slate-500">
-        {material.department?.name && (
-          <p className="truncate">
-            <span className="font-medium text-slate-700">Department:</span>{" "}
-            {material.department.name}
-          </p>
-        )}
-
-        {material.level?.name && (
-          <p>
-            <span className="font-medium text-slate-700">Level:</span>{" "}
-            {material.level.name}
-          </p>
-        )}
+        <span className="inline-flex truncate rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 capitalize">
+          {material.department.name} {material.level.name}L
+        </span>
       </div>
 
       {/* FOOTER */}
