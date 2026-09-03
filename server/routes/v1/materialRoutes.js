@@ -8,6 +8,7 @@ const {
   uploadMaterial,
   downloadMaterial,
   viewMaterial,
+  getPopularMaterials,
 } = require("../../controllers/materialController");
 const {
   protect,
@@ -36,6 +37,8 @@ router
     validateFileType,
     uploadMaterial,
   );
+
+router.get("/popular", getPopularMaterials);
 
 router
   .route("/:materialId")

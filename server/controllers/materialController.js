@@ -216,6 +216,66 @@ exports.getAllMaterials = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getPopularMaterials = catchAsync(async (req, res, next) => {
+  const limit = Math.min(Number(req.query.limit) || 5, 10);
+
+  const materials = await Material.aggregate([
+    {
+      $addFields: {
+        popularityScore: {
+          $add: [
+            { $multiply: ["$downloadCount", 3] },
+            { $multiply: ["$saveCount", 2] },
+            "$viewCount",
+          ],
+        },
+      },
+    },
+
+    {
+      $sort: {
+        popularityScore: -1,
+        createdAt: -1,
+      },
+    },
+
+    {
+      $limit: limit,
+    },
+  ]);
+
+  await Material.populate(materials, [
+    {
+      path: "school",
+      select: "name acronym",
+    },
+    {
+      path: "department",
+      select: "name",
+    },
+    {
+      path: "level",
+      select: "name",
+    },
+    {
+      path: "semester",
+      select: "name",
+    },
+    {
+      path: "uploadedBy",
+      select: "name photo",
+    },
+  ]);
+
+  res.status(200).json({
+    status: "success",
+    result: materials.length,
+    data: {
+      materials,
+    },
+  });
+});
+
 exports.uploadMaterial = catchAsync(async (req, res, next) => {
   if (!req.file) {
     return next(new AppError("Please upload a file", 400));
