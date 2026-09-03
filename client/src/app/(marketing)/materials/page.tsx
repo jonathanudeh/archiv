@@ -80,48 +80,43 @@ const MaterialsPageContent = () => {
       {/* HEADER */}
       <section className="">
         <div className="mx-auto max-w-7xl px-6 py-12">
-          <div className="text-center">
-            <h1 className="text-3xl font-extrabold text-slate-900 md:text-4xl">
+          <div className="flex items-center justify-between text-center">
+            <h1 className="text-4xl font-extrabold text-slate-900 md:text-6xl">
               Browse Materials
             </h1>
 
-            <p className="mx-auto mt-3 max-w-2xl text-slate-500">
-              Discover lecture notes, past questions, assignments, projects,
-              textbooks and other academic materials.
-            </p>
-          </div>
+            {/* SEARCH */}
+            <div className="w-xl max-w-3xl">
+              <div className="relative">
+                <Search className="absolute top-1/2 left-6 h-5 w-5 -translate-y-1/2 text-slate-400" />
 
-          {/* SEARCH */}
-          <div className="mx-auto mt-8 max-w-3xl">
-            <div className="relative">
-              <Search className="absolute top-1/2 left-6 h-5 w-5 -translate-y-1/2 text-slate-400" />
+                <input
+                  value={input}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    const value = e.target.value;
 
-              <input
-                value={input}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                  const value = e.target.value;
+                    setInput(value);
 
-                  setInput(value);
+                    if (!value.trim() && search) {
+                      router.push("/materials?page=1");
+                    }
+                  }}
+                  onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
+                    if (e.key === "Enter") {
+                      handleSearch();
+                    }
+                  }}
+                  placeholder="Search materials..."
+                  className="h-14 w-full rounded-full border border-slate-200 bg-white pr-36 pl-14 text-base shadow-sm transition outline-none focus:border-slate-400 focus:ring-4 focus:ring-slate-100"
+                />
 
-                  if (!value.trim() && search) {
-                    router.push("/materials?page=1");
-                  }
-                }}
-                onKeyDown={(e: KeyboardEvent<HTMLInputElement>) => {
-                  if (e.key === "Enter") {
-                    handleSearch();
-                  }
-                }}
-                placeholder="Search materials..."
-                className="h-14 w-full rounded-full border border-slate-200 bg-white pr-36 pl-14 text-base shadow-sm transition outline-none focus:border-slate-400 focus:ring-4 focus:ring-slate-100"
-              />
-
-              <button
-                onClick={handleSearch}
-                className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-slate-900 px-6 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
-              >
-                Search
-              </button>
+                <button
+                  onClick={handleSearch}
+                  className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full bg-slate-900 px-6 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800"
+                >
+                  Search
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -145,7 +140,7 @@ const MaterialsPageContent = () => {
         {/* GRID */}
         {materials.length > 0 ? (
           <>
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:grid-cols-3">
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
               {materials.map((material: Material) => (
                 <MaterialCard key={material._id} material={material} />
               ))}
