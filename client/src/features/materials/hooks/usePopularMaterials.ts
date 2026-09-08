@@ -8,7 +8,7 @@ export function usePopularMaterials() {
     error: errorPopularMaterials,
   } = useQuery({
     queryKey: ["popular-materials"],
-    queryFn: () => getPopularMaterials(5),
+    queryFn: () => getPopularMaterials(4),
     staleTime: 1000 * 60 * 10,
   });
 
