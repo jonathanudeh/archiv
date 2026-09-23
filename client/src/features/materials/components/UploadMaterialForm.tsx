@@ -172,7 +172,8 @@ export default function UploadMaterialForm() {
         <p className="mt-1 text-sm text-slate-500">
           Upload academic materials to Archiv.
           <span className="block text-amber-500">
-            You must finish editing your profile before you can upload.
+            {(!profileSchool || !profileDepartment) &&
+              "You must finish editing your profile before you can upload."}
           </span>
         </p>
       </div>
