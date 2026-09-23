@@ -49,7 +49,7 @@ export default function SearchableSchoolSelect({ value, onChange }: Props) {
         onClick={() => setOpen((prev) => !prev)}
         className="flex w-full items-center justify-between rounded-full border border-slate-300 bg-white px-4 py-3 text-left"
       >
-        <span className="truncate">
+        <span className="truncate capitalize">
           {selectedSchool?.name ?? "Select school"}
         </span>
 

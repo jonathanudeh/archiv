@@ -63,7 +63,7 @@ export default function SearchableDepartmentSelect({
         onClick={() => setOpen((prev) => !prev)}
         className="flex w-full items-center justify-between rounded-full border border-slate-300 bg-white px-4 py-3 text-left disabled:cursor-not-allowed disabled:bg-slate-100"
       >
-        <span className="truncate">
+        <span className="truncate capitalize">
           {selectedDepartment?.name ?? "Select department"}
         </span>
 

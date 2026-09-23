@@ -172,7 +172,7 @@ export default function UploadMaterialForm() {
         <p className="mt-1 text-sm text-slate-500">
           Upload academic materials to Archiv.
           <span className="block text-amber-500">
-            You must finish editing your before you can upload.
+            You must finish editing your profile before you can upload.
           </span>
         </p>
       </div>
@@ -407,7 +407,7 @@ export default function UploadMaterialForm() {
               onClick={() => {
                 setValue("file", undefined as never);
               }}
-              className="shrink-0 cursor-pointer rounded-full border border-red-500 p-2 text-xs font-medium text-red-500 hover:bg-red-500 hover:text-red-600 hover:text-white"
+              className="shrink-0 cursor-pointer rounded-full border border-red-500 p-2 text-xs font-medium text-red-500 hover:bg-red-500 hover:text-red-600"
             >
               Remove
             </button>
